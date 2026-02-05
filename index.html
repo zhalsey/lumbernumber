@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Lumber Number 1.0</title>
+<title>Lumber Number 1.1</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -44,7 +44,7 @@ body {
   font-family: 'Share Tech Mono', monospace;
   background: linear-gradient(135deg, #7a8188 0%, #9ca3af 100%);
   height: 100vh;
-  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,8 +129,9 @@ body {
 }
 
 .mode-selector {
-  display: flex;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
   margin-bottom: 14px;
   background: rgba(0,0,0,0.3);
   padding: 5px;
@@ -139,15 +140,15 @@ body {
 
 .mode-btn {
   flex: 1;
-  padding: 10px 8px;
-  min-height: 44px;
+  padding: 9px 6px;
+  min-height: 42px;
   background: var(--btn-bg);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 6px;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.5px;
+  font-size: 9px;
+  letter-spacing: 0.3px;
   color: #374151;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -360,6 +361,74 @@ body {
   width: 24px;
 }
 
+.sqft-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 14px 0 12px 0;
+}
+
+.sqft-preset-btn {
+  font-size: 8px !important;
+  padding: 9px 4px !important;
+}
+
+.sqft-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 14px 0 12px 0;
+}
+
+.sqft-preset-btn {
+  font-size: 8px !important;
+  padding: 9px 4px !important;
+}
+
+.sqft-pricing-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid rgba(0,0,0,0.2);
+}
+
+.sqft-pricing-label {
+  font-size: 9px;
+  color: #1f2937;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-transform: uppercase;
+}
+
+.sqft-price-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.sqft-price-result-label {
+  font-size: 10px;
+  color: #1f2937;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.sqft-price-result-value {
+  font-size: 14px;
+  color: var(--orange);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  text-shadow: 0 0 4px var(--orange-glow);
+}
+
 .input-row {
   display: flex;
   align-items: center;
@@ -412,7 +481,7 @@ body {
 
 .calc-btn {
   padding: 13px;
-  min-height: 44px; /* Minimum iOS touch target */
+  min-height: 44px;
   background: var(--btn-bg);
   border: 1px solid rgba(255,255,255,0.4);
   border-radius: 8px;
@@ -515,28 +584,30 @@ body {
   display: none;
 }
 
-/* Mobile portrait optimization */
 @media (max-width: 380px) {
   .calculator-body {
-    padding: 20px 16px 24px;
+    padding: 16px 18px 20px;
   }
   
-  .lcd-value {
-    font-size: 24px;
+  .lcd-display {
+    padding: 12px;
+    margin-bottom: 14px;
   }
   
-  .input-field {
-    flex: 0 0 110px;
-    font-size: 15px;
+  .input-panel {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .button-grid {
+    gap: 8px;
   }
   
   .calc-btn {
-    padding: 14px;
-    font-size: 11px;
+    padding: 12px;
   }
 }
 
-/* Landscape mobile */
 @media (max-height: 500px) and (orientation: landscape) {
   body {
     padding: 10px;
@@ -569,19 +640,20 @@ body {
 <body>
 
 <div class="calculator-body">
-  <div class="brand">Lumber Number 1.0</div>
-  <div class="tagline">Lineal Foot and Board Foot Conversion Calculator</div>
+  <div class="brand">Lumber Number 1.1</div>
+  <div class="tagline">Lineal, Board, and Square Foot Conversion Calculator</div>
   
   <div class="mode-selector">
     <button class="mode-btn active" data-mode="lf-to-mbf">LF → MBF</button>
     <button class="mode-btn" data-mode="mbf-to-lf">MBF → LF</button>
-    <button class="mode-btn" data-mode="pricing">Pricing</button>
+    <button class="mode-btn" data-mode="pricing">LF & MBF Pricing</button>
+    <button class="mode-btn" data-mode="sq-ft">SQ FT & MBF</button>
   </div>
   
   <div class="lcd-display">
     <div class="lcd-label" id="displayLabel">LINEAL FEET → MBF</div>
     <div class="lcd-value large" id="displayValue">
-      <span id="displayNumber">0.0000</span>
+      <span id="displayNumber">0.000</span>
       <span class="lcd-unit" id="displayUnit">MBF</span>
     </div>
   </div>
@@ -615,6 +687,62 @@ body {
     <div class="input-row">
       <span class="input-label">Width (in)</span>
       <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- Square Feet Panel -->
+  <div class="input-panel" id="panel-sq-ft">
+    <div class="price-toggle-container">
+      <span class="toggle-label">MBF</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="sqft-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">SQ FT</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="sqft-input-label">Square Feet</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-input" value="1000" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Net Face Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-face-width" value="3.25" step="0.001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Nominal Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-nominal-width" value="4" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-thick" value="1" step="0.01">
+    </div>
+    
+    <div class="sqft-presets">
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.25, 3)">2-1/4" (1x3)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.125, 3)">2-1/8" (1x3)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.25, 4)">3-1/4" (1x4)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.125, 4)">3-1/8" (1x4)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(5.125, 6)">5-1/8" (1x6)</button>
+    </div>
+    
+    <div class="sqft-pricing-section">
+      <div class="sqft-pricing-label">PRICING CONVERSION</div>
+      <div class="price-toggle-container">
+        <span class="toggle-label">$/MBF</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sqft-price-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">$/SQ FT</span>
+      </div>
+      <div class="input-row">
+        <span class="input-label" id="sqft-price-label">Price per SQ FT ($)</span>
+        <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-price-input" value="4.31" step="0.0001">
+      </div>
+      <div class="sqft-price-result">
+        <span class="sqft-price-result-label" id="sqft-price-result-label">$/MBF:</span>
+        <span class="sqft-price-result-value" id="sqft-price-result-value">—</span>
+      </div>
     </div>
   </div>
   
@@ -708,11 +836,20 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
     document.getElementById(`panel-${currentMode}`).classList.add('active');
     
+    // Show/hide appropriate preset buttons
+    const mainButtonGrid = document.querySelector('.button-grid');
+    if (currentMode === 'sq-ft') {
+      mainButtonGrid.style.display = 'none';
+    } else {
+      mainButtonGrid.style.display = 'grid';
+    }
+    
     // Update display label
     const labels = {
       'lf-to-mbf': 'LINEAL FEET → MBF',
       'mbf-to-lf': 'MBF → LINEAL FEET',
-      'pricing': 'PRICING CONVERSION'
+      'sq-ft': 'SQUARE FEET ↔ MBF',
+      'pricing': 'LF & MBF PRICING'
     };
     document.getElementById('displayLabel').textContent = labels[currentMode];
     
@@ -744,7 +881,7 @@ document.querySelectorAll('.input-field').forEach(input => {
   // Handle enter key to close keyboard
   input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' || e.keyCode === 13) {
-      this.blur(); // Close the keyboard
+      this.blur();
       calculate();
     }
   });
@@ -758,6 +895,20 @@ document.getElementById('price-unit-toggle').addEventListener('change', function
   calculate();
 });
 
+// Square feet unit toggle
+document.getElementById('sqft-unit-toggle').addEventListener('change', function() {
+  const isSqFt = this.checked;
+  document.getElementById('sqft-input-label').textContent = isSqFt ? 'Square Feet' : 'MBF';
+  calculate();
+});
+
+// Square feet price toggle
+document.getElementById('sqft-price-toggle').addEventListener('change', function() {
+  const isSqFt = this.checked;
+  document.getElementById('sqft-price-label').textContent = isSqFt ? 'Price per SQ FT ($)' : 'Price per MBF ($)';
+  calculate();
+});
+
 function setPreset(thickness, width) {
   const panels = ['lf', 'mbf', 'price'];
   panels.forEach(prefix => {
@@ -767,6 +918,31 @@ function setPreset(thickness, width) {
     if (widthEl) widthEl.value = width;
   });
   calculate();
+}
+
+function setSqFtPreset(netFace, nominalWidth) {
+  document.getElementById('sqft-face-width').value = netFace;
+  document.getElementById('sqft-nominal-width').value = nominalWidth;
+  document.getElementById('sqft-thick').value = 1;
+  calculate();
+}
+
+function calculateSqFtPricing(coverageFactor) {
+  const priceInput = parseFloat(document.getElementById('sqft-price-input').value) || 0;
+  const isSqFt = document.getElementById('sqft-price-toggle').checked;
+  
+  if (isSqFt) {
+    // $/SQ FT → $/MBF
+    const priceMBF = priceInput * coverageFactor * 1000;
+    document.getElementById('sqft-price-result-label').textContent = '$/MBF:';
+    document.getElementById('sqft-price-result-value').textContent = 
+      '$' + priceMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  } else {
+    // $/MBF → $/SQ FT
+    const priceSqFt = priceInput / 1000 / coverageFactor;
+    document.getElementById('sqft-price-result-label').textContent = '$/SQ FT:';
+    document.getElementById('sqft-price-result-value').textContent = '$' + priceSqFt.toFixed(3);
+  }
 }
 
 function calculate() {
@@ -800,11 +976,39 @@ function calculate() {
     displayUnit.textContent = 'LF';
     resultSection.style.display = 'none';
   }
+  else if (currentMode === 'sq-ft') {
+    const input = parseFloat(document.getElementById('sqft-input').value) || 0;
+    const netFace = parseFloat(document.getElementById('sqft-face-width').value) || 1;
+    const nominalWidth = parseFloat(document.getElementById('sqft-nominal-width').value) || 1;
+    const isSqFt = document.getElementById('sqft-unit-toggle').checked;
+    
+    // CRITICAL: Coverage Factor = Net Face Width ÷ Nominal Width
+    const coverageFactor = netFace / nominalWidth;
+    
+    if (isSqFt) {
+      // Input is SQ FT → calculate MBF
+      const mbf = input / coverageFactor / 1000;
+      displayNumber.textContent = mbf.toFixed(3);
+      displayUnit.textContent = 'MBF';
+    } else {
+      // Input is MBF → calculate SQ FT
+      const sqFt = input * 1000 * coverageFactor;
+      displayNumber.textContent = sqFt.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = 'SQ FT';
+    }
+    
+    // Calculate pricing
+    calculateSqFtPricing(coverageFactor);
+    resultSection.style.display = 'none';
+  }
   else if (currentMode === 'pricing') {
     const priceInput = parseFloat(document.getElementById('price-input').value) || 0;
     const t = parseFloat(document.getElementById('price-thick').value) || 1;
     const w = parseFloat(document.getElementById('price-width').value) || 1;
-    const isLF = document.getElementById('price-unit-toggle').checked; // checked = LF, unchecked = MBF
+    const isLF = document.getElementById('price-unit-toggle').checked;
     
     if (isLF) {
       // Input is $/LF → calculate $/MBF
