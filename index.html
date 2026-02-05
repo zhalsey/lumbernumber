@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lumber Number 1.0</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lumber Number">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2a2e35">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --steel-dark: #6b7280;
+  --steel-mid: #8b95a3;
+  --steel-light: #b0b8c4;
+  --steel-highlight: #d1d5db;
+  --chrome: linear-gradient(135deg, #a8a8a8 0%, #e0e0e0 50%, #a8a8a8 100%);
+  --bezel: linear-gradient(180deg, #9ca3af 0%, #7a8188 100%);
+  --lcd-bg: #2d3e2f;
+  --lcd-text: #8aff8a;
+  --lcd-glow: rgba(138, 255, 138, 0.3);
+  --btn-bg: linear-gradient(180deg, #b8bfc6 0%, #9ca3af 100%);
+  --btn-active: linear-gradient(180deg, #8b95a3 0%, #7a8188 100%);
+  --orange: #ff6b35;
+  --orange-glow: rgba(255, 107, 53, 0.4);
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background: linear-gradient(135deg, #7a8188 0%, #9ca3af 100%);
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.calculator-body {
+  max-width: 420px;
+  width: calc(100% - 20px);
+  max-height: calc(100vh - 20px);
+  max-height: calc(100dvh - 20px);
+  overflow-y: auto;
+  background: var(--bezel);
+  border-radius: 16px;
+  padding: 20px 18px 22px;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    inset 0 -2px 8px rgba(0,0,0,0.3);
+  position: relative;
+  animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.calculator-body::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255,255,255,0.6) 30%, 
+    rgba(255,255,255,0.8) 50%, 
+    rgba(255,255,255,0.6) 70%, 
+    transparent 100%);
+  border-radius: 2px;
+}
+
+.brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 4px;
+  color: #1f2937;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.tagline {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 14px;
+  color: #1f2937;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  background: rgba(0,0,0,0.3);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px 8px;
+  min-height: 44px;
+  background: var(--btn-bg);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.mode-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.mode-btn:active::before {
+  opacity: 1;
+  transition: opacity 0.05s ease-out;
+}
+
+.mode-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.4),
+    inset 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.mode-btn.active {
+  background: var(--orange);
+  color: #fff;
+  border-color: rgba(255,107,53,0.5);
+  box-shadow: 
+    0 0 12px var(--orange-glow),
+    0 2px 4px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.mode-btn.active::before {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+}
+
+.lcd-display {
+  background: var(--lcd-bg);
+  border: 3px solid var(--steel-dark);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 14px;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.8),
+    inset 0 0 40px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.lcd-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(138,255,138,0.03) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(138,255,138,0.03) 3px
+  );
+  pointer-events: none;
+}
+
+.lcd-label {
+  font-size: 9px;
+  color: rgba(138,255,138,0.5);
+  margin-bottom: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.lcd-value {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 24px;
+  color: var(--lcd-text);
+  text-align: right;
+  text-shadow: 0 0 8px var(--lcd-glow);
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  letter-spacing: 1px;
+  gap: 8px;
+}
+
+.lcd-value.large {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.lcd-unit {
+  font-size: 14px;
+  color: rgba(138, 255, 138, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.input-panel {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.input-panel.active {
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.price-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.toggle-label {
+  font-size: 11px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  color: #374151;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--btn-bg);
+  transition: 0.3s;
+  border-radius: 28px;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.4);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
+  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--btn-bg);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-slider:active:before {
+  width: 24px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-label {
+  font-size: 10px;
+  color: #1f2937;
+  flex: 1;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.input-field {
+  flex: 0 0 120px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  color: var(--lcd-text);
+  text-align: right;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.5),
+    0 0 8px var(--orange-glow);
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.preset-btn {
+  padding: 10px 6px !important;
+  font-size: 10px !important;
+}
+
+.calc-btn {
+  padding: 13px;
+  min-height: 44px; /* Minimum iOS touch target */
+  background: var(--btn-bg);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(0,0,0,0.15);
+  text-transform: uppercase;
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calc-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.calc-btn:active::before {
+  opacity: 1;
+  transition: opacity 0.05s ease-out;
+}
+
+.calc-btn:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 
+    0 1px 3px rgba(0,0,0,0.4),
+    inset 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.calc-btn:hover {
+  border-color: rgba(255,255,255,0.25);
+}
+
+.calc-btn.primary {
+  background: linear-gradient(180deg, #ff8359 0%, var(--orange) 100%);
+  color: #fff;
+  border-color: rgba(255,107,53,0.5);
+  box-shadow: 
+    0 0 12px var(--orange-glow),
+    0 3px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.calc-btn.primary::before {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 70%);
+}
+
+.calc-btn.primary:active {
+  box-shadow: 
+    0 0 16px var(--orange-glow),
+    0 1px 3px rgba(0,0,0,0.4),
+    inset 0 1px 4px rgba(0,0,0,0.3);
+  transform: translateY(2px) scale(0.98);
+}
+
+.result-section {
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.result-label {
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 8px;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.result-value {
+  font-size: 20px;
+  color: var(--orange);
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 8px var(--orange-glow);
+  letter-spacing: 1px;
+}
+
+.footer {
+  display: none;
+}
+
+/* Mobile portrait optimization */
+@media (max-width: 380px) {
+  .calculator-body {
+    padding: 20px 16px 24px;
+  }
+  
+  .lcd-value {
+    font-size: 24px;
+  }
+  
+  .input-field {
+    flex: 0 0 110px;
+    font-size: 15px;
+  }
+  
+  .calc-btn {
+    padding: 14px;
+    font-size: 11px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding: 10px;
+  }
+  
+  .calculator-body {
+    padding: 16px 18px 20px;
+  }
+  
+  .lcd-display {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .input-panel {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .button-grid {
+    gap: 8px;
+  }
+  
+  .calc-btn {
+    padding: 12px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="calculator-body">
+  <div class="brand">Lumber Number 1.0</div>
+  <div class="tagline">Lineal Foot and Board Foot Conversion Calculator</div>
+  
+  <div class="mode-selector">
+    <button class="mode-btn active" data-mode="lf-to-mbf">LF → MBF</button>
+    <button class="mode-btn" data-mode="mbf-to-lf">MBF → LF</button>
+    <button class="mode-btn" data-mode="pricing">Pricing</button>
+  </div>
+  
+  <div class="lcd-display">
+    <div class="lcd-label" id="displayLabel">LINEAL FEET → MBF</div>
+    <div class="lcd-value large" id="displayValue">
+      <span id="displayNumber">0.0000</span>
+      <span class="lcd-unit" id="displayUnit">MBF</span>
+    </div>
+  </div>
+  
+  <!-- LF to MBF Panel -->
+  <div class="input-panel active" id="panel-lf-to-mbf">
+    <div class="input-row">
+      <span class="input-label">Lineal Feet</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-input" value="1000" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- MBF to LF Panel -->
+  <div class="input-panel" id="panel-mbf-to-lf">
+    <div class="input-row">
+      <span class="input-label">MBF</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-input" value="0.5" step="0.0001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- Pricing Panel -->
+  <div class="input-panel" id="panel-pricing">
+    <div class="price-toggle-container">
+      <span class="toggle-label">MBF</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="price-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">LF</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="price-input-label">Price per LF ($)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-input" value="1.50" step="0.0001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <div class="button-grid">
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 4)">1×4</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 6)">1×6</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 8)">1×8</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 10)">1×10</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 12)">1×12</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 4)">2×4</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 6)">2×6</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 8)">2×8</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 10)">2×10</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 12)">2×12</button>
+  </div>
+  
+  <div class="result-section" id="resultSection" style="display: none;">
+    <div class="result-label" id="resultLabel">RESULT</div>
+    <div class="result-value" id="resultValue">—</div>
+  </div>
+</div>
+
+<div class="footer">
+  MBF = 1,000 Board Feet
+</div>
+
+<script>
+let currentMode = 'lf-to-mbf';
+
+// Mode switching
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const previousMode = currentMode;
+    currentMode = btn.dataset.mode;
+    
+    // Carry over thickness and width values when switching to pricing
+    if (currentMode === 'pricing') {
+      let sourceThick, sourceWidth;
+      if (previousMode === 'lf-to-mbf') {
+        sourceThick = document.getElementById('lf-thick').value;
+        sourceWidth = document.getElementById('lf-width').value;
+      } else if (previousMode === 'mbf-to-lf') {
+        sourceThick = document.getElementById('mbf-thick').value;
+        sourceWidth = document.getElementById('mbf-width').value;
+      }
+      if (sourceThick && sourceWidth) {
+        document.getElementById('price-thick').value = sourceThick;
+        document.getElementById('price-width').value = sourceWidth;
+      }
+    }
+    // Carry pricing values back when switching from pricing
+    else if (previousMode === 'pricing') {
+      const priceThick = document.getElementById('price-thick').value;
+      const priceWidth = document.getElementById('price-width').value;
+      if (currentMode === 'lf-to-mbf') {
+        document.getElementById('lf-thick').value = priceThick;
+        document.getElementById('lf-width').value = priceWidth;
+      } else if (currentMode === 'mbf-to-lf') {
+        document.getElementById('mbf-thick').value = priceThick;
+        document.getElementById('mbf-width').value = priceWidth;
+      }
+    }
+    
+    document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(`panel-${currentMode}`).classList.add('active');
+    
+    // Update display label
+    const labels = {
+      'lf-to-mbf': 'LINEAL FEET → MBF',
+      'mbf-to-lf': 'MBF → LINEAL FEET',
+      'pricing': 'PRICING CONVERSION'
+    };
+    document.getElementById('displayLabel').textContent = labels[currentMode];
+    
+    // Reset display
+    document.getElementById('displayNumber').textContent = '0.000';
+    document.getElementById('displayUnit').textContent = currentMode === 'lf-to-mbf' ? 'MBF' : 'LF';
+    document.getElementById('resultSection').style.display = 'none';
+    
+    calculate();
+  });
+});
+
+// Auto-calculate on input change
+document.querySelectorAll('.input-field').forEach(input => {
+  input.addEventListener('input', () => {
+    calculate();
+  });
+  
+  // Auto-select on focus so typing replaces value
+  input.addEventListener('focus', function() {
+    this.select();
+  });
+  
+  // Also select on click (for iOS)
+  input.addEventListener('click', function() {
+    this.select();
+  });
+  
+  // Handle enter key to close keyboard
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      this.blur(); // Close the keyboard
+      calculate();
+    }
+  });
+});
+
+// Price unit toggle listener
+document.getElementById('price-unit-toggle').addEventListener('change', function() {
+  const isLF = this.checked;
+  const label = document.getElementById('price-input-label');
+  label.textContent = isLF ? 'Price per LF ($)' : 'Price per MBF ($)';
+  calculate();
+});
+
+function setPreset(thickness, width) {
+  const panels = ['lf', 'mbf', 'price'];
+  panels.forEach(prefix => {
+    const thickEl = document.getElementById(`${prefix}-thick`);
+    const widthEl = document.getElementById(`${prefix}-width`);
+    if (thickEl) thickEl.value = thickness;
+    if (widthEl) widthEl.value = width;
+  });
+  calculate();
+}
+
+function calculate() {
+  const resultSection = document.getElementById('resultSection');
+  const resultLabel = document.getElementById('resultLabel');
+  const resultValue = document.getElementById('resultValue');
+  const displayNumber = document.getElementById('displayNumber');
+  const displayUnit = document.getElementById('displayUnit');
+  
+  if (currentMode === 'lf-to-mbf') {
+    const lf = parseFloat(document.getElementById('lf-input').value) || 0;
+    const t = parseFloat(document.getElementById('lf-thick').value) || 1;
+    const w = parseFloat(document.getElementById('lf-width').value) || 1;
+    
+    // MBF = LF * (T * W) / 12 / 1000
+    const mbf = lf * (t * w) / 12 / 1000;
+    
+    displayNumber.textContent = mbf.toFixed(3);
+    displayUnit.textContent = 'MBF';
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'mbf-to-lf') {
+    const mbf = parseFloat(document.getElementById('mbf-input').value) || 0;
+    const t = parseFloat(document.getElementById('mbf-thick').value) || 1;
+    const w = parseFloat(document.getElementById('mbf-width').value) || 1;
+    
+    // LF = MBF * 1000 * 12 / (T * W)
+    const lf = mbf * 1000 * 12 / (t * w);
+    
+    displayNumber.textContent = lf.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    displayUnit.textContent = 'LF';
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'pricing') {
+    const priceInput = parseFloat(document.getElementById('price-input').value) || 0;
+    const t = parseFloat(document.getElementById('price-thick').value) || 1;
+    const w = parseFloat(document.getElementById('price-width').value) || 1;
+    const isLF = document.getElementById('price-unit-toggle').checked; // checked = LF, unchecked = MBF
+    
+    if (isLF) {
+      // Input is $/LF → calculate $/MBF
+      const calcMBF = priceInput * 12 / (t * w) * 1000;
+      displayNumber.textContent = '$' + calcMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      displayUnit.textContent = '/MBF';
+    } else {
+      // Input is $/MBF → calculate $/LF
+      const calcLF = priceInput / 1000 * (t * w) / 12;
+      displayNumber.textContent = '$' + calcLF.toFixed(3);
+      displayUnit.textContent = '/LF';
+    }
+    resultSection.style.display = 'none';
+  }
+}
+
+// Initial calculation
+calculate();
+</script>
+
+</body>
+</html>
