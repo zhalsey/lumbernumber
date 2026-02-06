@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Lumber Number 1.1</title>
+<title>Lumber Number 1.2</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -130,7 +130,7 @@ body {
 
 .mode-selector {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 6px;
   margin-bottom: 14px;
   background: rgba(0,0,0,0.3);
@@ -140,15 +140,15 @@ body {
 
 .mode-btn {
   flex: 1;
-  padding: 9px 6px;
+  padding: 9px 4px;
   min-height: 42px;
   background: var(--btn-bg);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 6px;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 0.3px;
+  font-size: 8px;
+  letter-spacing: 0.2px;
   color: #374151;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -205,7 +205,7 @@ body {
   background: var(--lcd-bg);
   border: 3px solid var(--steel-dark);
   border-radius: 4px;
-  padding: 12px;
+  padding: 14px;
   margin-bottom: 14px;
   box-shadow: 
     inset 0 2px 8px rgba(0,0,0,0.8),
@@ -233,22 +233,22 @@ body {
 }
 
 .lcd-label {
-  font-size: 9px;
-  color: rgba(138,255,138,0.5);
+  font-size: 10px;
+  color: rgba(138,255,138,0.7);
   margin-bottom: 6px;
   font-family: 'Orbitron', sans-serif;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .lcd-value {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 24px;
+  font-size: 32px;
   color: var(--lcd-text);
   text-align: right;
-  text-shadow: 0 0 8px var(--lcd-glow);
-  min-height: 30px;
+  text-shadow: 0 0 10px var(--lcd-glow);
+  min-height: 38px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -257,13 +257,13 @@ body {
 }
 
 .lcd-value.large {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
 }
 
 .lcd-unit {
-  font-size: 14px;
-  color: rgba(138, 255, 138, 0.6);
+  font-size: 16px;
+  color: rgba(138, 255, 138, 0.8);
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -297,11 +297,11 @@ body {
 }
 
 .toggle-label {
-  font-size: 11px;
+  font-size: 12px;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
   color: #374151;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
   letter-spacing: 0.5px;
 }
 
@@ -422,11 +422,82 @@ body {
 }
 
 .sqft-price-result-value {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--orange);
   font-family: 'Share Tech Mono', monospace;
   font-weight: 700;
-  text-shadow: 0 0 4px var(--orange-glow);
+  text-shadow: 0 0 6px var(--orange-glow);
+}
+
+.m3-result-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.m3-section-title {
+  font-size: 9px;
+  color: #1f2937;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-transform: uppercase;
+}
+
+.m3-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.m3-result-row:last-of-type {
+  border-bottom: none;
+}
+
+.m3-result-label {
+  font-size: 12px;
+  color: #1f2937;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  text-transform: uppercase;
+}
+
+.m3-result-value {
+  font-size: 20px;
+  color: var(--orange);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  text-shadow: 0 0 6px var(--orange-glow);
+}
+
+.m3-exchange-rate {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Share Tech Mono', monospace;
+  text-align: center;
+}
+
+.m3-rate-display {
+  color: var(--lcd-text);
+  font-weight: 700;
+}
+
+.m3-rate-updated {
+  display: block;
+  margin-top: 4px;
+  font-size: 8px;
+  color: rgba(255,255,255,0.3);
 }
 
 .input-row {
@@ -436,14 +507,14 @@ body {
 }
 
 .input-label {
-  font-size: 10px;
+  font-size: 11px;
   color: #1f2937;
   flex: 1;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .input-field {
@@ -453,7 +524,7 @@ body {
   border-radius: 4px;
   padding: 8px 10px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--lcd-text);
   text-align: right;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
@@ -572,11 +643,11 @@ body {
 }
 
 .result-value {
-  font-size: 20px;
+  font-size: 22px;
   color: var(--orange);
   text-align: right;
   font-family: 'Share Tech Mono', monospace;
-  text-shadow: 0 0 8px var(--orange-glow);
+  text-shadow: 0 0 10px var(--orange-glow);
   letter-spacing: 1px;
 }
 
@@ -640,7 +711,7 @@ body {
 <body>
 
 <div class="calculator-body">
-  <div class="brand">Lumber Number 1.1</div>
+  <div class="brand">Lumber Number 1.2</div>
   <div class="tagline">Lineal, Board, and Square Foot Conversion Calculator</div>
   
   <div class="mode-selector">
@@ -648,6 +719,7 @@ body {
     <button class="mode-btn" data-mode="mbf-to-lf">MBF → LF</button>
     <button class="mode-btn" data-mode="pricing">LF & MBF Pricing</button>
     <button class="mode-btn" data-mode="sq-ft">SQ FT & MBF</button>
+    <button class="mode-btn" data-mode="mbf-m3">MBF-M<sup>3</sup></button>
   </div>
   
   <div class="lcd-display">
@@ -770,6 +842,38 @@ body {
     </div>
   </div>
   
+  <!-- MBF to M³ Panel -->
+  <div class="input-panel" id="panel-mbf-m3">
+    <div class="price-toggle-container">
+      <span class="toggle-label">M<sup>3</sup></span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="m3-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">MBF</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="m3-input-label">Price per MBF ($)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="m3-price-input" value="3500" step="1">
+    </div>
+    
+    <div class="m3-result-section">
+      <div class="m3-section-title">ADDITIONAL INFO</div>
+      <div class="m3-result-row">
+        <span class="m3-result-label" id="m3-label-usd">Price per m³ (USD):</span>
+        <span class="m3-result-value" id="m3-price-usd">—</span>
+      </div>
+      <div class="m3-result-row">
+        <span class="m3-result-label" id="m3-label-eur">Price per m³ (EUR):</span>
+        <span class="m3-result-value" id="m3-price-eur">—</span>
+      </div>
+      <div class="m3-exchange-rate">
+        Exchange rate: <span class="m3-rate-display" id="m3-rate-display">Loading...</span>
+        <span class="m3-rate-updated" id="m3-rate-time"></span>
+      </div>
+    </div>
+  </div>
+  
   <div class="button-grid">
     <button class="calc-btn preset-btn" onclick="setPreset(1, 4)">1×4</button>
     <button class="calc-btn preset-btn" onclick="setPreset(1, 6)">1×6</button>
@@ -794,6 +898,8 @@ body {
 </div>
 
 <script>
+const MBF_TO_M3 = 2.35973722; // 1 MBF = 2.3597 cubic meters
+let usdToEurRate = 0.846; // Default, updated from API
 let currentMode = 'lf-to-mbf';
 
 // Mode switching
@@ -838,18 +944,27 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     
     // Show/hide appropriate preset buttons
     const mainButtonGrid = document.querySelector('.button-grid');
-    if (currentMode === 'sq-ft') {
+    if (currentMode === 'sq-ft' || currentMode === 'mbf-m3') {
       mainButtonGrid.style.display = 'none';
     } else {
       mainButtonGrid.style.display = 'grid';
+    }
+    
+    // Hide LCD label for MBF-M³ mode
+    const lcdLabel = document.getElementById('displayLabel');
+    if (currentMode === 'mbf-m3') {
+      lcdLabel.style.display = 'none';
+    } else {
+      lcdLabel.style.display = 'block';
     }
     
     // Update display label
     const labels = {
       'lf-to-mbf': 'LINEAL FEET → MBF',
       'mbf-to-lf': 'MBF → LINEAL FEET',
-      'sq-ft': 'SQUARE FEET ↔ MBF',
-      'pricing': 'LF & MBF PRICING'
+      'pricing': 'LF & MBF PRICING',
+      'mbf-m3': 'MBF → CUBIC METER',
+      'sq-ft': 'SQUARE FEET ↔ MBF'
     };
     document.getElementById('displayLabel').textContent = labels[currentMode];
     
@@ -909,6 +1024,13 @@ document.getElementById('sqft-price-toggle').addEventListener('change', function
   calculate();
 });
 
+// M³ unit toggle
+document.getElementById('m3-unit-toggle').addEventListener('change', function() {
+  const isMBF = this.checked;
+  document.getElementById('m3-input-label').textContent = isMBF ? 'Price per MBF ($)' : 'Price per m³ (€)';
+  calculate();
+});
+
 function setPreset(thickness, width) {
   const panels = ['lf', 'mbf', 'price'];
   panels.forEach(prefix => {
@@ -925,6 +1047,172 @@ function setSqFtPreset(netFace, nominalWidth) {
   document.getElementById('sqft-nominal-width').value = nominalWidth;
   document.getElementById('sqft-thick').value = 1;
   calculate();
+}
+
+// Exchange rate fetching for MBF-M³ conversion - Multiple sources for reliability
+async function fetchExchangeRate() {
+  // Try multiple APIs in order of preference - all CORS-enabled and browser-friendly
+  const apis = [
+    {
+      name: 'fawazahmed0 (CDN)',
+      url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+      parse: (data) => data.usd.eur
+    },
+    {
+      name: 'exchangerate.host',
+      url: 'https://api.exchangerate.host/latest?base=USD&symbols=EUR',
+      parse: (data) => data.rates.EUR
+    },
+    {
+      name: 'frankfurter.dev',
+      url: 'https://api.frankfurter.dev/latest?from=USD&to=EUR',
+      parse: (data) => data.rates.EUR
+    }
+  ];
+  
+  for (const api of apis) {
+    try {
+      console.log(`Trying ${api.name}...`);
+      
+      const response = await fetch(api.url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+      });
+      
+      if (!response.ok) {
+        console.warn(`${api.name} returned status ${response.status}`);
+        continue;
+      }
+      
+      const data = await response.json();
+      const rate = api.parse(data);
+      
+      console.log(`${api.name} returned rate:`, rate);
+      
+      if (rate && !isNaN(rate) && rate > 0.7 && rate < 1.2) {
+        // Sanity check: EUR/USD should be between 0.7 and 1.2
+        usdToEurRate = rate;
+        
+        // Cache in localStorage with timestamp
+        localStorage.setItem('usdToEurRate', usdToEurRate.toString());
+        localStorage.setItem('rateTimestamp', Date.now().toString());
+        localStorage.setItem('rateSource', api.name);
+        
+        console.log(`✓ Exchange rate loaded from ${api.name}: ${rate}`);
+        updateRateDisplay();
+        calculateM3Pricing(); // Recalculate with new rate
+        return; // Success - exit function
+      } else {
+        console.warn(`${api.name} returned invalid rate:`, rate);
+      }
+    } catch (error) {
+      console.warn(`Failed to fetch from ${api.name}:`, error.message);
+      continue; // Try next API
+    }
+  }
+  
+  // All APIs failed - use cached rate if available
+  const cached = localStorage.getItem('usdToEurRate');
+  const timestamp = localStorage.getItem('rateTimestamp');
+  
+  if (cached && !isNaN(parseFloat(cached))) {
+    usdToEurRate = parseFloat(cached);
+    const age = timestamp ? Date.now() - parseInt(timestamp) : null;
+    const ageHours = age ? Math.floor(age / (1000 * 60 * 60)) : null;
+    updateRateDisplay(`(cached ${ageHours}h ago)`);
+    console.warn('Using cached exchange rate:', usdToEurRate);
+  } else {
+    // Last resort: Use conservative estimate
+    usdToEurRate = 0.85; // Updated conservative estimate
+    updateRateDisplay('(ESTIMATED - API unavailable)');
+    console.error('All exchange rate APIs failed. Using estimate:', usdToEurRate);
+  }
+}
+
+function updateRateDisplay(suffix = '') {
+  const displayEl = document.getElementById('m3-rate-display');
+  const timeEl = document.getElementById('m3-rate-time');
+  
+  if (displayEl) {
+    displayEl.textContent = `1 USD = ${usdToEurRate.toFixed(4)} EUR ${suffix}`;
+  }
+  
+  if (timeEl) {
+    const timestamp = localStorage.getItem('rateTimestamp');
+    const source = localStorage.getItem('rateSource');
+    
+    if (timestamp && !suffix.includes('ESTIMATED')) {
+      const date = new Date(parseInt(timestamp));
+      const timeStr = date.toLocaleString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+      timeEl.textContent = `Updated: ${timeStr}${source ? ' via ' + source : ''}`;
+    } else if (suffix.includes('ESTIMATED')) {
+      timeEl.textContent = '⚠️ Unable to fetch live rate - verify manually';
+      timeEl.style.color = '#ff6b35'; // Orange warning color
+    } else {
+      timeEl.textContent = '';
+    }
+  }
+}
+
+function checkRateUpdate() {
+  const cached = localStorage.getItem('usdToEurRate');
+  const timestamp = localStorage.getItem('rateTimestamp');
+  
+  if (cached && timestamp) {
+    const age = Date.now() - parseInt(timestamp);
+    const twelveHours = 12 * 60 * 60 * 1000; // Check twice daily for accuracy
+    
+    if (age < twelveHours) {
+      // Use cached rate (less than 12 hours old)
+      usdToEurRate = parseFloat(cached);
+      updateRateDisplay();
+      return;
+    }
+  }
+  
+  // Fetch new rate (cache expired or doesn't exist)
+  fetchExchangeRate();
+}
+
+function calculateM3Pricing() {
+  const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
+  const isMBF = document.getElementById('m3-unit-toggle').checked; // checked = MBF, unchecked = M³
+  
+  let priceM3USD, priceM3EUR;
+  
+  if (isMBF) {
+    // Input is $/MBF → calculate $/m³ and €/m³
+    const priceMBFUSD = priceInput;
+    priceM3USD = priceInput / MBF_TO_M3;
+    priceM3EUR = priceM3USD * usdToEurRate;
+  } else {
+    // Input is €/m³ → calculate $/m³
+    priceM3EUR = priceInput;
+    priceM3USD = priceInput / usdToEurRate;
+  }
+  
+  const usdEl = document.getElementById('m3-price-usd');
+  const eurEl = document.getElementById('m3-price-eur');
+  
+  if (usdEl) {
+    usdEl.textContent = '$' + priceM3USD.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  
+  if (eurEl) {
+    eurEl.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 }
 
 function calculateSqFtPricing(coverageFactor) {
@@ -1004,6 +1292,59 @@ function calculate() {
     calculateSqFtPricing(coverageFactor);
     resultSection.style.display = 'none';
   }
+  else if (currentMode === 'mbf-m3') {
+    // MBF to M³ conversion
+    const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
+    const isMBF = document.getElementById('m3-unit-toggle').checked;
+    
+    if (isMBF) {
+      // Input is $/MBF → Show €/m³ in LCD (primary result)
+      const priceMBFUSD = priceInput;
+      const priceM3USD = priceInput / MBF_TO_M3;
+      const priceM3EUR = priceM3USD * usdToEurRate;
+      
+      // Show €/m³ in big LCD display
+      displayNumber.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = '/m³';
+      
+      // Show $/m³ below in result section
+      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+    } else {
+      // Input is €/m³ → Show $/MBF in LCD (primary result)
+      const priceM3EUR = priceInput;
+      const priceM3USD = priceInput / usdToEurRate;
+      const priceMBFUSD = priceM3USD * MBF_TO_M3;
+      
+      // Show $/MBF in big LCD display
+      displayNumber.textContent = '$' + priceMBFUSD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = '/MBF';
+      
+      // Show both below in result section
+      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+    }
+    
+    resultSection.style.display = 'none';
+  }
   else if (currentMode === 'pricing') {
     const priceInput = parseFloat(document.getElementById('price-input').value) || 0;
     const t = parseFloat(document.getElementById('price-thick').value) || 1;
@@ -1027,6 +1368,9 @@ function calculate() {
 
 // Initial calculation
 calculate();
+
+// Initialize exchange rate for MBF-M³ conversion
+checkRateUpdate();
 </script>
 
 </body>
