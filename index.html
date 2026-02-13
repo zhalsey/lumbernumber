@@ -3,1375 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Lumber Number 1.2</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<title>Log Chop</title>
+<meta name="description" content="Chop logs, sell firewood, upgrade your gear. A lumberjack tycoon idle game. Grab your axe and start splitting!">
+<meta name="keywords" content="log chop, lumberjack game, idle game, tycoon, firewood, chopping game, browser game">
+<meta name="author" content="Log Chop">
+<meta name="theme-color" content="#1a1a2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lumber Number">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#2a2e35">
+
+<meta property="og:title" content="Log Chop - Lumberjack Tycoon Game">
+<meta property="og:description" content="Chop logs, sell firewood, upgrade your gear. A lumberjack tycoon idle game.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Log Chop - Lumberjack Tycoon Game">
+<meta name="twitter:description" content="Chop logs, sell firewood, upgrade your gear.">
+<meta name="twitter:image" content="og-image.png">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512x512.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-:root {
-  --steel-dark: #6b7280;
-  --steel-mid: #8b95a3;
-  --steel-light: #b0b8c4;
-  --steel-highlight: #d1d5db;
-  --chrome: linear-gradient(135deg, #a8a8a8 0%, #e0e0e0 50%, #a8a8a8 100%);
-  --bezel: linear-gradient(180deg, #9ca3af 0%, #7a8188 100%);
-  --lcd-bg: #2d3e2f;
-  --lcd-text: #8aff8a;
-  --lcd-glow: rgba(138, 255, 138, 0.3);
-  --btn-bg: linear-gradient(180deg, #b8bfc6 0%, #9ca3af 100%);
-  --btn-active: linear-gradient(180deg, #8b95a3 0%, #7a8188 100%);
-  --orange: #ff6b35;
-  --orange-glow: rgba(255, 107, 53, 0.4);
-}
-
-body {
-  font-family: 'Share Tech Mono', monospace;
-  background: linear-gradient(135deg, #7a8188 0%, #9ca3af 100%);
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: #fff;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
-.calculator-body {
-  max-width: 420px;
-  width: calc(100% - 20px);
-  max-height: calc(100vh - 20px);
-  max-height: calc(100dvh - 20px);
-  overflow-y: auto;
-  background: var(--bezel);
-  border-radius: 16px;
-  padding: 20px 18px 22px;
-  box-shadow: 
-    0 8px 32px rgba(0,0,0,0.4),
-    0 2px 8px rgba(0,0,0,0.2),
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    inset 0 -2px 8px rgba(0,0,0,0.3);
-  position: relative;
-  animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.95);
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #1a1a2e;
+    font-family: 'Press Start 2P', monospace;
+    user-select: none; -webkit-user-select: none;
+    touch-action: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  #game-container {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
   }
-}
-
-.calculator-body::before {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255,255,255,0.6) 30%, 
-    rgba(255,255,255,0.8) 50%, 
-    rgba(255,255,255,0.6) 70%, 
-    transparent 100%);
-  border-radius: 2px;
-}
-
-.brand {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 4px;
-  color: #1f2937;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-  text-transform: uppercase;
-  line-height: 1.3;
-}
-
-.tagline {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 8px;
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 14px;
-  color: #1f2937;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
-  text-transform: uppercase;
-}
-
-.mode-selector {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  margin-bottom: 14px;
-  background: rgba(0,0,0,0.3);
-  padding: 5px;
-  border-radius: 8px;
-}
-
-.mode-btn {
-  flex: 1;
-  padding: 9px 4px;
-  min-height: 42px;
-  background: var(--btn-bg);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 6px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 8px;
-  letter-spacing: 0.2px;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 2px 4px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.4);
-  text-transform: uppercase;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  position: relative;
-}
-
-.mode-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-  pointer-events: none;
-}
-
-.mode-btn:active::before {
-  opacity: 1;
-  transition: opacity 0.05s ease-out;
-}
-
-.mode-btn:active {
-  transform: translateY(1px) scale(0.98);
-  box-shadow: 
-    0 1px 2px rgba(0,0,0,0.4),
-    inset 0 1px 3px rgba(0,0,0,0.4);
-}
-
-.mode-btn.active {
-  background: var(--orange);
-  color: #fff;
-  border-color: rgba(255,107,53,0.5);
-  box-shadow: 
-    0 0 12px var(--orange-glow),
-    0 2px 4px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-}
-
-.mode-btn.active::before {
-  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
-}
-
-.lcd-display {
-  background: var(--lcd-bg);
-  border: 3px solid var(--steel-dark);
-  border-radius: 4px;
-  padding: 14px;
-  margin-bottom: 14px;
-  box-shadow: 
-    inset 0 2px 8px rgba(0,0,0,0.8),
-    inset 0 0 40px rgba(0,0,0,0.3),
-    0 1px 0 rgba(255,255,255,0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.lcd-display::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(138,255,138,0.03) 0px,
-    transparent 1px,
-    transparent 2px,
-    rgba(138,255,138,0.03) 3px
-  );
-  pointer-events: none;
-}
-
-.lcd-label {
-  font-size: 10px;
-  color: rgba(138,255,138,0.7);
-  margin-bottom: 6px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.lcd-value {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 32px;
-  color: var(--lcd-text);
-  text-align: right;
-  text-shadow: 0 0 10px var(--lcd-glow);
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  letter-spacing: 1px;
-  gap: 8px;
-}
-
-.lcd-value.large {
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.lcd-unit {
-  font-size: 16px;
-  color: rgba(138, 255, 138, 0.8);
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
-
-.input-panel {
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.input-panel.active {
-  display: flex;
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.price-toggle-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding: 10px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 8px;
-}
-
-.toggle-label {
-  font-size: 12px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  color: #374151;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  letter-spacing: 0.5px;
-}
-
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 56px;
-  height: 28px;
-}
-
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--btn-bg);
-  transition: 0.3s;
-  border-radius: 28px;
-  border: 2px solid rgba(0,0,0,0.2);
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.3),
-    0 1px 0 rgba(255,255,255,0.4);
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 3px;
-  bottom: 2px;
-  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
-  transition: 0.3s;
-  border-radius: 50%;
-  box-shadow: 
-    0 2px 4px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-}
-
-.toggle-switch input:checked + .toggle-slider {
-  background: var(--btn-bg);
-}
-
-.toggle-switch input:checked + .toggle-slider:before {
-  transform: translateX(26px);
-}
-
-.toggle-slider:active:before {
-  width: 24px;
-}
-
-.sqft-presets {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin: 14px 0 12px 0;
-}
-
-.sqft-preset-btn {
-  font-size: 8px !important;
-  padding: 9px 4px !important;
-}
-
-.sqft-presets {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin: 14px 0 12px 0;
-}
-
-.sqft-preset-btn {
-  font-size: 8px !important;
-  padding: 9px 4px !important;
-}
-
-.sqft-pricing-section {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 2px solid rgba(0,0,0,0.2);
-}
-
-.sqft-pricing-label {
-  font-size: 9px;
-  color: #1f2937;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-  text-transform: uppercase;
-}
-
-.sqft-price-result {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 6px;
-  margin-top: 10px;
-}
-
-.sqft-price-result-label {
-  font-size: 10px;
-  color: #1f2937;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-}
-
-.sqft-price-result-value {
-  font-size: 16px;
-  color: var(--orange);
-  font-family: 'Share Tech Mono', monospace;
-  font-weight: 700;
-  text-shadow: 0 0 6px var(--orange-glow);
-}
-
-.m3-result-section {
-  margin-top: 20px;
-  padding: 16px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.m3-section-title {
-  font-size: 9px;
-  color: #1f2937;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-  text-transform: uppercase;
-}
-
-.m3-result-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.m3-result-row:last-of-type {
-  border-bottom: none;
-}
-
-.m3-result-label {
-  font-size: 12px;
-  color: #1f2937;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  text-transform: uppercase;
-}
-
-.m3-result-value {
-  font-size: 20px;
-  color: var(--orange);
-  font-family: 'Share Tech Mono', monospace;
-  font-weight: 700;
-  text-shadow: 0 0 6px var(--orange-glow);
-}
-
-.m3-exchange-rate {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  font-size: 9px;
-  color: rgba(255,255,255,0.5);
-  font-family: 'Share Tech Mono', monospace;
-  text-align: center;
-}
-
-.m3-rate-display {
-  color: var(--lcd-text);
-  font-weight: 700;
-}
-
-.m3-rate-updated {
-  display: block;
-  margin-top: 4px;
-  font-size: 8px;
-  color: rgba(255,255,255,0.3);
-}
-
-.input-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.input-label {
-  font-size: 11px;
-  color: #1f2937;
-  flex: 1;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-}
-
-.input-field {
-  flex: 0 0 120px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
-  padding: 8px 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 17px;
-  color: var(--lcd-text);
-  text-align: right;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--orange);
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.5),
-    0 0 8px var(--orange-glow);
-}
-
-.button-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.preset-btn {
-  padding: 10px 6px !important;
-  font-size: 10px !important;
-}
-
-.calc-btn {
-  padding: 13px;
-  min-height: 44px;
-  background: var(--btn-bg);
-  border: 1px solid rgba(255,255,255,0.4);
-  border-radius: 8px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  color: #1f2937;
-  cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 3px 6px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.5),
-    inset 0 -1px 0 rgba(0,0,0,0.15);
-  text-transform: uppercase;
-  position: relative;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.calc-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
-  border-radius: 8px;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-  pointer-events: none;
-}
-
-.calc-btn:active::before {
-  opacity: 1;
-  transition: opacity 0.05s ease-out;
-}
-
-.calc-btn:active {
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 
-    0 1px 3px rgba(0,0,0,0.4),
-    inset 0 1px 4px rgba(0,0,0,0.3);
-}
-
-.calc-btn:hover {
-  border-color: rgba(255,255,255,0.25);
-}
-
-.calc-btn.primary {
-  background: linear-gradient(180deg, #ff8359 0%, var(--orange) 100%);
-  color: #fff;
-  border-color: rgba(255,107,53,0.5);
-  box-shadow: 
-    0 0 12px var(--orange-glow),
-    0 3px 6px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-.calc-btn.primary::before {
-  background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 70%);
-}
-
-.calc-btn.primary:active {
-  box-shadow: 
-    0 0 16px var(--orange-glow),
-    0 1px 3px rgba(0,0,0,0.4),
-    inset 0 1px 4px rgba(0,0,0,0.3);
-  transform: translateY(2px) scale(0.98);
-}
-
-.result-section {
-  background: rgba(0,0,0,0.2);
-  border-radius: 8px;
-  padding: 10px;
-  margin-top: 12px;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.result-label {
-  font-size: 9px;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 8px;
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.result-value {
-  font-size: 22px;
-  color: var(--orange);
-  text-align: right;
-  font-family: 'Share Tech Mono', monospace;
-  text-shadow: 0 0 10px var(--orange-glow);
-  letter-spacing: 1px;
-}
-
-.footer {
-  display: none;
-}
-
-@media (max-width: 380px) {
-  .calculator-body {
-    padding: 16px 18px 20px;
+  #hud {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    color: #e8d5b0; font-size: 11px;
+    position: absolute; top: 4px; left: 0; right: 0; text-align: center; z-index: 10;
+    padding: 4px 8px;
   }
-  
-  .lcd-display {
-    padding: 12px;
-    margin-bottom: 14px;
+  #hud span { text-shadow: 1px 1px 0 #333; white-space: nowrap; }
+  .hud-coins { color: #ffd700 !important; }
+  .hud-axe { color: #a0c8ff !important; }
+  .hud-legs { color: #80e080 !important; }
+  .hud-arms { color: #ff9966 !important; }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+  #instructions {
+    color: #888; text-align: center; line-height: 2; font-size: 10px;
+    position: absolute; bottom: 4px; left: 0; right: 0; z-index: 10; padding: 0 8px;
   }
-  
-  .input-panel {
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  
-  .button-grid {
-    gap: 8px;
-  }
-  
-  .calc-btn {
-    padding: 12px;
-  }
-}
+  #instructions strong { color: #c8a96e; }
+  #footer { color: #444; text-align: center; letter-spacing: 1px; font-size: 7px;
+    position: absolute; bottom: 0; right: 8px; z-index: 10; }
 
-@media (max-height: 500px) and (orientation: landscape) {
-  body {
-    padding: 10px;
+  #touch-controls {
+    display: none;
+    position: absolute; bottom: 8px; right: 8px; z-index: 20;
+    gap: 5px; flex-wrap: wrap; justify-content: flex-end; max-width: 280px;
   }
-  
-  .calculator-body {
-    padding: 16px 18px 20px;
+  .touch-btn {
+    background: rgba(200,169,110,0.3); border: 2px solid rgba(200,169,110,0.5);
+    color: #c8a96e; font-family: 'Press Start 2P', monospace;
+    border-radius: 6px; padding: 8px 12px; font-size: 10px; cursor: pointer; white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
   }
-  
-  .lcd-display {
-    padding: 12px;
-    margin-bottom: 14px;
+  .touch-btn:active { background: rgba(200,169,110,0.6); }
+  .touch-btn-chop { background: rgba(255,100,50,0.35); border-color: rgba(255,100,50,0.6); color: #ff9966; font-size: 13px; padding: 12px 20px; }
+
+  @media (pointer: coarse) {
+    #touch-controls { display: flex; }
+    #instructions { display: none; }
   }
-  
-  .input-panel {
-    gap: 8px;
-    margin-bottom: 14px;
+  @media (max-width: 600px) {
+    #hud { font-size: 8px; gap: 8px; }
   }
-  
-  .button-grid {
-    gap: 8px;
-  }
-  
-  .calc-btn {
-    padding: 12px;
-  }
-}
 </style>
 </head>
 <body>
-
-<div class="calculator-body">
-  <div class="brand">Lumber Number 1.2</div>
-  <div class="tagline">Lineal, Board, and Square Foot Conversion Calculator</div>
-  
-  <div class="mode-selector">
-    <button class="mode-btn active" data-mode="lf-to-mbf">LF → MBF</button>
-    <button class="mode-btn" data-mode="mbf-to-lf">MBF → LF</button>
-    <button class="mode-btn" data-mode="pricing">LF & MBF Pricing</button>
-    <button class="mode-btn" data-mode="sq-ft">SQ FT & MBF</button>
-    <button class="mode-btn" data-mode="mbf-m3">MBF-M<sup>3</sup></button>
+<div id="game-container">
+  <div id="hud">
+    <span>LOGS: <span id="score">0</span></span>
+    <span>WOOD: <span id="firewood">0</span></span>
+    <span class="hud-coins">COINS: <span id="coins">0</span></span>
+    <span class="hud-axe">AXE: <span id="axelevel">Starter</span></span>
+    <span class="hud-legs">HUSTLE: <span id="coffeelevel">Normal</span></span>
+    <span class="hud-arms">POWER: <span id="jerkylevel">Normal</span></span>
   </div>
-  
-  <div class="lcd-display">
-    <div class="lcd-label" id="displayLabel">LINEAL FEET → MBF</div>
-    <div class="lcd-value large" id="displayValue">
-      <span id="displayNumber">0.000</span>
-      <span class="lcd-unit" id="displayUnit">MBF</span>
-    </div>
+  <canvas id="game"></canvas>
+  <div id="instructions">
+    <strong>CLICK</strong> walk &nbsp;|&nbsp; <strong>SPACE</strong> chop &nbsp;|&nbsp; <strong>M</strong> sell &nbsp;|&nbsp; <strong>U</strong> upgrade axe &nbsp;|&nbsp; <strong>C</strong> coffee &nbsp;|&nbsp; <strong>J</strong> jerky
   </div>
-  
-  <!-- LF to MBF Panel -->
-  <div class="input-panel active" id="panel-lf-to-mbf">
-    <div class="input-row">
-      <span class="input-label">Lineal Feet</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-input" value="1000" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Thickness (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-thick" value="1" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Width (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-width" value="6" step="0.01">
-    </div>
+  <div id="touch-controls">
+    <button class="touch-btn" ontouchstart="sellAtMarket()" onclick="sellAtMarket()">SELL</button>
+    <button class="touch-btn" ontouchstart="upgradeAxe()" onclick="upgradeAxe()">AXE</button>
+    <button class="touch-btn" ontouchstart="buyCoffee()" onclick="buyCoffee()">COFFEE</button>
+    <button class="touch-btn" ontouchstart="buyJerky()" onclick="buyJerky()">JERKY</button>
+    <button class="touch-btn touch-btn-chop" ontouchstart="doChop()" onclick="doChop()">CHOP</button>
   </div>
-  
-  <!-- MBF to LF Panel -->
-  <div class="input-panel" id="panel-mbf-to-lf">
-    <div class="input-row">
-      <span class="input-label">MBF</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-input" value="0.5" step="0.0001">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Thickness (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-thick" value="1" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Width (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-width" value="6" step="0.01">
-    </div>
-  </div>
-  
-  <!-- Square Feet Panel -->
-  <div class="input-panel" id="panel-sq-ft">
-    <div class="price-toggle-container">
-      <span class="toggle-label">MBF</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="sqft-unit-toggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">SQ FT</span>
-    </div>
-    <div class="input-row">
-      <span class="input-label" id="sqft-input-label">Square Feet</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-input" value="1000" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Net Face Width (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-face-width" value="3.25" step="0.001">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Nominal Width (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-nominal-width" value="4" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Thickness (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-thick" value="1" step="0.01">
-    </div>
-    
-    <div class="sqft-presets">
-      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.25, 3)">2-1/4" (1x3)</button>
-      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.125, 3)">2-1/8" (1x3)</button>
-      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.25, 4)">3-1/4" (1x4)</button>
-      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.125, 4)">3-1/8" (1x4)</button>
-      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(5.125, 6)">5-1/8" (1x6)</button>
-    </div>
-    
-    <div class="sqft-pricing-section">
-      <div class="sqft-pricing-label">PRICING CONVERSION</div>
-      <div class="price-toggle-container">
-        <span class="toggle-label">$/MBF</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="sqft-price-toggle" checked>
-          <span class="toggle-slider"></span>
-        </label>
-        <span class="toggle-label">$/SQ FT</span>
-      </div>
-      <div class="input-row">
-        <span class="input-label" id="sqft-price-label">Price per SQ FT ($)</span>
-        <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-price-input" value="4.31" step="0.0001">
-      </div>
-      <div class="sqft-price-result">
-        <span class="sqft-price-result-label" id="sqft-price-result-label">$/MBF:</span>
-        <span class="sqft-price-result-value" id="sqft-price-result-value">—</span>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Pricing Panel -->
-  <div class="input-panel" id="panel-pricing">
-    <div class="price-toggle-container">
-      <span class="toggle-label">MBF</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="price-unit-toggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">LF</span>
-    </div>
-    <div class="input-row">
-      <span class="input-label" id="price-input-label">Price per LF ($)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-input" value="1.50" step="0.0001">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Thickness (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-thick" value="1" step="0.01">
-    </div>
-    <div class="input-row">
-      <span class="input-label">Width (in)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-width" value="6" step="0.01">
-    </div>
-  </div>
-  
-  <!-- MBF to M³ Panel -->
-  <div class="input-panel" id="panel-mbf-m3">
-    <div class="price-toggle-container">
-      <span class="toggle-label">M<sup>3</sup></span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="m3-unit-toggle" checked>
-        <span class="toggle-slider"></span>
-      </label>
-      <span class="toggle-label">MBF</span>
-    </div>
-    <div class="input-row">
-      <span class="input-label" id="m3-input-label">Price per MBF ($)</span>
-      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="m3-price-input" value="3500" step="1">
-    </div>
-    
-    <div class="m3-result-section">
-      <div class="m3-section-title">ADDITIONAL INFO</div>
-      <div class="m3-result-row">
-        <span class="m3-result-label" id="m3-label-usd">Price per m³ (USD):</span>
-        <span class="m3-result-value" id="m3-price-usd">—</span>
-      </div>
-      <div class="m3-result-row">
-        <span class="m3-result-label" id="m3-label-eur">Price per m³ (EUR):</span>
-        <span class="m3-result-value" id="m3-price-eur">—</span>
-      </div>
-      <div class="m3-exchange-rate">
-        Exchange rate: <span class="m3-rate-display" id="m3-rate-display">Loading...</span>
-        <span class="m3-rate-updated" id="m3-rate-time"></span>
-      </div>
-    </div>
-  </div>
-  
-  <div class="button-grid">
-    <button class="calc-btn preset-btn" onclick="setPreset(1, 4)">1×4</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(1, 6)">1×6</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(1, 8)">1×8</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(1, 10)">1×10</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(1, 12)">1×12</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(2, 4)">2×4</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(2, 6)">2×6</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(2, 8)">2×8</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(2, 10)">2×10</button>
-    <button class="calc-btn preset-btn" onclick="setPreset(2, 12)">2×12</button>
-  </div>
-  
-  <div class="result-section" id="resultSection" style="display: none;">
-    <div class="result-label" id="resultLabel">RESULT</div>
-    <div class="result-value" id="resultValue">—</div>
-  </div>
-</div>
-
-<div class="footer">
-  MBF = 1,000 Board Feet
+  <div id="footer">&copy; 2026 Log Chop</div>
 </div>
 
 <script>
-const MBF_TO_M3 = 2.35973722; // 1 MBF = 2.3597 cubic meters
-let usdToEurRate = 0.846; // Default, updated from API
-let currentMode = 'lf-to-mbf';
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const firewoodEl = document.getElementById('firewood');
+const coinsEl = document.getElementById('coins');
+const axeLevelEl = document.getElementById('axelevel');
+const coffeeLevelEl = document.getElementById('coffeelevel');
+const jerkyLevelEl = document.getElementById('jerkylevel');
 
-// Mode switching
-document.querySelectorAll('.mode-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    
-    const previousMode = currentMode;
-    currentMode = btn.dataset.mode;
-    
-    // Carry over thickness and width values when switching to pricing
-    if (currentMode === 'pricing') {
-      let sourceThick, sourceWidth;
-      if (previousMode === 'lf-to-mbf') {
-        sourceThick = document.getElementById('lf-thick').value;
-        sourceWidth = document.getElementById('lf-width').value;
-      } else if (previousMode === 'mbf-to-lf') {
-        sourceThick = document.getElementById('mbf-thick').value;
-        sourceWidth = document.getElementById('mbf-width').value;
-      }
-      if (sourceThick && sourceWidth) {
-        document.getElementById('price-thick').value = sourceThick;
-        document.getElementById('price-width').value = sourceWidth;
-      }
-    }
-    // Carry pricing values back when switching from pricing
-    else if (previousMode === 'pricing') {
-      const priceThick = document.getElementById('price-thick').value;
-      const priceWidth = document.getElementById('price-width').value;
-      if (currentMode === 'lf-to-mbf') {
-        document.getElementById('lf-thick').value = priceThick;
-        document.getElementById('lf-width').value = priceWidth;
-      } else if (currentMode === 'mbf-to-lf') {
-        document.getElementById('mbf-thick').value = priceThick;
-        document.getElementById('mbf-width').value = priceWidth;
-      }
-    }
-    
-    document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById(`panel-${currentMode}`).classList.add('active');
-    
-    // Show/hide appropriate preset buttons
-    const mainButtonGrid = document.querySelector('.button-grid');
-    if (currentMode === 'sq-ft' || currentMode === 'mbf-m3') {
-      mainButtonGrid.style.display = 'none';
-    } else {
-      mainButtonGrid.style.display = 'grid';
-    }
-    
-    // Hide LCD label for MBF-M³ mode
-    const lcdLabel = document.getElementById('displayLabel');
-    if (currentMode === 'mbf-m3') {
-      lcdLabel.style.display = 'none';
-    } else {
-      lcdLabel.style.display = 'block';
-    }
-    
-    // Update display label
-    const labels = {
-      'lf-to-mbf': 'LINEAL FEET → MBF',
-      'mbf-to-lf': 'MBF → LINEAL FEET',
-      'pricing': 'LF & MBF PRICING',
-      'mbf-m3': 'MBF → CUBIC METER',
-      'sq-ft': 'SQUARE FEET ↔ MBF'
-    };
-    document.getElementById('displayLabel').textContent = labels[currentMode];
-    
-    // Reset display
-    document.getElementById('displayNumber').textContent = '0.000';
-    document.getElementById('displayUnit').textContent = currentMode === 'lf-to-mbf' ? 'MBF' : 'LF';
-    document.getElementById('resultSection').style.display = 'none';
-    
-    calculate();
-  });
-});
+// ─── RESPONSIVE CANVAS ───
+const GW = 900, GH = 520;
+canvas.width = GW; canvas.height = GH;
 
-// Auto-calculate on input change
-document.querySelectorAll('.input-field').forEach(input => {
-  input.addEventListener('input', () => {
-    calculate();
-  });
-  
-  // Auto-select on focus so typing replaces value
-  input.addEventListener('focus', function() {
-    this.select();
-  });
-  
-  // Also select on click (for iOS)
-  input.addEventListener('click', function() {
-    this.select();
-  });
-  
-  // Handle enter key to close keyboard
-  input.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-      this.blur();
-      calculate();
-    }
-  });
-});
+function resizeCanvas() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const scaleX = w / GW;
+  const scaleY = h / GH;
+  const scale = Math.min(scaleX, scaleY);
+  canvas.style.width = Math.floor(GW * scale) + 'px';
+  canvas.style.height = Math.floor(GH * scale) + 'px';
+}
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 200));
+resizeCanvas();
 
-// Price unit toggle listener
-document.getElementById('price-unit-toggle').addEventListener('change', function() {
-  const isLF = this.checked;
-  const label = document.getElementById('price-input-label');
-  label.textContent = isLF ? 'Price per LF ($)' : 'Price per MBF ($)';
-  calculate();
-});
-
-// Square feet unit toggle
-document.getElementById('sqft-unit-toggle').addEventListener('change', function() {
-  const isSqFt = this.checked;
-  document.getElementById('sqft-input-label').textContent = isSqFt ? 'Square Feet' : 'MBF';
-  calculate();
-});
-
-// Square feet price toggle
-document.getElementById('sqft-price-toggle').addEventListener('change', function() {
-  const isSqFt = this.checked;
-  document.getElementById('sqft-price-label').textContent = isSqFt ? 'Price per SQ FT ($)' : 'Price per MBF ($)';
-  calculate();
-});
-
-// M³ unit toggle
-document.getElementById('m3-unit-toggle').addEventListener('change', function() {
-  const isMBF = this.checked;
-  document.getElementById('m3-input-label').textContent = isMBF ? 'Price per MBF ($)' : 'Price per m³ (€)';
-  calculate();
-});
-
-function setPreset(thickness, width) {
-  const panels = ['lf', 'mbf', 'price'];
-  panels.forEach(prefix => {
-    const thickEl = document.getElementById(`${prefix}-thick`);
-    const widthEl = document.getElementById(`${prefix}-width`);
-    if (thickEl) thickEl.value = thickness;
-    if (widthEl) widthEl.value = width;
-  });
-  calculate();
+function screenToGame(sx, sy) {
+  const rect = canvas.getBoundingClientRect();
+  return { x: (sx - rect.left) / (rect.width / GW), y: (sy - rect.top) / (rect.height / GH) };
 }
 
-function setSqFtPreset(netFace, nominalWidth) {
-  document.getElementById('sqft-face-width').value = netFace;
-  document.getElementById('sqft-nominal-width').value = nominalWidth;
-  document.getElementById('sqft-thick').value = 1;
-  calculate();
+// ─── GAME STATE ───
+let logsChopped=0, firewoodCount=0, coins=0, gameTime=0;
+
+const axes = [
+  {name:'Starter',color:'#a0a0a8',shine:'#d0d0d8',chopsMulti:1,cost:0},
+  {name:'Steel',color:'#b0b8c0',shine:'#e0e8f0',chopsMulti:0.8,cost:30},
+  {name:'Hardened',color:'#7ec8e3',shine:'#b0e8ff',chopsMulti:0.65,cost:90},
+  {name:'Mythril',color:'#90e090',shine:'#c0ffc0',chopsMulti:0.5,cost:250},
+  {name:'Golden',color:'#ffd700',shine:'#fff4a0',chopsMulti:0.35,cost:600},
+]; let axeLevel=0;
+
+const coffees = [
+  {name:'Normal',speed:1.8,cost:0},{name:'Coffee',speed:2.6,cost:12},
+  {name:'Dbl Shot',speed:3.4,cost:35},{name:'Triple',speed:4.2,cost:80},
+  {name:'Espresso IV',speed:5.2,cost:200},
+]; let coffeeLevel=0;
+
+const jerkys = [
+  {name:'Normal',chopSpeed:0.020,cost:0},{name:'Jerky',chopSpeed:0.026,cost:15},
+  {name:'Dbl Jerky',chopSpeed:0.033,cost:45},{name:'Smoked',chopSpeed:0.042,cost:100},
+  {name:'Brisket',chopSpeed:0.055,cost:250},
+]; let jerkyLevel=0;
+
+const MARKET_MIN_WOOD=15,WOOD_PRICE=2; let marketMessage=null;
+let cutscene=null;
+function startCutscene(t,d){cutscene={type:t,phase:0,timer:0,data:d||{}};}
+function isBusy(){return cutscene!==null||jack.isChopping;}
+
+const jack={x:300,y:360,targetX:300,facing:1,walkTimer:0,isWalking:false,isChopping:false,chopPhase:0,
+  carrying:false,carryCount:0,hasAxe:true,jitter:0,jitterTimer:0,drinking:false,eating:false,flexing:false,flexTimer:0};
+
+function getJackSpeed(){return coffees[coffeeLevel].speed;}
+function getChopSpeed(){return jerkys[jerkyLevel].chopSpeed;}
+
+let logs=[],splitAnimations=[],particles=[],floatingMessages=[],blacksmithSparks=[];
+const blockPositions=[250,400,550,700];
+
+function getMaxChops(){const b=4+Math.floor(Math.random()*3);return Math.max(1,Math.round(b*axes[axeLevel].chopsMulti));}
+
+function spawnLog(){
+  const av=blockPositions.filter(px=>!logs.some(l=>!l.chopped&&Math.abs(l.x-px)<60));
+  if(!av.length)return;
+  const x=av[Math.floor(Math.random()*av.length)];
+  const types=['oak','pine','birch'],type=types[Math.floor(Math.random()*3)];
+  const colors={oak:'#8B6914',pine:'#a0522d',birch:'#d4c5a9'};
+  const rings={oak:'#6b4f10',pine:'#7a3e22',birch:'#b8a88a'};
+  logs.push({x,y:390,type,color:colors[type],ringColor:rings[type],diameter:30+Math.random()*20,chopped:false,chopProgress:0,maxChops:getMaxChops()});
+}
+for(let i=0;i<3;i++) spawnLog();
+
+function gf(s){return s+'px "Press Start 2P"';}
+
+// ─── DRAW FUNCTIONS ───
+function drawSky(){const g=ctx.createLinearGradient(0,0,0,300);g.addColorStop(0,'#5b8fb9');g.addColorStop(1,'#87ceeb');ctx.fillStyle=g;ctx.fillRect(0,0,GW,300);ctx.fillStyle='#fff4a0';ctx.beginPath();ctx.arc(800,60,25,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(800,60,20,0,Math.PI*2);ctx.fill();}
+
+function drawClouds(t){ctx.fillStyle='rgba(255,255,255,0.7)';[[100,60,60],[350,40,45],[600,70,55],[800,50,40]].forEach(([bx,by,sz])=>{const cx=(bx+t*0.01)%960-30;ctx.beginPath();ctx.arc(cx,by,sz*0.6,0,Math.PI*2);ctx.arc(cx+sz*0.4,by-sz*0.2,sz*0.5,0,Math.PI*2);ctx.arc(cx+sz*0.8,by,sz*0.4,0,Math.PI*2);ctx.fill();});}
+
+function drawMountains(){ctx.fillStyle='#3a6b35';ctx.beginPath();ctx.moveTo(-20,280);ctx.lineTo(120,140);ctx.lineTo(250,260);ctx.lineTo(350,130);ctx.lineTo(500,270);ctx.lineTo(620,150);ctx.lineTo(750,250);ctx.lineTo(850,160);ctx.lineTo(940,270);ctx.lineTo(940,280);ctx.fill();ctx.fillStyle='#2d5a27';ctx.beginPath();ctx.moveTo(-20,290);ctx.lineTo(80,200);ctx.lineTo(200,280);ctx.lineTo(400,190);ctx.lineTo(550,280);ctx.lineTo(700,200);ctx.lineTo(830,275);ctx.lineTo(940,230);ctx.lineTo(940,290);ctx.fill();}
+
+function drawGround(){const g=ctx.createLinearGradient(0,290,0,520);g.addColorStop(0,'#5a8f3c');g.addColorStop(0.15,'#4a7a3b');g.addColorStop(1,'#3d6630');ctx.fillStyle=g;ctx.fillRect(0,290,GW,230);ctx.fillStyle='#6b5030';ctx.beginPath();ctx.ellipse(470,410,300,35,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7a5c38';ctx.beginPath();ctx.ellipse(470,408,290,30,0,0,Math.PI*2);ctx.fill();}
+
+function drawBackgroundTrees(){[[30,260,0.7],[80,250,0.9],[780,255,0.85],[850,245,1],[870,265,0.65]].forEach(([tx,ty,s])=>{ctx.fillStyle='#4a2e14';ctx.fillRect(tx-4*s,ty,8*s,40*s);ctx.fillStyle='#1e4a14';ctx.beginPath();ctx.moveTo(tx,ty-40*s);ctx.lineTo(tx-25*s,ty+10);ctx.lineTo(tx+25*s,ty+10);ctx.fill();ctx.beginPath();ctx.moveTo(tx,ty-25*s);ctx.lineTo(tx-20*s,ty+20);ctx.lineTo(tx+20*s,ty+20);ctx.fill();});}
+
+function drawChoppingBlock(x,y){ctx.fillStyle='#8B7355';ctx.fillRect(x-18,y-20,36,22);ctx.fillStyle='#a08060';ctx.beginPath();ctx.ellipse(x,y-20,18,7,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#6b5535';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x,y-20,12,4.5,0,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(x,y-20,6,2.5,0,0,Math.PI*2);ctx.stroke();}
+
+function drawLog(log){
+  if(log.chopped)return;const x=log.x,y=log.y,r=log.diameter/2;
+  ctx.fillStyle=log.color;ctx.fillRect(x-r,y-28-r*1.2,r*2,r*1.2);
+  ctx.fillStyle=log.ringColor;ctx.beginPath();ctx.ellipse(x,y-28-r*1.2,r,r*0.45,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle=log.color;ctx.lineWidth=1;for(let i=1;i<=3;i++){ctx.beginPath();ctx.ellipse(x,y-28-r*1.2,r*(i/4),r*0.45*(i/4),0,0,Math.PI*2);ctx.stroke();}
+  ctx.strokeStyle='#3a2510';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y-28-r*1.2,r,r*0.45,0,0,Math.PI*2);ctx.stroke();
+  if(log.chopProgress>0){ctx.strokeStyle='#ffe0a0';ctx.lineWidth=2;for(let i=0;i<log.chopProgress;i++){const cx=x-(log.chopProgress*2)+i*4;ctx.beginPath();ctx.moveTo(cx,y-28-r*1.8);ctx.lineTo(cx,y-28-r*0.6);ctx.stroke();}}
+  const bW=r*2,bH=5,bX=x-r,bY=y-28-r*1.2-r*0.45-16;
+  ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(bX,bY,bW,bH);
+  const pct=log.chopProgress/log.maxChops;
+  ctx.fillStyle=pct>0.7?'#ff6644':pct>0.4?'#ffaa44':'#88cc44';ctx.fillRect(bX,bY,bW*pct,bH);
+  ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.strokeRect(bX,bY,bW,bH);
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font=gf(8);ctx.textAlign='center';ctx.fillText((log.maxChops-log.chopProgress)+'',x,bY-4);
 }
 
-// Exchange rate fetching for MBF-M³ conversion - Multiple sources for reliability
-async function fetchExchangeRate() {
-  // Try multiple APIs in order of preference - all CORS-enabled and browser-friendly
-  const apis = [
-    {
-      name: 'fawazahmed0 (CDN)',
-      url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
-      parse: (data) => data.usd.eur
-    },
-    {
-      name: 'exchangerate.host',
-      url: 'https://api.exchangerate.host/latest?base=USD&symbols=EUR',
-      parse: (data) => data.rates.EUR
-    },
-    {
-      name: 'frankfurter.dev',
-      url: 'https://api.frankfurter.dev/latest?from=USD&to=EUR',
-      parse: (data) => data.rates.EUR
-    }
-  ];
-  
-  for (const api of apis) {
-    try {
-      console.log(`Trying ${api.name}...`);
-      
-      const response = await fetch(api.url, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache'
-      });
-      
-      if (!response.ok) {
-        console.warn(`${api.name} returned status ${response.status}`);
-        continue;
-      }
-      
-      const data = await response.json();
-      const rate = api.parse(data);
-      
-      console.log(`${api.name} returned rate:`, rate);
-      
-      if (rate && !isNaN(rate) && rate > 0.7 && rate < 1.2) {
-        // Sanity check: EUR/USD should be between 0.7 and 1.2
-        usdToEurRate = rate;
-        
-        // Cache in localStorage with timestamp
-        localStorage.setItem('usdToEurRate', usdToEurRate.toString());
-        localStorage.setItem('rateTimestamp', Date.now().toString());
-        localStorage.setItem('rateSource', api.name);
-        
-        console.log(`✓ Exchange rate loaded from ${api.name}: ${rate}`);
-        updateRateDisplay();
-        calculateM3Pricing(); // Recalculate with new rate
-        return; // Success - exit function
-      } else {
-        console.warn(`${api.name} returned invalid rate:`, rate);
-      }
-    } catch (error) {
-      console.warn(`Failed to fetch from ${api.name}:`, error.message);
-      continue; // Try next API
-    }
-  }
-  
-  // All APIs failed - use cached rate if available
-  const cached = localStorage.getItem('usdToEurRate');
-  const timestamp = localStorage.getItem('rateTimestamp');
-  
-  if (cached && !isNaN(parseFloat(cached))) {
-    usdToEurRate = parseFloat(cached);
-    const age = timestamp ? Date.now() - parseInt(timestamp) : null;
-    const ageHours = age ? Math.floor(age / (1000 * 60 * 60)) : null;
-    updateRateDisplay(`(cached ${ageHours}h ago)`);
-    console.warn('Using cached exchange rate:', usdToEurRate);
-  } else {
-    // Last resort: Use conservative estimate
-    usdToEurRate = 0.85; // Updated conservative estimate
-    updateRateDisplay('(ESTIMATED - API unavailable)');
-    console.error('All exchange rate APIs failed. Using estimate:', usdToEurRate);
-  }
+// ─── MARKET ───
+function drawMarketStall(){
+  const mx=55,my=340;
+  ctx.fillStyle='#8B6914';ctx.fillRect(mx-30,my-12,60,48);
+  ctx.fillStyle='#cc3333';ctx.beginPath();ctx.moveTo(mx-38,my-12);ctx.lineTo(mx+38,my-12);ctx.lineTo(mx+34,my-28);ctx.lineTo(mx-34,my-28);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#fff';for(let s=-28;s<30;s+=14){ctx.beginPath();ctx.moveTo(mx+s,my-12);ctx.lineTo(mx+s+7,my-12);ctx.lineTo(mx+s+5,my-28);ctx.lineTo(mx+s-2,my-28);ctx.closePath();ctx.fill();}
+  ctx.fillStyle='#a08060';ctx.fillRect(mx-32,my+8,64,6);
+  ctx.fillStyle='#fff';ctx.font=gf(8);ctx.textAlign='center';ctx.fillText('MARKET',mx,my+3);
+  ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(mx,my-36,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#b8960a';ctx.font=gf(9);ctx.fillText('$',mx,my-33);
+  if(firewoodCount>=MARKET_MIN_WOOD&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;ctx.globalAlpha=a;ctx.fillStyle='#ffd700';ctx.font=gf(9);ctx.fillText('PRESS M',mx,my-50);ctx.font=gf(8);ctx.fillText('TO SELL!',mx,my-62);ctx.globalAlpha=1;}
 }
 
-function updateRateDisplay(suffix = '') {
-  const displayEl = document.getElementById('m3-rate-display');
-  const timeEl = document.getElementById('m3-rate-time');
-  
-  if (displayEl) {
-    displayEl.textContent = `1 USD = ${usdToEurRate.toFixed(4)} EUR ${suffix}`;
-  }
-  
-  if (timeEl) {
-    const timestamp = localStorage.getItem('rateTimestamp');
-    const source = localStorage.getItem('rateSource');
-    
-    if (timestamp && !suffix.includes('ESTIMATED')) {
-      const date = new Date(parseInt(timestamp));
-      const timeStr = date.toLocaleString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-      timeEl.textContent = `Updated: ${timeStr}${source ? ' via ' + source : ''}`;
-    } else if (suffix.includes('ESTIMATED')) {
-      timeEl.textContent = '⚠️ Unable to fetch live rate - verify manually';
-      timeEl.style.color = '#ff6b35'; // Orange warning color
-    } else {
-      timeEl.textContent = '';
-    }
-  }
+// ─── ANVIL ───
+const AX=160,AY=330;
+function drawAnvil(){ctx.fillStyle='#555';ctx.fillRect(AX-14,AY+5,28,14);ctx.fillStyle='#666';ctx.fillRect(AX-18,AY-2,36,9);ctx.fillStyle='#777';ctx.beginPath();ctx.moveTo(AX-18,AY-2);ctx.lineTo(AX-22,AY-2);ctx.lineTo(AX-20,AY+5);ctx.lineTo(AX-18,AY+5);ctx.closePath();ctx.fill();if(cutscene&&cutscene.type==='axe'&&cutscene.phase>=2&&cutscene.phase<=3){ctx.globalAlpha=0.3+Math.sin(Date.now()*0.01)*0.15;ctx.fillStyle='#ff4400';ctx.beginPath();ctx.arc(AX,AY-10,25,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}}
+
+function drawUpgradeSign(){
+  if(axeLevel>=axes.length-1)return;const ux=AX,uy=AY-50,next=axes[axeLevel+1];
+  ctx.fillStyle='#5c3a1e';ctx.fillRect(ux-3,uy+24,6,28);
+  ctx.fillStyle='#c8a96e';ctx.fillRect(ux-42,uy-5,84,32);
+  ctx.strokeStyle='#5c3a1e';ctx.lineWidth=2;ctx.strokeRect(ux-42,uy-5,84,32);
+  ctx.fillStyle='#3a2510';ctx.font=gf(7);ctx.textAlign='center';ctx.fillText('AXE: '+next.name,ux,uy+9);
+  ctx.fillStyle='#ffd700';ctx.fillText(next.cost+' coins',ux,uy+21);
+  if(coins>=next.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;ctx.globalAlpha=a;ctx.fillStyle='#90ff90';ctx.font=gf(9);ctx.fillText('PRESS U',ux,uy-12);ctx.globalAlpha=1;}
 }
 
-function checkRateUpdate() {
-  const cached = localStorage.getItem('usdToEurRate');
-  const timestamp = localStorage.getItem('rateTimestamp');
-  
-  if (cached && timestamp) {
-    const age = Date.now() - parseInt(timestamp);
-    const twelveHours = 12 * 60 * 60 * 1000; // Check twice daily for accuracy
-    
-    if (age < twelveHours) {
-      // Use cached rate (less than 12 hours old)
-      usdToEurRate = parseFloat(cached);
-      updateRateDisplay();
-      return;
-    }
-  }
-  
-  // Fetch new rate (cache expired or doesn't exist)
-  fetchExchangeRate();
+// ─── COFFEE SHOP ───
+const CX=830,CY=320;
+function drawCoffeeShop(){
+  if(coffeeLevel>=coffees.length-1)return;const next=coffees[coffeeLevel+1];
+  ctx.fillStyle='#5c3a1e';ctx.fillRect(CX-3,CY+14,6,22);ctx.fillStyle='#a08060';ctx.fillRect(CX-22,CY+10,44,6);
+  drawMug(CX,CY,coffeeLevel>=1);
+  ctx.fillStyle='#80e080';ctx.font=gf(7);ctx.textAlign='center';ctx.fillText(next.name,CX,CY+26);
+  ctx.fillStyle='#ffd700';ctx.fillText(next.cost+' coins',CX,CY+37);
+  if(coins>=next.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;ctx.globalAlpha=a;ctx.fillStyle='#80e080';ctx.font=gf(9);ctx.fillText('PRESS C',CX,CY-18);ctx.globalAlpha=1;}
+}
+function drawMug(x,y,d){ctx.fillStyle=d?'#e8e8e8':'#d4d4d4';ctx.fillRect(x-6,y-10,12,15);ctx.fillStyle='#4a2810';ctx.fillRect(x-5,y-9,10,6);ctx.strokeStyle=d?'#e8e8e8':'#d4d4d4';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x+7,y-2,4,-Math.PI/2,Math.PI/2);ctx.stroke();const t=Date.now()*0.003;ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=1;for(let i=0;i<2;i++){ctx.beginPath();const sx=x-2+i*5;ctx.moveTo(sx,y-11);ctx.quadraticCurveTo(sx+Math.sin(t+i)*3,y-17,sx+Math.sin(t+i+1)*2,y-22);ctx.stroke();}}
+
+// ─── JERKY SHOP ───
+const JX=830,JY=410;
+function drawJerkyShop(){
+  if(jerkyLevel>=jerkys.length-1)return;const next=jerkys[jerkyLevel+1];
+  ctx.fillStyle='#5c3a1e';ctx.fillRect(JX-3,JY+14,6,22);ctx.fillStyle='#a08060';ctx.fillRect(JX-22,JY+10,44,6);
+  drawBag(JX,JY);
+  ctx.fillStyle='#ff9966';ctx.font=gf(7);ctx.textAlign='center';ctx.fillText(next.name,JX,JY+26);
+  ctx.fillStyle='#ffd700';ctx.fillText(next.cost+' coins',JX,JY+37);
+  if(coins>=next.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;ctx.globalAlpha=a;ctx.fillStyle='#ff9966';ctx.font=gf(9);ctx.fillText('PRESS J',JX,JY-18);ctx.globalAlpha=1;}
+}
+function drawBag(x,y){ctx.fillStyle='#8B4513';ctx.fillRect(x-8,y-12,16,18);ctx.fillStyle='#a0522d';ctx.fillRect(x-8,y-12,16,4);ctx.fillStyle='#ffd700';ctx.font=gf(4);ctx.textAlign='center';ctx.fillText('JERKY',x,y+2);}
+
+// ─── FIREWOOD PILE ───
+const WPX=470,WPY=470;
+function drawFirewoodPile(){
+  if(cutscene&&cutscene.type==='market'&&cutscene.phase>=2)return;
+  const bx=WPX-40,by=WPY;
+  for(let i=0;i<firewoodCount&&i<80;i++){const r=Math.floor(i/8),c=i%8,x=bx+c*11,y=by-r*8;ctx.fillStyle=i%3===0?'#8B6914':i%3===1?'#a0522d':'#c4a87a';ctx.fillRect(x-4,y-3,8,7);ctx.fillStyle='#d4b86a';ctx.beginPath();ctx.ellipse(x,y,4,3.5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#6b4f10';ctx.lineWidth=0.5;ctx.beginPath();ctx.ellipse(x,y,3,2.5,0,0,Math.PI*2);ctx.stroke();}
+  if(firewoodCount>0){ctx.fillStyle='#c8a96e';ctx.font=gf(8);ctx.textAlign='center';ctx.fillText(firewoodCount+' WOOD',WPX,by+16);}
 }
 
-function calculateM3Pricing() {
-  const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
-  const isMBF = document.getElementById('m3-unit-toggle').checked; // checked = MBF, unchecked = M³
-  
-  let priceM3USD, priceM3EUR;
-  
-  if (isMBF) {
-    // Input is $/MBF → calculate $/m³ and €/m³
-    const priceMBFUSD = priceInput;
-    priceM3USD = priceInput / MBF_TO_M3;
-    priceM3EUR = priceM3USD * usdToEurRate;
-  } else {
-    // Input is €/m³ → calculate $/m³
-    priceM3EUR = priceInput;
-    priceM3USD = priceInput / usdToEurRate;
+// ─── LUMBERJACK ───
+function drawLumberjack(time){
+  let x=jack.x,y=jack.y;const f=jack.facing;
+  y+=jack.isWalking?Math.sin(jack.walkTimer*0.3)*2:0;
+  if(jack.jitterTimer>0){x+=(Math.random()-0.5)*jack.jitter;y+=(Math.random()-0.5)*jack.jitter*0.5;}
+  ctx.save();ctx.translate(x,y);ctx.scale(f,1);
+  let aa=0;
+  if(jack.isChopping){const p=jack.chopPhase;if(p<0.4)aa=-Math.PI*0.8*(p/0.4);else if(p<0.6)aa=-Math.PI*0.8+Math.PI*1.2*((p-0.4)/0.2);else aa=Math.PI*0.4*(1-(p-0.6)/0.4);}
+  const ls=jack.isWalking?Math.sin(jack.walkTimer*0.3)*8:0;
+  ctx.fillStyle='#3a5fad';ctx.save();ctx.translate(-4,0);ctx.rotate(ls*Math.PI/180);ctx.fillRect(-4,0,8,18);ctx.fillStyle='#4a3020';ctx.fillRect(-4,16,10,5);ctx.restore();
+  ctx.save();ctx.translate(4,0);ctx.rotate(-ls*Math.PI/180);ctx.fillStyle='#3a5fad';ctx.fillRect(-4,0,8,18);ctx.fillStyle='#4a3020';ctx.fillRect(-5,16,10,5);ctx.restore();
+  ctx.fillStyle='#c43030';ctx.fillRect(-10,-24,20,26);ctx.strokeStyle='#8a1a1a';ctx.lineWidth=2;for(let ly=-22;ly<2;ly+=6){ctx.beginPath();ctx.moveTo(-10,ly);ctx.lineTo(10,ly);ctx.stroke();}ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,-24);ctx.lineTo(0,2);ctx.stroke();
+  ctx.fillStyle='#5a3a1e';ctx.fillRect(-7,-22,3,44);ctx.fillRect(4,-22,3,44);ctx.fillStyle='#d4a030';ctx.beginPath();ctx.arc(-5.5,-4,1.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(5.5,-4,1.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#c43030';ctx.save();ctx.translate(-10,-20);const ba=jack.isChopping?aa*0.3:(jack.isWalking?Math.sin(jack.walkTimer*0.3+Math.PI)*15*Math.PI/180:0);ctx.rotate(ba);ctx.fillRect(-3,0,6,16);ctx.fillStyle='#e8b88a';ctx.fillRect(-2,14,5,5);ctx.restore();
+  if(jack.carrying){ctx.save();ctx.translate(0,-30);for(let i=0;i<Math.min(jack.carryCount,5);i++){ctx.fillStyle=i%2===0?'#8B6914':'#a0522d';ctx.fillRect(-8+i*3,-6-i*4,10,7);ctx.fillStyle='#d4b86a';ctx.beginPath();ctx.ellipse(-3+i*3,-3-i*4,4,3,0,0,Math.PI*2);ctx.fill();}ctx.restore();}
+  if(jack.drinking){ctx.save();ctx.translate(8,-18);ctx.rotate(-0.5);ctx.fillStyle='#c43030';ctx.fillRect(-3,-8,6,14);ctx.fillStyle='#e8b88a';ctx.fillRect(-2,4,5,5);ctx.fillStyle='#d4d4d4';ctx.fillRect(-1,-14,8,10);ctx.fillStyle='#4a2810';ctx.fillRect(0,-13,6,4);ctx.restore();}
+  else if(jack.eating){ctx.save();ctx.translate(8,-18);ctx.rotate(-0.3);ctx.fillStyle='#c43030';ctx.fillRect(-3,-6,6,14);ctx.fillStyle='#e8b88a';ctx.fillRect(-2,6,5,5);ctx.fillStyle='#6b3010';ctx.fillRect(0,-10,4,8);ctx.fillStyle='#8B4513';ctx.fillRect(1,-9,2,6);ctx.restore();}
+  else if(jack.flexing){
+    // POPEYE FLEX - both arms up, biceps bulging
+    const ft=jack.flexTimer;const bulge=Math.sin(ft*0.15)*2;
+    // Left arm flexing up
+    ctx.save();ctx.translate(-10,-20);ctx.rotate(-1.2);
+    ctx.fillStyle='#c43030';ctx.fillRect(-3,0,6,14);
+    // Forearm up
+    ctx.save();ctx.translate(0,14);ctx.rotate(-2.2);
+    ctx.fillStyle='#c43030';ctx.fillRect(-3,0,6,12);
+    ctx.fillStyle='#e8b88a';ctx.fillRect(-2,10,5,5);
+    ctx.restore();
+    // Bicep bulge
+    ctx.fillStyle='#e8b88a';
+    ctx.beginPath();ctx.ellipse(-1,7,5+bulge,4+bulge,0,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+    // Right arm flexing up
+    ctx.save();ctx.translate(10,-20);ctx.rotate(1.2);
+    ctx.fillStyle='#c43030';ctx.fillRect(-3,0,6,14);
+    ctx.save();ctx.translate(0,14);ctx.rotate(2.2);
+    ctx.fillStyle='#c43030';ctx.fillRect(-3,0,6,12);
+    ctx.fillStyle='#e8b88a';ctx.fillRect(-2,10,5,5);
+    ctx.restore();
+    ctx.fillStyle='#e8b88a';
+    ctx.beginPath();ctx.ellipse(1,7,5+bulge,4+bulge,0,0,Math.PI*2);ctx.fill();
+    ctx.restore();
   }
-  
-  const usdEl = document.getElementById('m3-price-usd');
-  const eurEl = document.getElementById('m3-price-eur');
-  
-  if (usdEl) {
-    usdEl.textContent = '$' + priceM3USD.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+  else{ctx.save();ctx.translate(8,-22);const fa=jack.isChopping?aa*0.8:(jack.isWalking?Math.sin(jack.walkTimer*0.3)*15*Math.PI/180:0.1);ctx.rotate(fa);ctx.fillStyle='#c43030';ctx.fillRect(-3,0,6,16);ctx.fillStyle='#e8b88a';ctx.fillRect(-2,14,5,5);
+  if(jack.hasAxe){ctx.fillStyle='#8B7355';ctx.fillRect(1,14,3,28);const ax=axes[axeLevel];ctx.fillStyle=ax.color;ctx.beginPath();ctx.moveTo(0,38);ctx.lineTo(-8,44);ctx.lineTo(-6,48);ctx.lineTo(4,44);ctx.closePath();ctx.fill();ctx.fillStyle=ax.shine;ctx.beginPath();ctx.moveTo(-7,44);ctx.lineTo(-8,44);ctx.lineTo(-6,48);ctx.lineTo(-5,47);ctx.closePath();ctx.fill();if(axeLevel>=3){ctx.globalAlpha=0.3+Math.sin(Date.now()*0.005)*0.15;ctx.shadowColor=ax.color;ctx.shadowBlur=8;ctx.fillStyle=ax.color;ctx.beginPath();ctx.moveTo(0,38);ctx.lineTo(-8,44);ctx.lineTo(-6,48);ctx.lineTo(4,44);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.globalAlpha=1;}}ctx.restore();}
+  ctx.fillStyle='#e8b88a';ctx.fillRect(-8,-38,16,14);ctx.fillStyle='#2a2a2a';ctx.fillRect(-5,-34,3,3);ctx.fillRect(3,-34,3,3);
+  if(jack.drinking||jack.eating||jack.flexing){ctx.fillStyle='#c07050';ctx.beginPath();ctx.arc(0,-26,3,0,Math.PI);ctx.fill();}else{ctx.fillStyle='#a06040';ctx.fillRect(-3,-27,6,2);}
+  ctx.fillStyle='#5a3a1e';ctx.fillRect(-7,-26,14,4);ctx.fillRect(-5,-22,10,2);
+  ctx.fillStyle='#cc2222';ctx.beginPath();ctx.ellipse(0,-40,10,5,0,Math.PI,0);ctx.fill();ctx.fillRect(-10,-42,20,4);ctx.fillStyle='#991818';ctx.fillRect(-10,-40,20,3);ctx.fillStyle='#cc2222';ctx.beginPath();ctx.arc(0,-45,4,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  if(jack.isWalking&&coffeeLevel>=1){ctx.strokeStyle='rgba(255,200,100,0.25)';ctx.lineWidth=1;const d=-jack.facing;for(let i=0;i<coffeeLevel+1;i++){const ly=jack.y-20+i*12,lx=jack.x+d*15;ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(lx+d*(10+coffeeLevel*5),ly);ctx.stroke();}}
+}
+
+// ─── ANIMATIONS ───
+function triggerSplit(log){const pc=3+Math.floor(Math.random()*3);for(let i=0;i<pc;i++){const a=(Math.PI*2*i/pc)+Math.random()*0.5;splitAnimations.push({x:log.x,y:log.y-30,vx:Math.cos(a)*(2+Math.random()*3),vy:-3-Math.random()*4,r:log.diameter/4,color:log.color,faceColor:'#d4b86a',life:1,grounded:false,groundY:log.y+5+Math.random()*15,rotation:Math.random()*Math.PI});}firewoodCount+=pc;firewoodEl.textContent=firewoodCount;}
+function updateSplitAnimations(){splitAnimations.forEach(s=>{if(!s.grounded){s.vy+=0.2;s.x+=s.vx;s.y+=s.vy;s.rotation+=0.1;if(s.y>=s.groundY){s.y=s.groundY;s.grounded=true;s.vx=0;s.vy=0;}}if(s.grounded)s.life-=0.008;});splitAnimations=splitAnimations.filter(s=>s.life>0);}
+function drawSplitAnimations(){splitAnimations.forEach(s=>{ctx.save();ctx.globalAlpha=Math.max(0,s.life);ctx.translate(s.x,s.y);ctx.rotate(s.rotation);const w=s.r,h=s.r*0.7;ctx.fillStyle=s.color;ctx.fillRect(-w/2,-h/2,w,h);ctx.fillStyle=s.faceColor;ctx.beginPath();ctx.ellipse(0,0,w/2-1,h/2-1,0,0,Math.PI*2);ctx.fill();ctx.restore();});}
+
+function spawnChopParticles(x,y){for(let i=0;i<8;i++)particles.push({x,y:y-30,vx:(Math.random()-0.5)*4,vy:-Math.random()*3-1,life:1,color:Math.random()>0.5?'#d4b86a':'#8B7355',size:2+Math.random()*3});}
+function spawnCoinParticles(x,y,c){for(let i=0;i<c;i++)particles.push({x:x+(Math.random()-0.5)*30,y:y-20,vx:(Math.random()-0.5)*3,vy:-Math.random()*4-2,life:1,color:'#ffd700',size:3+Math.random()*2});}
+function spawnSparks(x,y){for(let i=0;i<12;i++)blacksmithSparks.push({x,y,vx:(Math.random()-0.5)*6,vy:-Math.random()*5-2,life:1,color:Math.random()>0.5?'#ffa030':'#ff6600',size:2+Math.random()*2});}
+function updateParticles(){particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.15;p.life-=0.02;});particles=particles.filter(p=>p.life>0);blacksmithSparks.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.025;});blacksmithSparks=blacksmithSparks.filter(p=>p.life>0);}
+function drawParticles(){[...particles,...blacksmithSparks].forEach(p=>{ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.fillRect(p.x-p.size/2,p.y-p.size/2,p.size,p.size);});ctx.globalAlpha=1;}
+
+function addMsg(x,y,t,c){floatingMessages.push({x,y,text:t,color:c,life:1});}
+function updateFloatingMessages(){floatingMessages.forEach(m=>{m.y-=0.8;m.life-=0.012;});floatingMessages=floatingMessages.filter(m=>m.life>0);}
+function drawFloatingMessages(){floatingMessages.forEach(m=>{ctx.globalAlpha=m.life;ctx.fillStyle=m.color;ctx.font=gf(12);ctx.textAlign='center';ctx.fillText(m.text,m.x,m.y);});ctx.globalAlpha=1;}
+
+function findNearestLog(){let n=null,d=50;logs.forEach(l=>{if(l.chopped)return;const dd=Math.abs(jack.x-l.x);if(dd<d){d=dd;n=l;}});return n;}
+
+function drawProximityHint(){if(cutscene)return;const nl=findNearestLog();if(nl&&!jack.isChopping&&!jack.isWalking){const a=0.5+Math.sin(Date.now()*0.005)*0.3;ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.font=gf(11);ctx.textAlign='center';ctx.fillText('CHOP',nl.x,nl.y-55-nl.diameter);ctx.globalAlpha=1;}}
+
+function drawMarketMessage(){if(!marketMessage)return;marketMessage.timer--;if(marketMessage.timer<=0){marketMessage=null;return;}ctx.globalAlpha=Math.min(1,marketMessage.timer/30);ctx.fillStyle=marketMessage.color;ctx.font=gf(16);ctx.textAlign='center';ctx.fillText(marketMessage.text,55,280-(90-marketMessage.timer)*0.5);ctx.globalAlpha=1;}
+
+// ─── CUTSCENES ───
+function updateCutscene(){
+  if(!cutscene)return;cutscene.timer++;
+  if(cutscene.type==='market'){
+    if(cutscene.phase===0){jack.targetX=WPX;jack.facing=jack.x>WPX?-1:1;if(Math.abs(jack.x-WPX)<8){cutscene.phase=1;cutscene.timer=0;}}
+    else if(cutscene.phase===1){jack.isWalking=false;if(cutscene.timer>30){jack.carrying=true;jack.carryCount=Math.min(firewoodCount,5);cutscene.phase=2;cutscene.timer=0;}}
+    else if(cutscene.phase===2){jack.targetX=55;jack.facing=-1;if(Math.abs(jack.x-55)<8){cutscene.phase=3;cutscene.timer=0;}}
+    else if(cutscene.phase===3){jack.isWalking=false;jack.carrying=false;if(cutscene.timer===1){const e=firewoodCount*WOOD_PRICE;coins+=e;coinsEl.textContent=coins;firewoodCount=0;firewoodEl.textContent=0;addMsg(55,260,'+'+e+' coins!','#ffd700');spawnCoinParticles(55,320,15);marketMessage={text:'SOLD!',timer:90,color:'#ffd700'};}if(cutscene.timer>60)cutscene=null;}
   }
-  
-  if (eurEl) {
-    eurEl.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+  else if(cutscene.type==='axe'){
+    if(cutscene.phase===0){jack.targetX=AX+30;jack.facing=-1;if(Math.abs(jack.x-(AX+30))<8){cutscene.phase=1;cutscene.timer=0;}}
+    else if(cutscene.phase===1){jack.isWalking=false;if(cutscene.timer===15)jack.hasAxe=false;if(cutscene.timer>40){cutscene.phase=2;cutscene.timer=0;}}
+    else if(cutscene.phase===2){jack.isWalking=false;if(cutscene.timer%12===0)spawnSparks(AX,AY);if(cutscene.timer>90){cutscene.phase=3;cutscene.timer=0;}}
+    else if(cutscene.phase===3){if(cutscene.timer===1){coins-=cutscene.data.cost;coinsEl.textContent=coins;axeLevel++;axeLevelEl.textContent=axes[axeLevel].name;jack.hasAxe=true;addMsg(AX,AY-70,axes[axeLevel].name+' AXE!','#90e0ff');spawnCoinParticles(AX,AY,10);}if(cutscene.timer>50)cutscene=null;}
+  }
+  else if(cutscene.type==='coffee'){
+    if(cutscene.phase===0){jack.targetX=CX-25;jack.facing=1;if(Math.abs(jack.x-(CX-25))<8){cutscene.phase=1;cutscene.timer=0;}}
+    else if(cutscene.phase===1){jack.isWalking=false;if(cutscene.timer===1){coins-=cutscene.data.cost;coinsEl.textContent=coins;coffeeLevel++;coffeeLevelEl.textContent=coffees[coffeeLevel].name;jack.drinking=true;}if(cutscene.timer>50){cutscene.phase=2;cutscene.timer=0;}}
+    else if(cutscene.phase===2){jack.drinking=false;jack.jitter=6;jack.jitterTimer=1;if(cutscene.timer===1){addMsg(jack.x,jack.y-80,coffees[coffeeLevel].name+'!','#80e080');for(let i=0;i<20;i++)particles.push({x:jack.x+(Math.random()-0.5)*20,y:jack.y-20,vx:(Math.random()-0.5)*6,vy:-Math.random()*5-2,life:1,color:'#8B4513',size:2+Math.random()*3});}jack.jitter=6*(1-cutscene.timer/80);if(cutscene.timer>80){jack.jitter=0;jack.jitterTimer=0;cutscene=null;}}
+  }
+  else if(cutscene.type==='jerky'){
+    if(cutscene.phase===0){jack.targetX=JX-25;jack.facing=1;if(Math.abs(jack.x-(JX-25))<8){cutscene.phase=1;cutscene.timer=0;}}
+    else if(cutscene.phase===1){jack.isWalking=false;if(cutscene.timer===1){coins-=cutscene.data.cost;coinsEl.textContent=coins;jerkyLevel++;jerkyLevelEl.textContent=jerkys[jerkyLevel].name;jack.eating=true;}if(cutscene.timer>55){cutscene.phase=2;cutscene.timer=0;}}
+    else if(cutscene.phase===2){jack.eating=false;jack.flexing=true;jack.flexTimer=0;if(cutscene.timer===1){addMsg(jack.x,jack.y-80,jerkys[jerkyLevel].name+'!','#ff9966');for(let i=0;i<15;i++)particles.push({x:jack.x+(Math.random()-0.5)*20,y:jack.y-20,vx:(Math.random()-0.5)*4,vy:-Math.random()*4-1,life:1,color:Math.random()>0.5?'#ff6633':'#ff9944',size:2+Math.random()*3});}jack.flexTimer=cutscene.timer;if(cutscene.timer>70){jack.flexing=false;jack.flexTimer=0;cutscene=null;}}
   }
 }
 
-function calculateSqFtPricing(coverageFactor) {
-  const priceInput = parseFloat(document.getElementById('sqft-price-input').value) || 0;
-  const isSqFt = document.getElementById('sqft-price-toggle').checked;
-  
-  if (isSqFt) {
-    // $/SQ FT → $/MBF
-    const priceMBF = priceInput * coverageFactor * 1000;
-    document.getElementById('sqft-price-result-label').textContent = '$/MBF:';
-    document.getElementById('sqft-price-result-value').textContent = 
-      '$' + priceMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  } else {
-    // $/MBF → $/SQ FT
-    const priceSqFt = priceInput / 1000 / coverageFactor;
-    document.getElementById('sqft-price-result-label').textContent = '$/SQ FT:';
-    document.getElementById('sqft-price-result-value').textContent = '$' + priceSqFt.toFixed(3);
-  }
+// ─── ACTIONS ───
+function sellAtMarket(){if(isBusy())return;if(firewoodCount<MARKET_MIN_WOOD){addMsg(55,280,'Need 15+ wood!','#ff6666');return;}startCutscene('market',{});}
+function upgradeAxe(){if(isBusy())return;if(axeLevel>=axes.length-1){addMsg(AX,AY-50,'MAX AXE!','#ffd700');return;}const n=axes[axeLevel+1];if(coins<n.cost){addMsg(AX,AY-50,'Need '+n.cost+'!','#ff6666');return;}startCutscene('axe',{cost:n.cost});}
+function buyCoffee(){if(isBusy())return;if(coffeeLevel>=coffees.length-1){addMsg(CX,CY-30,'MAX HUSTLE!','#80e080');return;}const n=coffees[coffeeLevel+1];if(coins<n.cost){addMsg(CX,CY-30,'Need '+n.cost+'!','#ff6666');return;}startCutscene('coffee',{cost:n.cost});}
+function buyJerky(){if(isBusy())return;if(jerkyLevel>=jerkys.length-1){addMsg(JX,JY-30,'MAX POWER!','#ff9966');return;}const n=jerkys[jerkyLevel+1];if(coins<n.cost){addMsg(JX,JY-30,'Need '+n.cost+'!','#ff6666');return;}startCutscene('jerky',{cost:n.cost});}
+function doChop(){if(isBusy())return;const nl=findNearestLog();if(nl){jack.isChopping=true;jack.chopPhase=0;jack.facing=jack.x<nl.x?1:jack.x>nl.x?-1:jack.facing;setTimeout(()=>{nl.chopProgress++;spawnChopParticles(nl.x,nl.y);if(nl.chopProgress>=nl.maxChops){nl.chopped=true;logsChopped++;scoreEl.textContent=logsChopped;triggerSplit(nl);setTimeout(()=>spawnLog(),1200);}},350);}}
+
+window.sellAtMarket=sellAtMarket;window.upgradeAxe=upgradeAxe;window.buyCoffee=buyCoffee;window.buyJerky=buyJerky;window.doChop=doChop;
+
+// ─── INPUT ───
+canvas.addEventListener('click',(e)=>{if(isBusy())return;const g=screenToGame(e.clientX,e.clientY);jack.targetX=Math.max(50,Math.min(850,g.x));});
+canvas.addEventListener('touchstart',(e)=>{e.preventDefault();if(isBusy())return;const t=e.touches[0];const g=screenToGame(t.clientX,t.clientY);jack.targetX=Math.max(50,Math.min(850,g.x));},{passive:false});
+document.addEventListener('keydown',(e)=>{if(e.code==='Space'){e.preventDefault();doChop();}if(e.code==='KeyM')sellAtMarket();if(e.code==='KeyU')upgradeAxe();if(e.code==='KeyC')buyCoffee();if(e.code==='KeyJ')buyJerky();});
+
+// ─── MAIN LOOP ───
+function gameLoop(ts){
+  gameTime=ts;
+  const dx=jack.targetX-jack.x;
+  if(Math.abs(dx)>3&&!jack.isChopping&&!jack.drinking&&!jack.eating&&!jack.flexing){jack.isWalking=true;jack.x+=Math.sign(dx)*getJackSpeed();jack.facing=dx>0?1:-1;jack.walkTimer++;}
+  else if(!jack.isChopping){jack.isWalking=false;}
+  if(jack.isChopping){jack.chopPhase+=getChopSpeed();if(jack.chopPhase>=1){jack.isChopping=false;jack.chopPhase=0;}}
+  updateCutscene();updateParticles();updateSplitAnimations();updateFloatingMessages();
+  ctx.clearRect(0,0,GW,GH);
+  drawSky();drawClouds(ts);drawMountains();drawBackgroundTrees();drawGround();
+  drawMarketStall();drawAnvil();drawUpgradeSign();drawCoffeeShop();drawJerkyShop();
+  blockPositions.forEach(bx=>drawChoppingBlock(bx,400));
+  logs.forEach(l=>drawLog(l));
+  drawSplitAnimations();drawFirewoodPile();drawLumberjack(ts);
+  drawParticles();drawProximityHint();drawMarketMessage();drawFloatingMessages();
+  requestAnimationFrame(gameLoop);
 }
-
-function calculate() {
-  const resultSection = document.getElementById('resultSection');
-  const resultLabel = document.getElementById('resultLabel');
-  const resultValue = document.getElementById('resultValue');
-  const displayNumber = document.getElementById('displayNumber');
-  const displayUnit = document.getElementById('displayUnit');
-  
-  if (currentMode === 'lf-to-mbf') {
-    const lf = parseFloat(document.getElementById('lf-input').value) || 0;
-    const t = parseFloat(document.getElementById('lf-thick').value) || 1;
-    const w = parseFloat(document.getElementById('lf-width').value) || 1;
-    
-    // MBF = LF * (T * W) / 12 / 1000
-    const mbf = lf * (t * w) / 12 / 1000;
-    
-    displayNumber.textContent = mbf.toFixed(3);
-    displayUnit.textContent = 'MBF';
-    resultSection.style.display = 'none';
-  }
-  else if (currentMode === 'mbf-to-lf') {
-    const mbf = parseFloat(document.getElementById('mbf-input').value) || 0;
-    const t = parseFloat(document.getElementById('mbf-thick').value) || 1;
-    const w = parseFloat(document.getElementById('mbf-width').value) || 1;
-    
-    // LF = MBF * 1000 * 12 / (T * W)
-    const lf = mbf * 1000 * 12 / (t * w);
-    
-    displayNumber.textContent = lf.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    displayUnit.textContent = 'LF';
-    resultSection.style.display = 'none';
-  }
-  else if (currentMode === 'sq-ft') {
-    const input = parseFloat(document.getElementById('sqft-input').value) || 0;
-    const netFace = parseFloat(document.getElementById('sqft-face-width').value) || 1;
-    const nominalWidth = parseFloat(document.getElementById('sqft-nominal-width').value) || 1;
-    const isSqFt = document.getElementById('sqft-unit-toggle').checked;
-    
-    // CRITICAL: Coverage Factor = Net Face Width ÷ Nominal Width
-    const coverageFactor = netFace / nominalWidth;
-    
-    if (isSqFt) {
-      // Input is SQ FT → calculate MBF
-      const mbf = input / coverageFactor / 1000;
-      displayNumber.textContent = mbf.toFixed(3);
-      displayUnit.textContent = 'MBF';
-    } else {
-      // Input is MBF → calculate SQ FT
-      const sqFt = input * 1000 * coverageFactor;
-      displayNumber.textContent = sqFt.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      displayUnit.textContent = 'SQ FT';
-    }
-    
-    // Calculate pricing
-    calculateSqFtPricing(coverageFactor);
-    resultSection.style.display = 'none';
-  }
-  else if (currentMode === 'mbf-m3') {
-    // MBF to M³ conversion
-    const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
-    const isMBF = document.getElementById('m3-unit-toggle').checked;
-    
-    if (isMBF) {
-      // Input is $/MBF → Show €/m³ in LCD (primary result)
-      const priceMBFUSD = priceInput;
-      const priceM3USD = priceInput / MBF_TO_M3;
-      const priceM3EUR = priceM3USD * usdToEurRate;
-      
-      // Show €/m³ in big LCD display
-      displayNumber.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      displayUnit.textContent = '/m³';
-      
-      // Show $/m³ below in result section
-      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + '/m³';
-      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + '/m³';
-    } else {
-      // Input is €/m³ → Show $/MBF in LCD (primary result)
-      const priceM3EUR = priceInput;
-      const priceM3USD = priceInput / usdToEurRate;
-      const priceMBFUSD = priceM3USD * MBF_TO_M3;
-      
-      // Show $/MBF in big LCD display
-      displayNumber.textContent = '$' + priceMBFUSD.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      displayUnit.textContent = '/MBF';
-      
-      // Show both below in result section
-      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + '/m³';
-      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + '/m³';
-    }
-    
-    resultSection.style.display = 'none';
-  }
-  else if (currentMode === 'pricing') {
-    const priceInput = parseFloat(document.getElementById('price-input').value) || 0;
-    const t = parseFloat(document.getElementById('price-thick').value) || 1;
-    const w = parseFloat(document.getElementById('price-width').value) || 1;
-    const isLF = document.getElementById('price-unit-toggle').checked;
-    
-    if (isLF) {
-      // Input is $/LF → calculate $/MBF
-      const calcMBF = priceInput * 12 / (t * w) * 1000;
-      displayNumber.textContent = '$' + calcMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-      displayUnit.textContent = '/MBF';
-    } else {
-      // Input is $/MBF → calculate $/LF
-      const calcLF = priceInput / 1000 * (t * w) / 12;
-      displayNumber.textContent = '$' + calcLF.toFixed(3);
-      displayUnit.textContent = '/LF';
-    }
-    resultSection.style.display = 'none';
-  }
-}
-
-// Initial calculation
-calculate();
-
-// Initialize exchange rate for MBF-M³ conversion
-checkRateUpdate();
+requestAnimationFrame(gameLoop);
 </script>
-
 </body>
 </html>
