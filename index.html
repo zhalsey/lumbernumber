@@ -3,1181 +3,1375 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Log Chop</title>
-<meta name="description" content="Chop logs, sell firewood, upgrade your gear. A lumberjack tycoon idle game.">
-<meta name="theme-color" content="#1a1a2e">
+<title>Lumber Number 1.2</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta property="og:title" content="Log Chop - Lumberjack Tycoon Game">
-<meta property="og:description" content="Chop logs, sell firewood, upgrade your gear. A lumberjack tycoon idle game.">
-<meta property="og:image" content="og-image.png">
-<meta property="og:type" content="website">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="icon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
+<meta name="apple-mobile-web-app-title" content="Lumber Number">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2a2e35">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:'Press Start 2P',monospace;user-select:none;-webkit-user-select:none;touch-action:none}
-#gc{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
-#gtitle{position:absolute;top:3px;left:8px;z-index:10;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 0 6px rgba(0,0,0,0.6)}
-#gtitle .gname{color:#ffd700;font-size:12px;display:block}
-#gtitle .glvl{color:#c8a96e;font-size:8px;display:block;margin-top:2px}
-#hud{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;color:#fff;font-size:13px;position:absolute;top:2px;left:0;right:0;text-align:center;z-index:10;padding:2px 6px}
-#hud span{text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 0 4px rgba(0,0,0,0.5);white-space:nowrap}
-.hc{color:#ffd700!important}.ha{color:#a0c8ff!important}.hl{color:#80e080!important}.hp{color:#ff9966!important}
-canvas{image-rendering:pixelated;display:block}
-#ins{color:#fff;text-align:center;line-height:1.8;font-size:11px;position:absolute;bottom:2px;left:0;right:0;z-index:10;padding:0 6px;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000}
-#ins strong{color:#ffd700}
-#tc{display:none;position:absolute;bottom:6px;right:6px;z-index:20;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:340px}
-.tb{background:rgba(200,169,110,0.3);border:2px solid rgba(200,169,110,0.5);color:#c8a96e;font-family:'Press Start 2P',monospace;border-radius:6px;padding:7px 10px;font-size:9px;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.tb:active{background:rgba(200,169,110,0.6)}
-.tc2{background:rgba(255,100,50,0.35);border-color:rgba(255,100,50,0.6);color:#ff9966;font-size:12px;padding:10px 18px}
-@media(pointer:coarse){#tc{display:flex}#ins{display:none}}
-@media(max-width:600px){#hud{font-size:9px;gap:6px}}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --steel-dark: #6b7280;
+  --steel-mid: #8b95a3;
+  --steel-light: #b0b8c4;
+  --steel-highlight: #d1d5db;
+  --chrome: linear-gradient(135deg, #a8a8a8 0%, #e0e0e0 50%, #a8a8a8 100%);
+  --bezel: linear-gradient(180deg, #9ca3af 0%, #7a8188 100%);
+  --lcd-bg: #2d3e2f;
+  --lcd-text: #8aff8a;
+  --lcd-glow: rgba(138, 255, 138, 0.3);
+  --btn-bg: linear-gradient(180deg, #b8bfc6 0%, #9ca3af 100%);
+  --btn-active: linear-gradient(180deg, #8b95a3 0%, #7a8188 100%);
+  --orange: #ff6b35;
+  --orange-glow: rgba(255, 107, 53, 0.4);
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background: linear-gradient(135deg, #7a8188 0%, #9ca3af 100%);
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.calculator-body {
+  max-width: 420px;
+  width: calc(100% - 20px);
+  max-height: calc(100vh - 20px);
+  max-height: calc(100dvh - 20px);
+  overflow-y: auto;
+  background: var(--bezel);
+  border-radius: 16px;
+  padding: 20px 18px 22px;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.2),
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    inset 0 -2px 8px rgba(0,0,0,0.3);
+  position: relative;
+  animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.calculator-body::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255,255,255,0.6) 30%, 
+    rgba(255,255,255,0.8) 50%, 
+    rgba(255,255,255,0.6) 70%, 
+    transparent 100%);
+  border-radius: 2px;
+}
+
+.brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 4px;
+  color: #1f2937;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.tagline {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 14px;
+  color: #1f2937;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+
+.mode-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+  background: rgba(0,0,0,0.3);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 9px 4px;
+  min-height: 42px;
+  background: var(--btn-bg);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 0.2px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.mode-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.mode-btn:active::before {
+  opacity: 1;
+  transition: opacity 0.05s ease-out;
+}
+
+.mode-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.4),
+    inset 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.mode-btn.active {
+  background: var(--orange);
+  color: #fff;
+  border-color: rgba(255,107,53,0.5);
+  box-shadow: 
+    0 0 12px var(--orange-glow),
+    0 2px 4px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.mode-btn.active::before {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+}
+
+.lcd-display {
+  background: var(--lcd-bg);
+  border: 3px solid var(--steel-dark);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.8),
+    inset 0 0 40px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.lcd-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(138,255,138,0.03) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(138,255,138,0.03) 3px
+  );
+  pointer-events: none;
+}
+
+.lcd-label {
+  font-size: 10px;
+  color: rgba(138,255,138,0.7);
+  margin-bottom: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.lcd-value {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 32px;
+  color: var(--lcd-text);
+  text-align: right;
+  text-shadow: 0 0 10px var(--lcd-glow);
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  letter-spacing: 1px;
+  gap: 8px;
+}
+
+.lcd-value.large {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.lcd-unit {
+  font-size: 16px;
+  color: rgba(138, 255, 138, 0.8);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.input-panel {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.input-panel.active {
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.price-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.toggle-label {
+  font-size: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  color: #374151;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  letter-spacing: 0.5px;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--btn-bg);
+  transition: 0.3s;
+  border-radius: 28px;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.4);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
+  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--btn-bg);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-slider:active:before {
+  width: 24px;
+}
+
+.sqft-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 14px 0 12px 0;
+}
+
+.sqft-preset-btn {
+  font-size: 8px !important;
+  padding: 9px 4px !important;
+}
+
+.sqft-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 14px 0 12px 0;
+}
+
+.sqft-preset-btn {
+  font-size: 8px !important;
+  padding: 9px 4px !important;
+}
+
+.sqft-pricing-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid rgba(0,0,0,0.2);
+}
+
+.sqft-pricing-label {
+  font-size: 9px;
+  color: #1f2937;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-transform: uppercase;
+}
+
+.sqft-price-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.sqft-price-result-label {
+  font-size: 10px;
+  color: #1f2937;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.sqft-price-result-value {
+  font-size: 16px;
+  color: var(--orange);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  text-shadow: 0 0 6px var(--orange-glow);
+}
+
+.m3-result-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.m3-section-title {
+  font-size: 9px;
+  color: #1f2937;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-transform: uppercase;
+}
+
+.m3-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.m3-result-row:last-of-type {
+  border-bottom: none;
+}
+
+.m3-result-label {
+  font-size: 12px;
+  color: #1f2937;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  text-transform: uppercase;
+}
+
+.m3-result-value {
+  font-size: 20px;
+  color: var(--orange);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  text-shadow: 0 0 6px var(--orange-glow);
+}
+
+.m3-exchange-rate {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Share Tech Mono', monospace;
+  text-align: center;
+}
+
+.m3-rate-display {
+  color: var(--lcd-text);
+  font-weight: 700;
+}
+
+.m3-rate-updated {
+  display: block;
+  margin-top: 4px;
+  font-size: 8px;
+  color: rgba(255,255,255,0.3);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-label {
+  font-size: 11px;
+  color: #1f2937;
+  flex: 1;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.input-field {
+  flex: 0 0 120px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 17px;
+  color: var(--lcd-text);
+  text-align: right;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.5),
+    0 0 8px var(--orange-glow);
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.preset-btn {
+  padding: 10px 6px !important;
+  font-size: 10px !important;
+}
+
+.calc-btn {
+  padding: 13px;
+  min-height: 44px;
+  background: var(--btn-bg);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(0,0,0,0.15);
+  text-transform: uppercase;
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calc-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.calc-btn:active::before {
+  opacity: 1;
+  transition: opacity 0.05s ease-out;
+}
+
+.calc-btn:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 
+    0 1px 3px rgba(0,0,0,0.4),
+    inset 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.calc-btn:hover {
+  border-color: rgba(255,255,255,0.25);
+}
+
+.calc-btn.primary {
+  background: linear-gradient(180deg, #ff8359 0%, var(--orange) 100%);
+  color: #fff;
+  border-color: rgba(255,107,53,0.5);
+  box-shadow: 
+    0 0 12px var(--orange-glow),
+    0 3px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.calc-btn.primary::before {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 70%);
+}
+
+.calc-btn.primary:active {
+  box-shadow: 
+    0 0 16px var(--orange-glow),
+    0 1px 3px rgba(0,0,0,0.4),
+    inset 0 1px 4px rgba(0,0,0,0.3);
+  transform: translateY(2px) scale(0.98);
+}
+
+.result-section {
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.result-label {
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 8px;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.result-value {
+  font-size: 22px;
+  color: var(--orange);
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 10px var(--orange-glow);
+  letter-spacing: 1px;
+}
+
+.footer {
+  display: none;
+}
+
+@media (max-width: 380px) {
+  .calculator-body {
+    padding: 16px 18px 20px;
+  }
+  
+  .lcd-display {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .input-panel {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .button-grid {
+    gap: 8px;
+  }
+  
+  .calc-btn {
+    padding: 12px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding: 10px;
+  }
+  
+  .calculator-body {
+    padding: 16px 18px 20px;
+  }
+  
+  .lcd-display {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .input-panel {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .button-grid {
+    gap: 8px;
+  }
+  
+  .calc-btn {
+    padding: 12px;
+  }
+}
 </style>
 </head>
 <body>
-<div id="gc">
-<div id="gtitle"><span class="gname">LOG CHOP</span><span class="glvl" id="hLvl">LEVEL 1</span></div>
-<div id="hud">
-  <span>LOGS:<span id="hS">0</span></span>
-  <span class="hc">COINS:<span id="hC">15</span></span>
-  <span class="ha">AXE:<span id="hA">Starter</span></span>
-  <span class="hl">ENERGY:<span id="hCo">None</span></span>
-  <span class="hp">STRENGTH:<span id="hJ">None</span></span>
-  <span id="hShWrap" style="display:none">SHEDS:<span id="hSh">0</span>/5</span>
-  <span id="hEmpWrap" style="display:none">HAND:<span id="hEmp">—</span></span>
+
+<div class="calculator-body">
+  <div class="brand">Lumber Number 1.2</div>
+  <div class="tagline">Lineal, Board, and Square Foot Conversion Calculator</div>
+  
+  <div class="mode-selector">
+    <button class="mode-btn active" data-mode="lf-to-mbf">LF → MBF</button>
+    <button class="mode-btn" data-mode="mbf-to-lf">MBF → LF</button>
+    <button class="mode-btn" data-mode="pricing">LF & MBF Pricing</button>
+    <button class="mode-btn" data-mode="sq-ft">SQ FT & MBF</button>
+    <button class="mode-btn" data-mode="mbf-m3">MBF-M<sup>3</sup></button>
+  </div>
+  
+  <div class="lcd-display">
+    <div class="lcd-label" id="displayLabel">LINEAL FEET → MBF</div>
+    <div class="lcd-value large" id="displayValue">
+      <span id="displayNumber">0.000</span>
+      <span class="lcd-unit" id="displayUnit">MBF</span>
+    </div>
+  </div>
+  
+  <!-- LF to MBF Panel -->
+  <div class="input-panel active" id="panel-lf-to-mbf">
+    <div class="input-row">
+      <span class="input-label">Lineal Feet</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-input" value="1000" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="lf-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- MBF to LF Panel -->
+  <div class="input-panel" id="panel-mbf-to-lf">
+    <div class="input-row">
+      <span class="input-label">MBF</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-input" value="0.5" step="0.0001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="mbf-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- Square Feet Panel -->
+  <div class="input-panel" id="panel-sq-ft">
+    <div class="price-toggle-container">
+      <span class="toggle-label">MBF</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="sqft-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">SQ FT</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="sqft-input-label">Square Feet</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-input" value="1000" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Net Face Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-face-width" value="3.25" step="0.001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Nominal Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-nominal-width" value="4" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-thick" value="1" step="0.01">
+    </div>
+    
+    <div class="sqft-presets">
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.25, 3)">2-1/4" (1x3)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(2.125, 3)">2-1/8" (1x3)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.25, 4)">3-1/4" (1x4)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(3.125, 4)">3-1/8" (1x4)</button>
+      <button class="calc-btn preset-btn sqft-preset-btn" onclick="setSqFtPreset(5.125, 6)">5-1/8" (1x6)</button>
+    </div>
+    
+    <div class="sqft-pricing-section">
+      <div class="sqft-pricing-label">PRICING CONVERSION</div>
+      <div class="price-toggle-container">
+        <span class="toggle-label">$/MBF</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sqft-price-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">$/SQ FT</span>
+      </div>
+      <div class="input-row">
+        <span class="input-label" id="sqft-price-label">Price per SQ FT ($)</span>
+        <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="sqft-price-input" value="4.31" step="0.0001">
+      </div>
+      <div class="sqft-price-result">
+        <span class="sqft-price-result-label" id="sqft-price-result-label">$/MBF:</span>
+        <span class="sqft-price-result-value" id="sqft-price-result-value">—</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pricing Panel -->
+  <div class="input-panel" id="panel-pricing">
+    <div class="price-toggle-container">
+      <span class="toggle-label">MBF</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="price-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">LF</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="price-input-label">Price per LF ($)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-input" value="1.50" step="0.0001">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Thickness (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-thick" value="1" step="0.01">
+    </div>
+    <div class="input-row">
+      <span class="input-label">Width (in)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="price-width" value="6" step="0.01">
+    </div>
+  </div>
+  
+  <!-- MBF to M³ Panel -->
+  <div class="input-panel" id="panel-mbf-m3">
+    <div class="price-toggle-container">
+      <span class="toggle-label">M<sup>3</sup></span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="m3-unit-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">MBF</span>
+    </div>
+    <div class="input-row">
+      <span class="input-label" id="m3-input-label">Price per MBF ($)</span>
+      <input type="tel" inputmode="decimal" enterkeyhint="done" class="input-field" id="m3-price-input" value="3500" step="1">
+    </div>
+    
+    <div class="m3-result-section">
+      <div class="m3-section-title">ADDITIONAL INFO</div>
+      <div class="m3-result-row">
+        <span class="m3-result-label" id="m3-label-usd">Price per m³ (USD):</span>
+        <span class="m3-result-value" id="m3-price-usd">—</span>
+      </div>
+      <div class="m3-result-row">
+        <span class="m3-result-label" id="m3-label-eur">Price per m³ (EUR):</span>
+        <span class="m3-result-value" id="m3-price-eur">—</span>
+      </div>
+      <div class="m3-exchange-rate">
+        Exchange rate: <span class="m3-rate-display" id="m3-rate-display">Loading...</span>
+        <span class="m3-rate-updated" id="m3-rate-time"></span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="button-grid">
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 4)">1×4</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 6)">1×6</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 8)">1×8</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 10)">1×10</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(1, 12)">1×12</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 4)">2×4</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 6)">2×6</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 8)">2×8</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 10)">2×10</button>
+    <button class="calc-btn preset-btn" onclick="setPreset(2, 12)">2×12</button>
+  </div>
+  
+  <div class="result-section" id="resultSection" style="display: none;">
+    <div class="result-label" id="resultLabel">RESULT</div>
+    <div class="result-value" id="resultValue">—</div>
+  </div>
 </div>
-<canvas id="game"></canvas>
-<div id="ins">
-  <strong>CLICK</strong> walk | <strong>SPACE</strong> chop | <strong>M</strong> sell | <strong>U</strong> axe | <strong>C</strong> coffee | <strong>J</strong> jerky | <strong>S</strong> stack(30+)<span id="insShed"></span><span id="insEmp"></span>
-</div>
-<div id="tc">
-  <button class="tb" onclick="doSell()">SELL</button>
-  <button class="tb" onclick="doStack()">STACK</button>
-  <button class="tb" onclick="upgradeAxe()">AXE</button>
-  <button class="tb" onclick="buyCoffee()">COFFEE</button>
-  <button class="tb" onclick="buyJerky()">JERKY</button>
-  <button class="tb" id="shedBtn" onclick="buyShed()" style="display:none">SHED</button>
-  <button class="tb" id="empBtn" onclick="hireOrUpgradeEmp()" style="display:none">HAND</button>
-  <button class="tb tc2" onclick="doChop()">CHOP</button>
-</div>
+
+<div class="footer">
+  MBF = 1,000 Board Feet
 </div>
 
 <script>
-const CV=document.getElementById('game'),X=CV.getContext('2d');
-const GW=960,GH=560;CV.width=GW;CV.height=GH;
+const MBF_TO_M3 = 2.35973722; // 1 MBF = 2.3597 cubic meters
+let usdToEurRate = 0.846; // Default, updated from API
+let currentMode = 'lf-to-mbf';
 
-function resize(){
-  const s=Math.min(innerWidth/GW,innerHeight/GH);
-  CV.style.width=Math.floor(GW*s)+'px';
-  CV.style.height=Math.floor(GH*s)+'px';
-}
-addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));resize();
-function s2g(sx,sy){const r=CV.getBoundingClientRect();return{x:(sx-r.left)/(r.width/GW),y:(sy-r.top)/(r.height/GH)};}
-
-// ═══ SPECIES (weighted spawn: fir>alder>maple>oak>madrone) ═══
-const SPECIES=[
-  {id:'fir',name:'Douglas Fir',abbr:'D.FIR',logColor:'#a0522d',ringColor:'#7a3e22',
-   baseChops:4,btu:20.5,coinsPer:2,dryTime:120,seasonMo:'6-9',color:'#8B6914',weight:35},
-  {id:'alder',name:'Red Alder',abbr:'ALDER',logColor:'#c4a87a',ringColor:'#b8a88a',
-   baseChops:3,btu:19.5,coinsPer:2.5,dryTime:180,seasonMo:'4-9',color:'#d4b890',weight:25},
-  {id:'maple',name:'Bigleaf Maple',abbr:'MAPLE',logColor:'#c89050',ringColor:'#a07030',
-   baseChops:5,btu:22.7,coinsPer:3,dryTime:240,seasonMo:'6-8',color:'#b87830',weight:20},
-  {id:'oak',name:'Oregon White Oak',abbr:'OAK',logColor:'#8B7355',ringColor:'#6b5535',
-   baseChops:7,btu:28.0,coinsPer:4,dryTime:360,seasonMo:'9-12+',color:'#7a6040',weight:12},
-  {id:'madrone',name:'Pacific Madrone',abbr:'MADRONE',logColor:'#c06040',ringColor:'#a04830',
-   baseChops:9,btu:30.9,coinsPer:5,dryTime:480,seasonMo:'9-12',color:'#d05a3a',weight:8},
-];
-const TOTAL_WEIGHT=SPECIES.reduce((a,s)=>a+s.weight,0);
-function pickSpecies(){
-  let r=Math.random()*TOTAL_WEIGHT;
-  for(const sp of SPECIES){r-=sp.weight;if(r<=0)return sp;}
-  return SPECIES[0];
-}
-
-// ═══ UPGRADES (rebalanced - slower snowball) ═══
-const AXES=[
-  {name:'Starter',color:'#a0a0a8',shine:'#d0d0d8',multi:1,cost:0},
-  {name:'Steel',color:'#b0b8c0',shine:'#e0e8f0',multi:0.8,cost:75},
-  {name:'Hardened',color:'#7ec8e3',shine:'#b0e8ff',multi:0.65,cost:200},
-  {name:'Mythril',color:'#90e090',shine:'#c0ffc0',multi:0.5,cost:500},
-  {name:'Golden',color:'#ffd700',shine:'#fff4a0',multi:0.35,cost:1200},
-];
-const COFFEES=[
-  {name:'None',speed:1.8,cost:0},
-  {name:'Drip Coffee',speed:2.2,cost:15},
-  {name:'Pour Over',speed:2.6,cost:45},
-  {name:'French Press',speed:3.0,cost:100},
-  {name:'Moka Pot',speed:3.4,cost:200},
-  {name:'Espresso',speed:3.9,cost:400},
-  {name:'Cold Brew',speed:4.4,cost:750},
-  {name:'Dbl Espresso',speed:5.0,cost:1200},
-  {name:'Quad Espresso',speed:5.8,cost:2000},
-];
-const JERKYS=[
-  {name:'None',cs:0.020,cost:0},
-  {name:'Beef Jerky',cs:0.023,cost:20},
-  {name:'Elk Jerky',cs:0.027,cost:50},
-  {name:'Peppered',cs:0.031,cost:120},
-  {name:'Smoked',cs:0.035,cost:250},
-  {name:'Teriyaki',cs:0.040,cost:500},
-  {name:'Biltong',cs:0.045,cost:900},
-  {name:'Wagyu Jerky',cs:0.051,cost:1500},
-  {name:'Pemmican',cs:0.058,cost:2500},
-];
-let axeLv=0,coffeeLv=0,jerkyLv=0;
-
-// ═══ DRYING SHEDS ═══
-// Each shed: 50% faster drying for that species
-const SHEDS=[
-  {speciesId:'fir',name:'Fir Shed',cost:400},
-  {speciesId:'alder',name:'Alder Shed',cost:700},
-  {speciesId:'maple',name:'Maple Shed',cost:1100},
-  {speciesId:'oak',name:'Oak Shed',cost:1800},
-  {speciesId:'madrone',name:'Madrone Shed',cost:2800},
-];
-let shedsBought={};
-SPECIES.forEach(s=>shedsBought[s.id]=false);
-function hasShed(id){return shedsBought[id]===true;}
-function allShedsBought(){return SPECIES.every(s=>shedsBought[s.id]);}
-
-// ═══ DRY KILNS (per species, unlock after all sheds) ═══
-let kilnsBought={};
-SPECIES.forEach(s=>kilnsBought[s.id]=false);
-const KILNS=[
-  {speciesId:'fir',name:'Fir Kiln',cost:800},
-  {speciesId:'alder',name:'Alder Kiln',cost:1200},
-  {speciesId:'maple',name:'Maple Kiln',cost:1800},
-  {speciesId:'oak',name:'Oak Kiln',cost:2500},
-  {speciesId:'madrone',name:'Madrone Kiln',cost:3500},
-];
-function hasKiln(id){return kilnsBought[id]===true;}
-function allKilnsBought(){return SPECIES.every(s=>kilnsBought[s.id]);}
-function getNextKiln(){return KILNS.find(k=>!kilnsBought[k.speciesId]);}
-function kilnCount(){return Object.values(kilnsBought).filter(v=>v).length;}
-
-function maxStacksFor(id){return hasKiln(id)?10:5;}
-function dryTimeFor(sp){
-  let t=sp.dryTime;
-  if(hasShed(sp.id))t*=0.5;
-  if(hasKiln(sp.id))t*=0.5;
-  return t;
-}
-function shedCount(){return Object.values(shedsBought).filter(v=>v).length;}
-
-// ═══ EMPLOYEE ═══
-const EMP_PERKS=[
-  {name:'Hire Hand',spdMul:0.5,cost:2000},
-  {name:'Novice',spdMul:0.65,cost:400},
-  {name:'Rookie',spdMul:0.8,cost:800},
-  {name:'Skilled',spdMul:1.0,cost:1500},
-  {name:'Veteran',spdMul:1.25,cost:2500},
-  {name:'Expert',spdMul:1.5,cost:4000},
-  {name:'Foreman',spdMul:1.8,cost:6000},
-];
-const EMP_AXES=[
-  {name:'No Axe',multi:0,cost:0},
-  {name:'Starter Axe',multi:1,cost:250},
-  {name:'Steel Axe',multi:0.8,cost:600},
-  {name:'Hardened Axe',multi:0.65,cost:1200},
-  {name:'Mythril Axe',multi:0.5,cost:2500},
-];
-let empHired=false,empPerkLv=0,empAxeLv=0;
-const E={x:500,y:380,tx:500,f:-1,wt:0,walk:false,carry:false,cc:0,
-  state:'idle',timer:0,target:null,phase:0,chop:false,cp:0,hasAxe:false};
-function empSpd(){return COFFEES[coffeeLv].speed*EMP_PERKS[empPerkLv].spdMul;}
-function empBusy(){return E.state!=='idle';}
-function nextEmpPerk(){return empPerkLv<EMP_PERKS.length-1?EMP_PERKS[empPerkLv+1]:null;}
-function nextEmpAxe(){return empAxeLv<EMP_AXES.length-1?EMP_AXES[empAxeLv+1]:null;}
-function empMaxChops(sp){return empAxeLv>0?Math.max(1,Math.round(sp.baseChops*EMP_AXES[empAxeLv].multi)):0;}
-
-// ═══ SAVE / LOAD ═══
-function saveGame(){
-  const data={
-    v:4,logsChopped,coins,axeLv,coffeeLv,jerkyLv,
-    shedsBought,kilnsBought,empHired,empPerkLv,empAxeLv,empX:E.x,
-    freshWood,
-    dryingStacks:dryingStacks.map(s=>({speciesId:s.speciesId,pieces:s.pieces,dryProgress:s.dryProgress,dryTime:s.dryTime,x:s.x,y:s.y,slot:s.slot,done:s.done})),
-    goldenShimmer,showIntro
-  };
-  try{localStorage.setItem('logchop_save',JSON.stringify(data));}catch(e){}
-}
-function loadGame(){
-  try{
-    const raw=localStorage.getItem('logchop_save');
-    if(!raw)return false;
-    const d=JSON.parse(raw);
-    if(!d.v||d.v<4)return false;
-    logsChopped=d.logsChopped||0;coins=d.coins||15;
-    axeLv=d.axeLv||0;coffeeLv=d.coffeeLv||0;jerkyLv=d.jerkyLv||0;
-    if(d.shedsBought)Object.keys(d.shedsBought).forEach(k=>shedsBought[k]=d.shedsBought[k]);
-    if(d.kilnsBought)Object.keys(d.kilnsBought).forEach(k=>kilnsBought[k]=d.kilnsBought[k]);
-    empHired=d.empHired||false;empPerkLv=d.empPerkLv||0;empAxeLv=d.empAxeLv||0;
-    if(d.empX){E.x=d.empX;E.tx=d.empX;}
-    E.hasAxe=empAxeLv>0;
-    if(d.freshWood)Object.keys(d.freshWood).forEach(k=>freshWood[k]=d.freshWood[k]);
-    if(d.dryingStacks)dryingStacks=d.dryingStacks;
-    goldenShimmer=d.goldenShimmer||0;
-    showIntro=d.showIntro!==undefined?d.showIntro:false;
-    return true;
-  }catch(e){return false;}
-}
-setInterval(saveGame,5000);
-
-
-// ═══ STATE ═══
-let logsChopped=0,coins=15,gt=0,marketMsg=null,cutscene=null;
-let goldenShimmer=0;
-let showIntro=true; // Show "press space" intro
-
-let freshWood={};
-SPECIES.forEach(s=>freshWood[s.id]=0);
-// Tutorial: start with 30 fir on the ground ready to stack
-freshWood['fir']=30;
-
-let dryingStacks=[];
-const STACK_SIZE=30;
-
-// Tutorial: start with 1 drying stack of each non-fir species at various progress
-function initTutorialStacks(){
-  for(let si=1;si<SPECIES.length;si++){
-    const sp=SPECIES[si];
-    const pos=getStackPos(si,0);
-    const prog=[0,0.15,0.05,0.02][si-1]||0;
-    dryingStacks.push({speciesId:sp.id,pieces:STACK_SIZE,dryProgress:prog,dryTime:dryTimeFor(sp),x:pos.x,y:pos.y,slot:0,done:false});
-  }
-}
-
-// ═══ JACK ═══
-const J={x:400,y:380,tx:400,f:1,wt:0,walk:false,chop:false,cp:0,
-  carry:false,cc:0,hasAxe:true,jit:0,jitT:0,drink:false,eat:false,flex:false,flexT:0};
-function spd(){return COFFEES[coffeeLv].speed;}
-function cspd(){return JERKYS[jerkyLv].cs;}
-
-// ═══ LOGS ═══
-let logs=[],splitAnims=[],particles=[],floatMsgs=[],bsSparks=[];
-const BLOCK_X=[140,280,420,560,700];
-
-function maxChops(sp){return Math.max(1,Math.round(sp.baseChops*AXES[axeLv].multi));}
-
-function spawnLog(){
-  const avail=BLOCK_X.filter(px=>!logs.some(l=>!l.done&&Math.abs(l.x-px)<60));
-  if(!avail.length)return;
-  const x=avail[Math.floor(Math.random()*avail.length)];
-  const sp=pickSpecies();
-  logs.push({x,y:410,sp,done:false,prog:0,max:maxChops(sp),diam:28+Math.random()*18});
-}
-setInterval(()=>{logs=logs.filter(l=>!l.done);},5000);
-
-function isBusy(){return cutscene||J.chop;}
-function startCS(t,d){cutscene={type:t,phase:0,timer:0,data:d||{}};}
-
-// ═══ DRYING STACK LAYOUT ═══
-const STACK_BASE_Y=305;
-function stackSpc(id){return hasKiln(id)?16:34;}
-function getStackPos(si,slot){const sp=SPECIES[si];return{x:55+si*175+slot*stackSpc(sp.id),y:STACK_BASE_Y};}
-
-function addDryingStack(speciesId){
-  const si=SPECIES.findIndex(s=>s.id===speciesId);
-  const sp=SPECIES[si];
-  const existing=dryingStacks.filter(s=>s.speciesId===speciesId);
-  if(existing.length>=maxStacksFor(speciesId))return false;
-  const pos=getStackPos(si,existing.length);
-  dryingStacks.push({speciesId,pieces:STACK_SIZE,dryProgress:0,dryTime:dryTimeFor(sp),x:pos.x,y:pos.y,slot:existing.length,done:false});
-  freshWood[speciesId]-=STACK_SIZE;
-  return true;
-}
-function getReadyStack(){return dryingStacks.find(s=>s.done);}
-
-// Load saved game or init tutorial
-if(!loadGame()){
-  initTutorialStacks();
-}
-for(let i=0;i<5;i++){if(logs.length<5)spawnLog();}
-
-// ═══ FRESH PILE POSITIONS ═══
-const PILE_X=[96,288,480,672,864];
-
-// ═══ HUD REFS ═══
-const hC=document.getElementById('hC'),hA=document.getElementById('hA');
-const hCo=document.getElementById('hCo'),hJ=document.getElementById('hJ');
-const hS=document.getElementById('hS'),hSh=document.getElementById('hSh');
-
-function updHud(){hC.textContent=coins;hA.textContent=AXES[axeLv].name;
-  hCo.textContent=COFFEES[coffeeLv].name;hJ.textContent=JERKYS[jerkyLv].name;
-  hS.textContent=logsChopped;
-  hSh.textContent=allShedsBought()?(kilnCount()+'/5 KILNS'):shedCount()+'/5';
-  const sb=document.getElementById('shedBtn');
-  const eb=document.getElementById('empBtn');
-  const lv=document.getElementById('hLvl');
-  if(axeLv>=AXES.length-1){
-    document.getElementById('hShWrap').style.display='';sb.style.display='';
-    document.getElementById('hEmpWrap').style.display='';eb.style.display='';
-    lv.textContent='LEVEL 2';lv.style.color='#ffd700';
-    document.getElementById('insShed').innerHTML=' | <strong>B</strong> shed';
-    document.getElementById('insEmp').innerHTML=' | <strong>H</strong> hand | <strong>G</strong> hand axe';
-    let empStatus=empHired?EMP_PERKS[empPerkLv].name:'—';
-    if(empHired&&empAxeLv>0)empStatus+=' +'+EMP_AXES[empAxeLv].name;
-    document.getElementById('hEmp').textContent=empStatus;
-  }}
-updHud(); // Init HUD after load
-
-// ═══ DRAWING ═══
-function gf(s){return s+'px "Press Start 2P"';}
-function oText(t,x,y,fill,sz,al){
-  X.font=gf(sz);X.textAlign=al||'center';
-  X.strokeStyle='rgba(0,0,0,0.7)';X.lineWidth=3;X.lineJoin='round';
-  X.strokeText(t,x,y);X.fillStyle=fill;X.fillText(t,x,y);
-}
-
-function drawSky(){const g=X.createLinearGradient(0,0,0,310);g.addColorStop(0,'#5b8fb9');g.addColorStop(1,'#87ceeb');X.fillStyle=g;X.fillRect(0,0,GW,310);X.fillStyle='#fff4a0';X.beginPath();X.arc(870,55,25,0,Math.PI*2);X.fill();X.fillStyle='#ffd700';X.beginPath();X.arc(870,55,20,0,Math.PI*2);X.fill();}
-
-function drawClouds(t){X.fillStyle='rgba(255,255,255,0.7)';[[100,55,55],[350,35,42],[600,60,50],[800,45,38]].forEach(([bx,by,sz])=>{const cx=(bx+t*0.008)%1000-30;X.beginPath();X.arc(cx,by,sz*0.6,0,Math.PI*2);X.arc(cx+sz*0.4,by-sz*0.2,sz*0.5,0,Math.PI*2);X.arc(cx+sz*0.8,by,sz*0.4,0,Math.PI*2);X.fill();});}
-
-function drawMountains(){X.fillStyle='#3a6b35';X.beginPath();X.moveTo(0,290);X.lineTo(120,140);X.lineTo(260,270);X.lineTo(400,130);X.lineTo(540,275);X.lineTo(680,150);X.lineTo(820,260);X.lineTo(920,165);X.lineTo(GW,280);X.lineTo(GW,290);X.fill();X.fillStyle='#2d5a27';X.beginPath();X.moveTo(0,300);X.lineTo(80,210);X.lineTo(220,290);X.lineTo(440,200);X.lineTo(600,290);X.lineTo(760,210);X.lineTo(900,285);X.lineTo(GW,240);X.lineTo(GW,300);X.fill();}
-
-function drawGround(){const g=X.createLinearGradient(0,300,0,GH);g.addColorStop(0,'#5a8f3c');g.addColorStop(0.12,'#4a7a3b');g.addColorStop(1,'#3d6630');X.fillStyle=g;X.fillRect(0,300,GW,GH-300);X.fillStyle='#6b5030';X.beginPath();X.ellipse(420,430,320,40,0,0,Math.PI*2);X.fill();X.fillStyle='#7a5c38';X.beginPath();X.ellipse(420,428,310,35,0,0,Math.PI*2);X.fill();}
-
-function drawBgTrees(){[[15,270,0.65],[55,258,0.8],[850,262,0.75],[910,250,0.9],[940,272,0.6]].forEach(([tx,ty,s])=>{X.fillStyle='#4a2e14';X.fillRect(tx-4*s,ty,8*s,38*s);X.fillStyle='#1e4a14';X.beginPath();X.moveTo(tx,ty-38*s);X.lineTo(tx-22*s,ty+8);X.lineTo(tx+22*s,ty+8);X.fill();X.beginPath();X.moveTo(tx,ty-22*s);X.lineTo(tx-18*s,ty+18);X.lineTo(tx+18*s,ty+18);X.fill();});}
-
-function drawBlock(x,y){X.fillStyle='#8B7355';X.fillRect(x-18,y-20,36,22);X.fillStyle='#a08060';X.beginPath();X.ellipse(x,y-20,18,7,0,0,Math.PI*2);X.fill();X.strokeStyle='#6b5535';X.lineWidth=1;X.beginPath();X.ellipse(x,y-20,12,4.5,0,0,Math.PI*2);X.stroke();}
-
-function drawLog(log){
-  if(log.done)return;
-  const x=log.x,y=log.y,r=log.diam/2,sp=log.sp;
-  // Log sits ON the block - block top is at y-20 when drawn at y
-  // Log barrel bottom aligns with block top
-  const blockTop=420-20; // block drawn at 420, top face at y-20 = 400
-  const logBot=blockTop-3; // sit just on top
-  const logH=r*1.1; // barrel height
-  const logTop=logBot-logH;
-  const faceY=logTop; // top ellipse center
-
-  // Barrel (sides)
-  X.fillStyle=sp.logColor;X.fillRect(x-r,logTop,r*2,logH);
-  // Top face (end grain)
-  X.fillStyle=sp.ringColor;X.beginPath();X.ellipse(x,faceY,r,r*0.4,0,0,Math.PI*2);X.fill();
-  // Ring lines
-  X.strokeStyle=sp.logColor;X.lineWidth=1;
-  for(let i=1;i<=3;i++){X.beginPath();X.ellipse(x,faceY,r*(i/4),r*0.4*(i/4),0,0,Math.PI*2);X.stroke();}
-  // Outer rim
-  X.strokeStyle='#3a2510';X.lineWidth=2;X.beginPath();X.ellipse(x,faceY,r,r*0.4,0,0,Math.PI*2);X.stroke();
-
-  // Pie-wedge split marks on top face
-  if(log.prog>0){
-    const slices=log.prog;
-    const angleStep=Math.PI*2/log.max;
-    X.save();
-    // Clip to log face ellipse
-    X.beginPath();X.ellipse(x,faceY,r-1,r*0.4-1,0,0,Math.PI*2);X.clip();
-    for(let i=0;i<slices;i++){
-      const a1=angleStep*i-Math.PI/2;
-      const a2=a1+angleStep*0.15; // thin wedge
-      // Draw split line from center outward
-      X.strokeStyle='#ffe0a0';X.lineWidth=2;
-      X.beginPath();
-      X.moveTo(x,faceY);
-      X.lineTo(x+Math.cos(a1)*r*1.2,faceY+Math.sin(a1)*r*0.5);
-      X.stroke();
-      // Slight gap/shadow along split
-      X.strokeStyle='rgba(60,30,10,0.5)';X.lineWidth=1;
-      X.beginPath();
-      X.moveTo(x,faceY);
-      X.lineTo(x+Math.cos(a1+0.05)*r*1.2,faceY+Math.sin(a1+0.05)*r*0.5);
-      X.stroke();
-    }
-    X.restore();
-  }
-
-  // Progress bar
-  const bW=r*2,bH=5,bX=x-r,bY=faceY-r*0.4-18;
-  X.fillStyle='rgba(0,0,0,0.4)';X.fillRect(bX,bY,bW,bH);
-  const pct=log.prog/log.max;
-  X.fillStyle=pct>0.7?'#ff6644':pct>0.4?'#ffaa44':'#88cc44';
-  X.fillRect(bX,bY,bW*pct,bH);
-  X.strokeStyle='rgba(255,255,255,0.3)';X.lineWidth=1;X.strokeRect(bX,bY,bW,bH);
-  oText((log.max-log.prog)+'',x,bY-3,'rgba(255,255,255,0.9)',8);
-  oText(sp.abbr,x,bY-13,sp.color,7);
-}
-
-// ═══ FRESH PILES ═══
-function drawFreshPiles(){
-  SPECIES.forEach((sp,si)=>{
-    const count=freshWood[sp.id];if(!count)return;
-    const bx=PILE_X[si],by=500;
-    for(let i=0;i<Math.min(count,30);i++){
-      const r=Math.floor(i/6),c=i%6;
-      const px=bx-16+c*6+(r%2)*3,py=by-r*5;
-      X.fillStyle=sp.logColor;X.beginPath();
-      X.moveTo(px,py+4);X.lineTo(px,py);X.quadraticCurveTo(px+2.5,py-1.5,px+5,py);
-      X.lineTo(px+5,py+4);X.closePath();X.fill();
-      X.fillStyle=sp.color;X.fillRect(px+1,py+1,3,3);
-      X.strokeStyle=sp.ringColor;X.lineWidth=0.3;X.globalAlpha=0.4;
-      X.beginPath();X.arc(px+2.5,py+4,2,Math.PI*1.2,Math.PI*1.8);X.stroke();X.globalAlpha=1;
-    }
-    oText(count+'',bx,by+12,sp.color,8);
-    oText(sp.abbr,bx,by+22,'#e8d5b0',7);
-    if(count>=STACK_SIZE&&!cutscene){
-      const stk=dryingStacks.filter(s=>s.speciesId===sp.id);
-      if(stk.length<maxStacksFor(sp.id)){
-        const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;
-        oText('PRESS S',bx,by+34,'#90ff90',8);X.globalAlpha=1;
+// Mode switching
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const previousMode = currentMode;
+    currentMode = btn.dataset.mode;
+    
+    // Carry over thickness and width values when switching to pricing
+    if (currentMode === 'pricing') {
+      let sourceThick, sourceWidth;
+      if (previousMode === 'lf-to-mbf') {
+        sourceThick = document.getElementById('lf-thick').value;
+        sourceWidth = document.getElementById('lf-width').value;
+      } else if (previousMode === 'mbf-to-lf') {
+        sourceThick = document.getElementById('mbf-thick').value;
+        sourceWidth = document.getElementById('mbf-width').value;
+      }
+      if (sourceThick && sourceWidth) {
+        document.getElementById('price-thick').value = sourceThick;
+        document.getElementById('price-width').value = sourceWidth;
       }
     }
+    // Carry pricing values back when switching from pricing
+    else if (previousMode === 'pricing') {
+      const priceThick = document.getElementById('price-thick').value;
+      const priceWidth = document.getElementById('price-width').value;
+      if (currentMode === 'lf-to-mbf') {
+        document.getElementById('lf-thick').value = priceThick;
+        document.getElementById('lf-width').value = priceWidth;
+      } else if (currentMode === 'mbf-to-lf') {
+        document.getElementById('mbf-thick').value = priceThick;
+        document.getElementById('mbf-width').value = priceWidth;
+      }
+    }
+    
+    document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(`panel-${currentMode}`).classList.add('active');
+    
+    // Show/hide appropriate preset buttons
+    const mainButtonGrid = document.querySelector('.button-grid');
+    if (currentMode === 'sq-ft' || currentMode === 'mbf-m3') {
+      mainButtonGrid.style.display = 'none';
+    } else {
+      mainButtonGrid.style.display = 'grid';
+    }
+    
+    // Hide LCD label for MBF-M³ mode
+    const lcdLabel = document.getElementById('displayLabel');
+    if (currentMode === 'mbf-m3') {
+      lcdLabel.style.display = 'none';
+    } else {
+      lcdLabel.style.display = 'block';
+    }
+    
+    // Update display label
+    const labels = {
+      'lf-to-mbf': 'LINEAL FEET → MBF',
+      'mbf-to-lf': 'MBF → LINEAL FEET',
+      'pricing': 'LF & MBF PRICING',
+      'mbf-m3': 'MBF → CUBIC METER',
+      'sq-ft': 'SQUARE FEET ↔ MBF'
+    };
+    document.getElementById('displayLabel').textContent = labels[currentMode];
+    
+    // Reset display
+    document.getElementById('displayNumber').textContent = '0.000';
+    document.getElementById('displayUnit').textContent = currentMode === 'lf-to-mbf' ? 'MBF' : 'LF';
+    document.getElementById('resultSection').style.display = 'none';
+    
+    calculate();
   });
-}
-
-// ═══ DRYING STACKS ═══
-// Draw permanent sheds for purchased species (independent of stacks)
-function drawSheds(){
-  SPECIES.forEach((sp,si)=>{
-    if(!hasShed(sp.id))return;
-    const pos0=getStackPos(si,0);
-    const maxSlots=maxStacksFor(sp.id);
-    const posLast=getStackPos(si,maxSlots-1);
-    const y=pos0.y;
-    const pw=7,ph=6,cols=4,rows=5,sW=cols*pw;
-    const leftX=pos0.x-sW/2-4;
-    const rightX=posLast.x+sW/2+4;
-    const cx=(leftX+rightX)/2;
-    const shedW=rightX-leftX;
-    const shedTop=y-rows*ph-6;
-    X.fillStyle='#5c3a1e';
-    X.fillRect(leftX,y-rows*ph,3,rows*ph+2);
-    X.fillRect(rightX-3,y-rows*ph,3,rows*ph+2);
-    X.fillStyle='#6b4820';X.fillRect(leftX,shedTop,shedW,3);
-    X.fillStyle='#8B6914';
-    X.beginPath();X.moveTo(leftX-2,shedTop);X.lineTo(cx,shedTop-10);X.lineTo(rightX+2,shedTop);X.closePath();X.fill();
-    X.strokeStyle='#5c3a1e';X.lineWidth=1;
-    X.beginPath();X.moveTo(leftX-2,shedTop);X.lineTo(cx,shedTop-10);X.lineTo(rightX+2,shedTop);X.stroke();
-    oText(sp.abbr+(hasKiln(sp.id)?' KILN':' SHED'),cx,y+12,'#8B6914',5);
-  });
-}
-
-function drawDryingStacks(){
-  dryingStacks.forEach(st=>{
-    const x=st.x,y=st.y;
-    const sp=SPECIES.find(s=>s.id===st.speciesId);
-    const dm=st.done?1:0.75;
-    const pw=7,ph=6,cols=4,rows=5,sW=cols*pw;
-    for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){
-      const px=x-sW/2+c*pw,py=y-r*ph;
-      X.fillStyle=sp.logColor;X.globalAlpha=dm;
-      X.beginPath();X.moveTo(px,py+ph);X.lineTo(px,py);X.quadraticCurveTo(px+pw/2,py-2,px+pw,py);X.lineTo(px+pw,py+ph);X.closePath();X.fill();
-      X.fillStyle=sp.color;X.fillRect(px+1,py+1,pw-2,ph-1);
-      X.strokeStyle=sp.ringColor;X.lineWidth=0.5;X.globalAlpha=dm*0.5;
-      X.beginPath();X.arc(px+pw/2,py+ph+2,4,Math.PI*1.15,Math.PI*1.85);X.stroke();
-      X.globalAlpha=1;
-    }}
-    // Progress bar
-    const bw=sW+4,bh=4,bx2=x-sW/2-2,by2=y-rows*ph-10;
-    X.fillStyle='rgba(0,0,0,0.5)';X.fillRect(bx2,by2,bw,bh);
-    X.fillStyle=st.done?'#ffd700':'#66aaff';
-    X.fillRect(bx2,by2,bw*Math.min(1,st.dryProgress),bh);
-    X.strokeStyle='rgba(255,255,255,0.25)';X.lineWidth=0.5;X.strokeRect(bx2,by2,bw,bh);
-    oText(sp.abbr,x,by2-3,st.done?'#ffd700':'#ccc',6);
-    // Coin value below stack
-    const val=Math.round(st.pieces*sp.coinsPer);
-    oText(val+'c',x,y+10,st.done?'#ffd700':'#aaa',5);
-    // Gold border + DRY when done
-    if(st.done){
-      X.strokeStyle='#ffd700';X.lineWidth=1.5;X.strokeRect(x-sW/2-2,y-rows*ph-2,sW+4,rows*ph+4);
-      const a=0.4+Math.sin(Date.now()*0.005)*0.3;X.globalAlpha=a;oText('DRY!',x,by2-12,'#ffd700',7);X.globalAlpha=1;
-    }
-  });
-}
-
-// ═══ MARKET ═══
-const MX=50,MY=370;
-function drawMarket(){
-  X.fillStyle='#8B6914';X.fillRect(MX-25,MY-10,50,42);
-  X.fillStyle='#cc3333';X.beginPath();X.moveTo(MX-32,MY-10);X.lineTo(MX+32,MY-10);X.lineTo(MX+28,MY-24);X.lineTo(MX-28,MY-24);X.closePath();X.fill();
-  X.fillStyle='#fff';for(let s=-22;s<24;s+=11){X.beginPath();X.moveTo(MX+s,MY-10);X.lineTo(MX+s+5,MY-10);X.lineTo(MX+s+4,MY-24);X.lineTo(MX+s-1,MY-24);X.closePath();X.fill();}
-  X.fillStyle='#a08060';X.fillRect(MX-27,MY+6,54,5);
-  oText('MARKET',MX,MY+2,'#fff',8);
-  X.fillStyle='#ffd700';X.beginPath();X.arc(MX,MY-32,7,0,Math.PI*2);X.fill();
-  oText('$',MX,MY-29,'#b8960a',9);
-  const rdy=getReadyStack();
-  if(rdy&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS M',MX,MY-46,'#ffd700',9);oText('SELL DRY!',MX,MY-58,'#ffd700',7);X.globalAlpha=1;}
-}
-
-// ═══ ANVIL ═══
-const AXX=810,AXY=350;
-function drawAnvil(){
-  X.fillStyle='#555';X.fillRect(AXX-12,AXY+5,24,12);X.fillStyle='#666';X.fillRect(AXX-16,AXY-2,32,8);
-  X.fillStyle='#777';X.beginPath();X.moveTo(AXX-16,AXY-2);X.lineTo(AXX-20,AXY-2);X.lineTo(AXX-18,AXY+4);X.lineTo(AXX-16,AXY+4);X.closePath();X.fill();
-  if(cutscene&&cutscene.type==='axe'&&cutscene.phase>=2&&cutscene.phase<=3){X.globalAlpha=0.3+Math.sin(Date.now()*0.01)*0.15;X.fillStyle='#ff4400';X.beginPath();X.arc(AXX,AXY-10,25,0,Math.PI*2);X.fill();X.globalAlpha=1;}
-}
-function drawAxeSign(){
-  if(axeLv>=AXES.length-1)return;const n=AXES[axeLv+1],ux=AXX,uy=AXY-48;
-  X.fillStyle='#5c3a1e';X.fillRect(ux-3,uy+22,6,26);
-  X.fillStyle='#c8a96e';X.fillRect(ux-42,uy-4,84,30);X.strokeStyle='#5c3a1e';X.lineWidth=2;X.strokeRect(ux-42,uy-4,84,30);
-  X.fillStyle='#3a2510';X.font=gf(7);X.textAlign='center';X.fillText('AXE:'+n.name,ux,uy+9);
-  X.fillStyle='#ffd700';X.font=gf(7);X.fillText(n.cost+'c',ux,uy+20);
-  if(coins>=n.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;X.globalAlpha=a;oText('PRESS U',ux,uy-10,'#90ff90',9);X.globalAlpha=1;}
-}
-
-// ═══ COFFEE ═══
-const CXP=910,CYP=345;
-function drawCoffeeShop(){
-  if(coffeeLv>=COFFEES.length-1)return;const n=COFFEES[coffeeLv+1];
-  X.fillStyle='#5c3a1e';X.fillRect(CXP-2,CYP+12,4,18);X.fillStyle='#a08060';X.fillRect(CXP-18,CYP+8,36,5);
-  X.fillStyle='#d4d4d4';X.fillRect(CXP-5,CYP-8,10,13);X.fillStyle='#4a2810';X.fillRect(CXP-4,CYP-7,8,5);
-  X.strokeStyle='#d4d4d4';X.lineWidth=2;X.beginPath();X.arc(CXP+6,CYP-1,3,-Math.PI/2,Math.PI/2);X.stroke();
-  const t=Date.now()*0.003;X.strokeStyle='rgba(255,255,255,0.4)';X.lineWidth=1;
-  for(let i=0;i<2;i++){X.beginPath();const sx=CXP-2+i*4;X.moveTo(sx,CYP-9);X.quadraticCurveTo(sx+Math.sin(t+i)*3,CYP-14,sx+Math.sin(t+i+1)*2,CYP-19);X.stroke();}
-  oText(n.name,CXP,CYP+22,'#80e080',7);
-  oText(n.cost+'c',CXP,CYP+32,'#ffd700',7);
-  if(coins>=n.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;X.globalAlpha=a;oText('PRESS C',CXP,CYP-16,'#80e080',8);X.globalAlpha=1;}
-}
-
-// ═══ JERKY ═══
-const JXP=910,JYP=425;
-function drawJerkyShop(){
-  if(jerkyLv>=JERKYS.length-1)return;const n=JERKYS[jerkyLv+1];
-  X.fillStyle='#5c3a1e';X.fillRect(JXP-2,JYP+12,4,18);X.fillStyle='#a08060';X.fillRect(JXP-18,JYP+8,36,5);
-  X.fillStyle='#8B4513';X.fillRect(JXP-7,JYP-12,14,18);X.fillStyle='#a0522d';X.fillRect(JXP-7,JYP-12,14,4);
-  oText('JERKY',JXP,JYP+1,'#ffd700',4);
-  oText(n.name,JXP,JYP+22,'#ff9966',7);
-  oText(n.cost+'c',JXP,JYP+32,'#ffd700',7);
-  if(coins>=n.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.005)*0.4;X.globalAlpha=a;oText('PRESS J',JXP,JYP-18,'#ff9966',8);X.globalAlpha=1;}
-}
-
-// ═══ SHED SHOP (near market) ═══
-function getNextShed(){return SHEDS.find(sh=>!shedsBought[sh.speciesId]);}
-function drawShedShop(){
-  if(axeLv<AXES.length-1)return;
-  const sx=50,sy=460;
-  const next=getNextShed();
-  if(next){
-    X.fillStyle='#5c3a1e';X.fillRect(sx-12,sy-8,24,16);
-    X.fillStyle='#8B6914';X.beginPath();X.moveTo(sx-16,sy-8);X.lineTo(sx,sy-20);X.lineTo(sx+16,sy-8);X.closePath();X.fill();
-    oText(next.name,sx,sy+16,'#c8a96e',6);
-    oText(next.cost+'c',sx,sy+26,'#ffd700',6);
-    if(coins>=next.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS B',sx,sy-28,'#c8a96e',8);X.globalAlpha=1;}
-  } else {
-    // All sheds bought - show next kiln
-    const nextK=getNextKiln();
-    if(nextK){
-      X.fillStyle='#8B3010';X.fillRect(sx-14,sy-10,28,20);
-      X.fillStyle='#ff4420';X.fillRect(sx-10,sy-6,20,4);
-      oText(nextK.name,sx,sy+16,'#ff6633',6);
-      oText(nextK.cost+'c',sx,sy+26,'#ffd700',6);
-      if(coins>=nextK.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS B',sx,sy-28,'#ff6633',8);X.globalAlpha=1;}
-    }
-  }
-}
-
-// ═══ LUMBERJACK ═══
-function drawJack(){
-  let x=J.x,y=J.y;const f=J.f;
-  y+=J.walk?Math.sin(J.wt*0.3)*2:0;
-  if(J.jitT>0){x+=(Math.random()-0.5)*J.jit;y+=(Math.random()-0.5)*J.jit*0.5;}
-  X.save();X.translate(x,y);X.scale(f,1);
-  let aa=0;
-  if(J.chop){const p=J.cp;if(p<0.4)aa=-Math.PI*0.8*(p/0.4);else if(p<0.6)aa=-Math.PI*0.8+Math.PI*1.2*((p-0.4)/0.2);else aa=Math.PI*0.4*(1-(p-0.6)/0.4);}
-  const ls=J.walk?Math.sin(J.wt*0.3)*8:0;
-  // Legs
-  X.fillStyle='#3a5fad';X.save();X.translate(-4,0);X.rotate(ls*Math.PI/180);X.fillRect(-4,0,8,18);X.fillStyle='#4a3020';X.fillRect(-4,16,10,5);X.restore();
-  X.save();X.translate(4,0);X.rotate(-ls*Math.PI/180);X.fillStyle='#3a5fad';X.fillRect(-4,0,8,18);X.fillStyle='#4a3020';X.fillRect(-5,16,10,5);X.restore();
-  // Body
-  X.fillStyle='#c43030';X.fillRect(-10,-24,20,26);X.strokeStyle='#8a1a1a';X.lineWidth=2;for(let ly=-22;ly<2;ly+=6){X.beginPath();X.moveTo(-10,ly);X.lineTo(10,ly);X.stroke();}X.lineWidth=1;X.beginPath();X.moveTo(0,-24);X.lineTo(0,2);X.stroke();
-  // Suspenders
-  X.fillStyle='#5a3a1e';X.fillRect(-7,-22,3,44);X.fillRect(4,-22,3,44);
-  X.fillStyle='#d4a030';X.beginPath();X.arc(-5.5,-4,1.5,0,Math.PI*2);X.fill();X.beginPath();X.arc(5.5,-4,1.5,0,Math.PI*2);X.fill();
-  // Back arm
-  X.fillStyle='#c43030';X.save();X.translate(-10,-20);
-  const ba=J.chop?aa*0.3:(J.walk?Math.sin(J.wt*0.3+Math.PI)*15*Math.PI/180:0);
-  X.rotate(ba);X.fillRect(-3,0,6,16);X.fillStyle='#e8b88a';X.fillRect(-2,14,5,5);X.restore();
-  // Carrying
-  if(J.carry){X.save();X.translate(0,-30);for(let i=0;i<Math.min(J.cc,5);i++){X.fillStyle=i%2===0?'#8B6914':'#a0522d';X.fillRect(-8+i*3,-6-i*4,10,7);X.fillStyle='#d4b86a';X.beginPath();X.ellipse(-3+i*3,-3-i*4,4,3,0,0,Math.PI*2);X.fill();}X.restore();}
-
-  if(J.drink){
-    X.save();X.translate(8,-18);X.rotate(-0.5);X.fillStyle='#c43030';X.fillRect(-3,-8,6,14);X.fillStyle='#e8b88a';X.fillRect(-2,4,5,5);X.fillStyle='#d4d4d4';X.fillRect(-1,-14,8,10);X.fillStyle='#4a2810';X.fillRect(0,-13,6,4);X.restore();
-  } else if(J.eat){
-    X.save();X.translate(8,-18);X.rotate(-0.3);X.fillStyle='#c43030';X.fillRect(-3,-6,6,14);X.fillStyle='#e8b88a';X.fillRect(-2,6,5,5);X.fillStyle='#6b3010';X.fillRect(0,-10,4,8);X.fillStyle='#8B4513';X.fillRect(1,-9,2,6);X.restore();
-  } else if(J.flex){
-    // POPEYE FLEX - clear pose with bulging biceps
-    const bt=J.flexT;
-    const pump=2+Math.sin(bt*0.2)*3; // pulsing bicep size
-    // Left arm: upper arm out to side, forearm bent up
-    X.save();X.translate(-10,-18);
-    // Upper arm going left-ish
-    X.fillStyle='#c43030';X.fillRect(-12,-2,14,6);
-    // Forearm bent up
-    X.fillStyle='#c43030';X.fillRect(-14,-14,6,14);
-    // Fist
-    X.fillStyle='#e8b88a';X.fillRect(-15,-18,8,6);
-    // BICEP BULGE
-    X.fillStyle='#e8b88a';
-    X.beginPath();X.ellipse(-8,-4,pump+3,pump+2,0,0,Math.PI*2);X.fill();
-    // Skin-tone forearm
-    X.fillStyle='#e8b88a';X.fillRect(-13,-13,4,12);
-    X.restore();
-    // Right arm: mirror
-    X.save();X.translate(10,-18);
-    X.fillStyle='#c43030';X.fillRect(-2,-2,14,6);
-    X.fillStyle='#c43030';X.fillRect(8,-14,6,14);
-    X.fillStyle='#e8b88a';X.fillRect(7,-18,8,6);
-    X.fillStyle='#e8b88a';
-    X.beginPath();X.ellipse(8,-4,pump+3,pump+2,0,0,Math.PI*2);X.fill();
-    X.fillStyle='#e8b88a';X.fillRect(9,-13,4,12);
-    X.restore();
-  } else {
-    // Normal front arm + axe
-    X.save();X.translate(8,-22);
-    const fa=J.chop?aa*0.8:(J.walk?Math.sin(J.wt*0.3)*15*Math.PI/180:0.1);
-    X.rotate(fa);X.fillStyle='#c43030';X.fillRect(-3,0,6,16);X.fillStyle='#e8b88a';X.fillRect(-2,14,5,5);
-    if(J.hasAxe){X.fillStyle='#8B7355';X.fillRect(1,14,3,28);const ax=AXES[axeLv];X.fillStyle=ax.color;X.beginPath();X.moveTo(0,38);X.lineTo(-8,44);X.lineTo(-6,48);X.lineTo(4,44);X.closePath();X.fill();X.fillStyle=ax.shine;X.beginPath();X.moveTo(-7,44);X.lineTo(-8,44);X.lineTo(-6,48);X.lineTo(-5,47);X.closePath();X.fill();if(axeLv>=3){X.globalAlpha=0.3+Math.sin(Date.now()*0.005)*0.15;X.shadowColor=ax.color;X.shadowBlur=8;X.fillStyle=ax.color;X.beginPath();X.moveTo(0,38);X.lineTo(-8,44);X.lineTo(-6,48);X.lineTo(4,44);X.closePath();X.fill();X.shadowBlur=0;X.globalAlpha=1;}}
-    X.restore();
-  }
-  // Head
-  X.fillStyle='#e8b88a';X.fillRect(-8,-38,16,14);X.fillStyle='#2a2a2a';X.fillRect(-5,-34,3,3);X.fillRect(3,-34,3,3);
-  if(J.drink||J.eat||J.flex){X.fillStyle='#c07050';X.beginPath();X.arc(0,-26,3,0,Math.PI);X.fill();}
-  else{X.fillStyle='#a06040';X.fillRect(-3,-27,6,2);}
-  X.fillStyle='#5a3a1e';X.fillRect(-7,-26,14,4);X.fillRect(-5,-22,10,2);
-  // Beanie
-  X.fillStyle='#cc2222';X.beginPath();X.ellipse(0,-40,10,5,0,Math.PI,0);X.fill();X.fillRect(-10,-42,20,4);X.fillStyle='#991818';X.fillRect(-10,-40,20,3);X.fillStyle='#cc2222';X.beginPath();X.arc(0,-45,4,0,Math.PI*2);X.fill();
-  X.restore();
-  if(J.walk&&coffeeLv>=1){X.strokeStyle='rgba(255,200,100,0.25)';X.lineWidth=1;const d=-J.f;for(let i=0;i<coffeeLv+1;i++){const ly=J.y-20+i*12,lx=J.x+d*15;X.beginPath();X.moveTo(lx,ly);X.lineTo(lx+d*(10+coffeeLv*5),ly);X.stroke();}}
-}
-
-// ═══ GOLDEN AXE SHIMMER ═══
-function drawGoldenShimmer(){
-  if(goldenShimmer<=0)return;
-  goldenShimmer-=0.004;
-  const a=Math.min(0.4,goldenShimmer)*Math.abs(Math.sin(Date.now()*0.008));
-  X.globalAlpha=a;
-  const g=X.createLinearGradient(0,0,GW,GH);
-  g.addColorStop(0,'#ffd700');g.addColorStop(0.3,'#fff4a0');g.addColorStop(0.5,'#ffd700');g.addColorStop(0.7,'#fff4a0');g.addColorStop(1,'#ffd700');
-  X.fillStyle=g;X.fillRect(0,0,GW,GH);
-  X.globalAlpha=1;
-  // Sparkle particles
-  if(goldenShimmer>0.2){
-    for(let i=0;i<3;i++){
-      const sx=Math.random()*GW,sy=Math.random()*GH,ss=2+Math.random()*4;
-      X.fillStyle='#fff4a0';X.globalAlpha=0.6*goldenShimmer;
-      X.fillRect(sx-ss/2,sy-ss/2,ss,ss);
-    }
-    X.globalAlpha=1;
-  }
-  if(goldenShimmer>0.5){
-    oText('GOLDEN AXE!',GW/2,180,'#ffd700',22);
-    oText('LEVEL 2 - SHEDS UNLOCKED',GW/2,220,'#fff4a0',12);
-  }
-}
-
-// ═══ PARTICLES / ANIMS ═══
-function triggerSplit(log){
-  const pc=3+Math.floor(Math.random()*3);const sy=380;
-  for(let i=0;i<pc;i++){const a=(Math.PI*2*i/pc)+Math.random()*0.5;splitAnims.push({x:log.x,y:sy,vx:Math.cos(a)*(2+Math.random()*3),vy:-3-Math.random()*4,r:log.diam/4,color:log.sp.logColor,fc:'#d4b86a',life:1,gnd:false,gy:420+Math.random()*15,rot:Math.random()*Math.PI});}
-  freshWood[log.sp.id]+=pc;
-}
-function updateSplits(){splitAnims.forEach(s=>{if(!s.gnd){s.vy+=0.2;s.x+=s.vx;s.y+=s.vy;s.rot+=0.1;if(s.y>=s.gy){s.y=s.gy;s.gnd=true;s.vx=0;s.vy=0;}}if(s.gnd)s.life-=0.01;});splitAnims=splitAnims.filter(s=>s.life>0);}
-function drawSplits(){splitAnims.forEach(s=>{X.save();X.globalAlpha=Math.max(0,s.life);X.translate(s.x,s.y);X.rotate(s.rot);const w=s.r,h=s.r*0.7;X.fillStyle=s.color;X.fillRect(-w/2,-h/2,w,h);X.fillStyle=s.fc;X.beginPath();X.ellipse(0,0,w/2-1,h/2-1,0,0,Math.PI*2);X.fill();X.restore();});}
-
-function spawnChopP(x,y){const vy2=375;for(let i=0;i<8;i++)particles.push({x,y:vy2,vx:(Math.random()-0.5)*4,vy:-Math.random()*3-1,life:1,c:Math.random()>0.5?'#d4b86a':'#8B7355',sz:2+Math.random()*3});}
-function spawnCoinP(x,y,n){for(let i=0;i<n;i++)particles.push({x:x+(Math.random()-0.5)*30,y:y-20,vx:(Math.random()-0.5)*3,vy:-Math.random()*4-2,life:1,c:'#ffd700',sz:3+Math.random()*2});}
-function spawnSparks(x,y){for(let i=0;i<12;i++)bsSparks.push({x,y,vx:(Math.random()-0.5)*6,vy:-Math.random()*5-2,life:1,c:Math.random()>0.5?'#ffa030':'#ff6600',sz:2+Math.random()*2});}
-function updateP(){particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.15;p.life-=0.02;});particles=particles.filter(p=>p.life>0);bsSparks.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.025;});bsSparks=bsSparks.filter(p=>p.life>0);}
-function drawP(){[...particles,...bsSparks].forEach(p=>{X.globalAlpha=p.life;X.fillStyle=p.c;X.fillRect(p.x-p.sz/2,p.y-p.sz/2,p.sz,p.sz);});X.globalAlpha=1;}
-
-function addMsg(x,y,t,c){floatMsgs.push({x,y,text:t,color:c,life:1});}
-function updateMsgs(){floatMsgs.forEach(m=>{m.y-=0.7;m.life-=0.012;});floatMsgs=floatMsgs.filter(m=>m.life>0);}
-function drawMsgs(){floatMsgs.forEach(m=>{X.globalAlpha=m.life;oText(m.text,m.x,m.y,m.color,12);});X.globalAlpha=1;}
-
-function nearest(){let n=null,d=Infinity;logs.forEach(l=>{if(l.done)return;const dd=Math.abs(J.x-l.x);if(dd<d){d=dd;n=l;}});return n;}
-function nearestClose(){let n=null,d=60;logs.forEach(l=>{if(l.done)return;const dd=Math.abs(J.x-l.x);if(dd<d&&dd>l.diam/4){d=dd;n=l;}});return n;}
-
-function drawHint(){if(cutscene)return;const nl=nearestClose();if(nl&&!J.chop&&!J.walk){const a=0.5+Math.sin(Date.now()*0.005)*0.3;X.globalAlpha=a;oText('CHOP',nl.x,355-nl.diam,'#fff',11);X.globalAlpha=1;}}
-
-function drawMarketMsg(){if(!marketMsg)return;marketMsg.timer--;if(marketMsg.timer<=0){marketMsg=null;return;}X.globalAlpha=Math.min(1,marketMsg.timer/30);oText(marketMsg.text,GW/2,280-(90-marketMsg.timer)*0.4,marketMsg.color,15);X.globalAlpha=1;}
-
-// ═══ CUTSCENES ═══
-function updateCS(){
-  if(!cutscene)return;cutscene.timer++;const cs=cutscene;
-  if(cs.type==='sell'){
-    const st=cs.data.stack;
-    if(cs.phase===0){J.tx=st.x;J.f=J.x>st.x?-1:1;if(Math.abs(J.x-st.x)<8){cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;if(cs.timer>25){J.carry=true;J.cc=3;cs.phase=2;cs.timer=0;}}
-    else if(cs.phase===2){J.tx=MX;J.f=-1;if(Math.abs(J.x-MX)<8){cs.phase=3;cs.timer=0;}}
-    else if(cs.phase===3){J.walk=false;J.carry=false;
-      if(cs.timer===1){
-        const sp=SPECIES.find(s=>s.id===st.speciesId);
-        const earned=Math.round(st.pieces*sp.coinsPer);
-        coins+=earned;
-        dryingStacks=dryingStacks.filter(s=>s!==st);
-        const rem=dryingStacks.filter(s=>s.speciesId===st.speciesId);
-        const si=SPECIES.findIndex(s=>s.id===st.speciesId);
-        rem.forEach((s,i)=>{const p=getStackPos(si,i);s.x=p.x;s.y=p.y;s.slot=i;});
-        addMsg(GW/2,240,'+'+earned+' coins!','#ffd700');
-        spawnCoinP(MX,MY-20,15);
-        marketMsg={text:'SOLD '+sp.abbr+'!',timer:90,color:'#ffd700'};
-        updHud();
-      }
-      if(cs.timer>50)cutscene=null;
-    }
-  }
-  else if(cs.type==='stack'){
-    const si=cs.data.speciesIdx;const bx=PILE_X[si];
-    if(cs.phase===0){J.tx=bx;J.f=J.x>bx?-1:1;if(Math.abs(J.x-bx)<8){cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;if(cs.timer>20){J.carry=true;J.cc=4;cs.phase=2;cs.timer=0;}}
-    else if(cs.phase===2){
-      const sp=SPECIES[si];const existing=dryingStacks.filter(s=>s.speciesId===sp.id);
-      const pos=getStackPos(si,existing.length);
-      J.tx=pos.x;J.f=J.x>pos.x?-1:1;
-      if(Math.abs(J.x-pos.x)<8){cs.phase=3;cs.timer=0;}
-    }
-    else if(cs.phase===3){J.walk=false;J.carry=false;
-      if(cs.timer===1){addDryingStack(SPECIES[cs.data.speciesIdx].id);addMsg(J.x,J.y-80,'STACKED!','#90ff90');}
-      if(cs.timer>30)cutscene=null;
-    }
-  }
-  else if(cs.type==='axe'){
-    if(cs.phase===0){J.tx=AXX+25;J.f=J.x>AXX+25?-1:1;if(Math.abs(J.x-(AXX+25))<8){J.f=-1;cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;if(cs.timer===15)J.hasAxe=false;if(cs.timer>40){cs.phase=2;cs.timer=0;}}
-    else if(cs.phase===2){J.walk=false;if(cs.timer%12===0)spawnSparks(AXX,AXY);if(cs.timer>90){cs.phase=3;cs.timer=0;}}
-    else if(cs.phase===3){
-      if(cs.timer===1){
-        coins-=cs.data.cost;axeLv++;J.hasAxe=true;
-        addMsg(AXX,AXY-70,AXES[axeLv].name+' AXE!','#90e0ff');
-        spawnCoinP(AXX,AXY,10);
-        updHud();
-        if(axeLv===AXES.length-1)goldenShimmer=1.5; // Golden axe shimmer!
-      }
-      if(cs.timer>50)cutscene=null;
-    }
-  }
-  else if(cs.type==='coffee'){
-    if(cs.phase===0){J.tx=CXP-20;J.f=1;if(Math.abs(J.x-(CXP-20))<8){cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;if(cs.timer===1){coins-=cs.data.cost;coffeeLv++;J.drink=true;updHud();}if(cs.timer>50){cs.phase=2;cs.timer=0;}}
-    else if(cs.phase===2){J.drink=false;J.jit=6;J.jitT=1;if(cs.timer===1){addMsg(J.x,J.y-80,COFFEES[coffeeLv].name+'!','#80e080');for(let i=0;i<20;i++)particles.push({x:J.x+(Math.random()-0.5)*20,y:J.y-20,vx:(Math.random()-0.5)*6,vy:-Math.random()*5-2,life:1,c:'#8B4513',sz:2+Math.random()*3});}J.jit=6*(1-cs.timer/80);if(cs.timer>80){J.jit=0;J.jitT=0;cutscene=null;}}
-  }
-  else if(cs.type==='jerky'){
-    if(cs.phase===0){J.tx=JXP-20;J.f=1;if(Math.abs(J.x-(JXP-20))<8){cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;if(cs.timer===1){coins-=cs.data.cost;jerkyLv++;J.eat=true;updHud();}if(cs.timer>55){cs.phase=2;cs.timer=0;}}
-    else if(cs.phase===2){
-      J.eat=false;J.flex=true;J.flexT=0;
-      if(cs.timer===1){addMsg(J.x,J.y-80,JERKYS[jerkyLv].name+'!','#ff9966');for(let i=0;i<15;i++)particles.push({x:J.x+(Math.random()-0.5)*20,y:J.y-20,vx:(Math.random()-0.5)*4,vy:-Math.random()*4-1,life:1,c:Math.random()>0.5?'#ff6633':'#ff9944',sz:2+Math.random()*3});}
-      J.flexT=cs.timer;
-      if(cs.timer>70){J.flex=false;J.flexT=0;cutscene=null;}
-    }
-  }
-  else if(cs.type==='walkchop'){
-    const lg=cs.data.log;
-    if(lg.done){cutscene=null;return;}
-    if(cs.phase===0){
-      // Walk to beside the log, not on top
-      const side=J.x<lg.x?-1:1; // approach from whichever side Jack is on
-      const chopX=lg.x+side*(lg.diam/2+18);
-      J.tx=chopX;J.f=-side; // face toward the log
-      if(Math.abs(J.x-chopX)<8){cs.phase=1;cs.timer=0;}
-    }
-    else if(cs.phase===1){J.walk=false;
-      if(cs.timer===1){J.chop=true;J.cp=0;J.f=J.x<lg.x?1:-1;
-        setTimeout(()=>{if(lg.done)return;lg.prog++;spawnChopP(lg.x,lg.y);
-          if(lg.prog>=lg.max){lg.done=true;logsChopped++;triggerSplit(lg);updHud();setTimeout(()=>spawnLog(),1200);}
-        },350);}
-      if(cs.timer>30)cutscene=null;
-    }
-  }
-  else if(cs.type==='shed'){
-    if(cs.phase===0){J.tx=50;J.f=-1;if(Math.abs(J.x-50)<8){cs.phase=1;cs.timer=0;}}
-    else if(cs.phase===1){J.walk=false;
-      if(cs.timer===1){
-        const sh=cs.data.shed;
-        coins-=sh.cost;shedsBought[sh.speciesId]=true;
-        addMsg(80,400,sh.name+'!','#c8a96e');
-        spawnCoinP(50,440,8);updHud();
-      }
-      if(cs.timer>40)cutscene=null;
-    }
-  }
-}
-
-// ═══ ACTIONS ═══
-function doChop(){
-  if(isBusy())return;const nl=nearest();if(!nl)return;
-  const dist=Math.abs(J.x-nl.x);
-  const chopDist=nl.diam/2+22;
-  if(dist<chopDist+10){
-    // Already beside it - chop
-    J.chop=true;J.cp=0;J.f=J.x<nl.x?1:-1;
-    setTimeout(()=>{nl.prog++;spawnChopP(nl.x,nl.y);
-      if(nl.prog>=nl.max){nl.done=true;logsChopped++;triggerSplit(nl);updHud();setTimeout(()=>spawnLog(),1200);}
-    },350);
-  } else {startCS('walkchop',{log:nl});}
-}
-
-function doStack(){
-  if(isBusy())return;
-  // Find all stackable species, sort by proximity to Jack
-  let candidates=[];
-  let anyFull=false;
-  for(let si=0;si<SPECIES.length;si++){
-    const sp=SPECIES[si];
-    if(freshWood[sp.id]>=STACK_SIZE){
-      const existing=dryingStacks.filter(s=>s.speciesId===sp.id);
-      if(existing.length<maxStacksFor(sp.id)){candidates.push({si,dist:Math.abs(J.x-PILE_X[si])});}
-      else{anyFull=true;}
-    }
-  }
-  if(candidates.length){
-    candidates.sort((a,b)=>a.dist-b.dist);
-    startCS('stack',{speciesIdx:candidates[0].si});return;
-  }
-  if(anyFull)addMsg(J.x,J.y-60,'Stacks full!','#ff6666');
-  else addMsg(J.x,J.y-60,'Need 30+ wood!','#ff6666');
-}
-
-function doSell(){
-  if(isBusy())return;
-  // Find nearest ready stack to Jack
-  const ready=dryingStacks.filter(s=>s.done);
-  if(!ready.length){addMsg(MX,MY-50,'No dry wood!','#ff6666');return;}
-  ready.sort((a,b)=>Math.abs(J.x-a.x)-Math.abs(J.x-b.x));
-  startCS('sell',{stack:ready[0]});
-}
-
-function upgradeAxe(){
-  if(isBusy())return;if(axeLv>=AXES.length-1){addMsg(AXX,AXY-50,'MAX!','#ffd700');return;}
-  const n=AXES[axeLv+1];if(coins<n.cost){addMsg(AXX,AXY-50,'Need '+n.cost+'c','#ff6666');return;}
-  startCS('axe',{cost:n.cost});
-}
-function buyCoffee(){
-  if(isBusy())return;if(coffeeLv>=COFFEES.length-1){addMsg(CXP,CYP-30,'MAX!','#80e080');return;}
-  const n=COFFEES[coffeeLv+1];if(coins<n.cost){addMsg(CXP,CYP-30,'Need '+n.cost+'c','#ff6666');return;}
-  startCS('coffee',{cost:n.cost});
-}
-function buyJerky(){
-  if(isBusy())return;if(jerkyLv>=JERKYS.length-1){addMsg(JXP,JYP-30,'MAX!','#ff9966');return;}
-  const n=JERKYS[jerkyLv+1];if(coins<n.cost){addMsg(JXP,JYP-30,'Need '+n.cost+'c','#ff6666');return;}
-  startCS('jerky',{cost:n.cost});
-}
-function buyShed(){
-  if(isBusy())return;
-  if(axeLv<AXES.length-1){addMsg(50,440,'Need Golden Axe!','#ff6666');return;}
-  const next=getNextShed();
-  if(next){
-    if(coins<next.cost){addMsg(50,440,'Need '+next.cost+'c','#ff6666');return;}
-    startCS('shed',{shed:next});
-  } else {
-    // All sheds done, try kilns
-    const nextK=getNextKiln();
-    if(nextK){
-      if(coins<nextK.cost){addMsg(50,440,'Need '+nextK.cost+'c','#ff6666');return;}
-      coins-=nextK.cost;kilnsBought[nextK.speciesId]=true;
-      // Recalculate drying times and positions for that species
-      const si=SPECIES.findIndex(s=>s.id===nextK.speciesId);
-      const speciesStacks=dryingStacks.filter(st=>st.speciesId===nextK.speciesId);
-      speciesStacks.forEach((st,i)=>{
-        const sp=SPECIES.find(s=>s.id===st.speciesId);
-        st.dryTime=dryTimeFor(sp);
-        const p=getStackPos(si,i);st.x=p.x;st.y=p.y;st.slot=i;
-      });
-      addMsg(GW/2,280,nextK.name+' BUILT!','#ff6633');
-      updHud();
-    } else {addMsg(50,440,'All built!','#c8a96e');}
-  }
-}
-
-window.doChop=doChop;window.doStack=doStack;window.doSell=doSell;
-window.upgradeAxe=upgradeAxe;window.buyCoffee=buyCoffee;window.buyJerky=buyJerky;window.buyShed=buyShed;
-
-function hireOrUpgradeEmp(){
-  if(isBusy())return;
-  if(axeLv<AXES.length-1){addMsg(GW/2,300,'Need Golden Axe!','#ff6666');return;}
-  if(!empHired){
-    if(coins<EMP_PERKS[0].cost){addMsg(GW/2,300,'Need '+EMP_PERKS[0].cost+'c','#ff6666');return;}
-    coins-=EMP_PERKS[0].cost;empHired=true;E.x=J.x+40;E.tx=E.x;
-    addMsg(GW/2,280,'HAND HIRED!','#80e080');updHud();return;
-  }
-  const next=nextEmpPerk();
-  if(!next){addMsg(GW/2,300,'MAX PERKS!','#ffd700');return;}
-  if(coins<next.cost){addMsg(GW/2,300,'Need '+next.cost+'c','#ff6666');return;}
-  coins-=next.cost;empPerkLv++;
-  addMsg(GW/2,280,next.name+'!','#80e080');updHud();
-}
-function upgradeEmpAxe(){
-  if(isBusy())return;
-  if(!empHired){addMsg(GW/2,300,'Hire hand first!','#ff6666');return;}
-  const next=nextEmpAxe();
-  if(!next){addMsg(GW/2,300,'MAX AXE!','#ffd700');return;}
-  if(coins<next.cost){addMsg(GW/2,300,'Need '+next.cost+'c','#ff6666');return;}
-  coins-=next.cost;empAxeLv++;E.hasAxe=empAxeLv>0;
-  addMsg(GW/2,280,next.name+'!','#a0c8ff');updHud();
-}
-window.hireOrUpgradeEmp=hireOrUpgradeEmp;
-window.upgradeEmpAxe=upgradeEmpAxe;
-
-// ═══ EMPLOYEE SHOP ═══
-function drawEmpShop(){
-  if(axeLv<AXES.length-1)return;
-  const sx=50,sy=500;
-  if(!empHired){
-    X.fillStyle='#2d5a27';X.fillRect(sx-14,sy-10,28,20);
-    oText('HIRE',sx,sy+3,'#80e080',5);
-    oText('HAND',sx,sy+14,'#80e080',5);
-    oText(EMP_PERKS[0].cost+'c',sx,sy+24,'#ffd700',5);
-    if(coins>=EMP_PERKS[0].cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS H',sx,sy-18,'#80e080',7);X.globalAlpha=1;}
-  } else {
-    // Perk upgrade (H key)
-    const nextP=nextEmpPerk();
-    if(nextP){
-      X.fillStyle='#2d5a27';X.fillRect(sx-14,sy-10,28,20);
-      oText('PERK',sx,sy+3,'#80e080',5);
-      oText(nextP.name,sx,sy+14,'#80e080',5);
-      oText(nextP.cost+'c',sx,sy+24,'#ffd700',5);
-      if(coins>=nextP.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS H',sx,sy-18,'#80e080',7);X.globalAlpha=1;}
-    }
-    // Axe upgrade (G key) - shown to the right
-    const nextA=nextEmpAxe();
-    if(nextA){
-      const ax=sx+80,ay=sy;
-      X.fillStyle='#3a4a6a';X.fillRect(ax-14,ay-10,28,20);
-      oText('HAND',ax,ay-2,'#a0c8ff',5);
-      oText('AXE',ax,ay+8,'#a0c8ff',5);
-      oText(nextA.name,ax,ay+20,'#a0c8ff',5);
-      oText(nextA.cost+'c',ax,ay+30,'#ffd700',5);
-      if(coins>=nextA.cost&&!cutscene){const a=0.5+Math.sin(Date.now()*0.004)*0.4;X.globalAlpha=a;oText('PRESS G',ax,ay-18,'#a0c8ff',7);X.globalAlpha=1;}
-    }
-  }
-}
-
-// ═══ EMPLOYEE AI ═══
-function updateEmployee(dt){
-  if(!empHired)return;
-  const es=empSpd();
-
-  // Handle chop animation
-  if(E.chop){E.cp+=0.025;if(E.cp>=1){E.chop=false;E.cp=0;}}
-
-  if(E.state==='idle'){
-    E.timer+=dt;
-    // Priorities: 1) sell dry, 2) stack 30+, 3) chop if has axe
-    const rdy=getReadyStack();
-    if(rdy){E.state='selling';E.target=rdy;E.phase=0;E.timer=0;return;}
-    for(let si=0;si<SPECIES.length;si++){
-      const sp=SPECIES[si];
-      if(freshWood[sp.id]>=STACK_SIZE){
-        const existing=dryingStacks.filter(s=>s.speciesId===sp.id);
-        if(existing.length<maxStacksFor(sp.id)){E.state='stacking';E.target={speciesIdx:si};E.phase=0;E.timer=0;return;}
-      }
-    }
-    // 3) Chop a log if has axe and idle
-    if(empAxeLv>0&&E.timer>1){
-      const empLog=logs.find(l=>!l.done&&Math.abs(J.x-l.x)>60); // pick log player isn't near
-      if(empLog){E.state='chopping';E.target=empLog;E.phase=0;E.timer=0;return;}
-    }
-    if(E.timer>3){E.tx=300+Math.random()*360;E.timer=0;}
-  }
-  else if(E.state==='selling'){
-    const st=E.target;
-    if(!st||!dryingStacks.includes(st)){E.state='idle';E.carry=false;E.timer=0;return;}
-    if(E.phase===0){// Walk to stack
-      E.tx=st.x;E.f=E.x>st.x?-1:1;
-      if(Math.abs(E.x-st.x)<10){E.phase=1;E.timer=0;}
-    } else if(E.phase===1){// Pick up
-      E.walk=false;E.timer+=dt;
-      if(E.timer>0.4){E.carry=true;E.cc=3;E.phase=2;E.timer=0;}
-    } else if(E.phase===2){// Walk to market
-      E.tx=MX;E.f=-1;
-      if(Math.abs(E.x-MX)<10){E.phase=3;E.timer=0;}
-    } else if(E.phase===3){// Sell
-      E.walk=false;E.carry=false;E.timer+=dt;
-      if(E.timer>0.3){
-        if(dryingStacks.includes(st)){
-          const sp=SPECIES.find(s=>s.id===st.speciesId);
-          const earned=Math.round(st.pieces*sp.coinsPer);
-          coins+=earned;
-          dryingStacks=dryingStacks.filter(s=>s!==st);
-          const rem=dryingStacks.filter(s=>s.speciesId===st.speciesId);
-          const si=SPECIES.findIndex(s=>s.id===st.speciesId);
-          rem.forEach((s,i)=>{const p=getStackPos(si,i);s.x=p.x;s.y=p.y;s.slot=i;});
-          addMsg(MX,MY-80,'+'+earned+'c','#ffd700');
-          spawnCoinP(MX,MY-20,8);
-          marketMsg={text:'SOLD '+sp.abbr+'!',timer:90,color:'#ffd700'};
-          updHud();
-        }
-        E.state='idle';E.timer=0;
-      }
-    }
-  }
-  else if(E.state==='stacking'){
-    const si=E.target.speciesIdx;const sp=SPECIES[si];
-    if(freshWood[sp.id]<STACK_SIZE){E.state='idle';E.carry=false;E.timer=0;return;}
-    const bx=PILE_X[si];
-    if(E.phase===0){// Walk to pile
-      E.tx=bx;E.f=E.x>bx?-1:1;
-      if(Math.abs(E.x-bx)<10){E.phase=1;E.timer=0;}
-    } else if(E.phase===1){// Pick up
-      E.walk=false;E.timer+=dt;
-      if(E.timer>0.4){E.carry=true;E.cc=4;E.phase=2;E.timer=0;}
-    } else if(E.phase===2){// Walk to drying area
-      const existing=dryingStacks.filter(s=>s.speciesId===sp.id);
-      if(existing.length>=maxStacksFor(sp.id)){E.state='idle';E.carry=false;E.timer=0;return;}
-      const pos=getStackPos(si,existing.length);
-      E.tx=pos.x;E.f=E.x>pos.x?-1:1;
-      if(Math.abs(E.x-pos.x)<10){E.phase=3;E.timer=0;}
-    } else if(E.phase===3){// Place
-      E.walk=false;E.carry=false;E.timer+=dt;
-      if(E.timer>0.3){
-        if(freshWood[sp.id]>=STACK_SIZE){
-          addDryingStack(sp.id);
-          addMsg(E.x,E.y-80,'STACKED!','#90ff90');
-        }
-        E.state='idle';E.timer=0;
-      }
-    }
-  }
-
-  else if(E.state==='chopping'){
-    const lg=E.target;
-    if(!lg||lg.done){E.state='idle';E.timer=0;return;}
-    if(E.phase===0){// Walk beside log
-      const side=E.x<lg.x?-1:1;
-      const chopX=lg.x+side*(lg.diam/2+18);
-      E.tx=chopX;E.f=-side;
-      if(Math.abs(E.x-chopX)<10){E.phase=1;E.timer=0;}
-    } else if(E.phase===1){// Chop
-      E.walk=false;E.timer+=dt;
-      if(lg.done){E.state='idle';E.chop=false;E.timer=0;return;}
-      if(E.timer>0.8&&!E.chop){
-        E.chop=true;E.cp=0;E.f=E.x<lg.x?1:-1;
-        setTimeout(()=>{
-          if(lg.done)return;
-          lg.prog++;spawnChopP(lg.x,lg.y);
-          if(lg.prog>=lg.max){lg.done=true;logsChopped++;triggerSplit(lg);updHud();setTimeout(()=>spawnLog(),1200);}
-        },350);
-        E.timer=0;
-      }
-    }
-  }
-
-  // Move employee
-  const edx=E.tx-E.x;
-  if(Math.abs(edx)>3){E.walk=true;E.x+=Math.sign(edx)*es;E.f=edx>0?1:-1;E.wt++;}
-  else{E.walk=false;}
-}
-
-// ═══ DRAW EMPLOYEE ═══
-function drawEmployee(){
-  if(!empHired)return;
-  let x=E.x,y=E.y;const f=E.f;
-  y+=E.walk?Math.sin(E.wt*0.3)*2:0;
-  X.save();X.translate(x,y);X.scale(f,1);
-  const ls=E.walk?Math.sin(E.wt*0.3)*8:0;
-  // Legs
-  X.fillStyle='#3a5fad';X.save();X.translate(-4,0);X.rotate(ls*Math.PI/180);X.fillRect(-4,0,8,18);X.fillStyle='#4a3020';X.fillRect(-4,16,10,5);X.restore();
-  X.save();X.translate(4,0);X.rotate(-ls*Math.PI/180);X.fillStyle='#3a5fad';X.fillRect(-4,0,8,18);X.fillStyle='#4a3020';X.fillRect(-5,16,10,5);X.restore();
-  // Body - GREEN flannel
-  X.fillStyle='#2d7a27';X.fillRect(-10,-24,20,26);X.strokeStyle='#1a5a14';X.lineWidth=2;for(let ly=-22;ly<2;ly+=6){X.beginPath();X.moveTo(-10,ly);X.lineTo(10,ly);X.stroke();}X.lineWidth=1;X.beginPath();X.moveTo(0,-24);X.lineTo(0,2);X.stroke();
-  // Suspenders
-  X.fillStyle='#5a3a1e';X.fillRect(-7,-22,3,44);X.fillRect(4,-22,3,44);
-  X.fillStyle='#d4a030';X.beginPath();X.arc(-5.5,-4,1.5,0,Math.PI*2);X.fill();X.beginPath();X.arc(5.5,-4,1.5,0,Math.PI*2);X.fill();
-  // Chop animation angle
-  let ea=0;
-  if(E.chop){const p=E.cp;if(p<0.4)ea=-Math.PI*0.8*(p/0.4);else if(p<0.6)ea=-Math.PI*0.8+Math.PI*1.2*((p-0.4)/0.2);else ea=Math.PI*0.4*(1-(p-0.6)/0.4);}
-  // Arms
-  const armSwing=E.walk?Math.sin(E.wt*0.3)*15*Math.PI/180:0;
-  // Back arm
-  X.fillStyle='#2d7a27';X.save();X.translate(-10,-20);
-  const eba=E.chop?ea*0.3:armSwing;
-  X.rotate(eba);X.fillRect(-3,0,6,16);X.fillStyle='#e8b88a';X.fillRect(-2,14,5,5);X.restore();
-  // Carrying
-  if(E.carry){X.save();X.translate(0,-30);for(let i=0;i<Math.min(E.cc,5);i++){X.fillStyle=i%2===0?'#8B6914':'#a0522d';X.fillRect(-8+i*3,-6-i*4,10,7);X.fillStyle='#d4b86a';X.beginPath();X.ellipse(-3+i*3,-3-i*4,4,3,0,0,Math.PI*2);X.fill();}X.restore();}
-  // Front arm + axe
-  X.save();X.translate(8,-22);
-  const efa=E.chop?ea*0.8:-armSwing;
-  X.rotate(efa);X.fillStyle='#2d7a27';X.fillRect(-3,0,6,16);X.fillStyle='#e8b88a';X.fillRect(-2,14,5,5);
-  if(E.hasAxe){X.fillStyle='#8B7355';X.fillRect(1,14,3,28);const eax=empAxeLv>=4?AXES[3]:empAxeLv>=3?AXES[2]:empAxeLv>=2?AXES[1]:AXES[0];X.fillStyle=eax.color;X.beginPath();X.moveTo(0,38);X.lineTo(-8,44);X.lineTo(-6,48);X.lineTo(4,44);X.closePath();X.fill();}
-  X.restore();
-  // Head
-  X.fillStyle='#e8b88a';X.fillRect(-8,-38,16,14);X.fillStyle='#2a2a2a';X.fillRect(-5,-34,3,3);X.fillRect(3,-34,3,3);
-  X.fillStyle='#a06040';X.fillRect(-3,-27,6,2);
-  X.fillStyle='#5a3a1e';X.fillRect(-7,-26,14,4);X.fillRect(-5,-22,10,2);
-  // Green beanie
-  X.fillStyle='#228822';X.beginPath();X.ellipse(0,-40,10,5,0,Math.PI,0);X.fill();X.fillRect(-10,-42,20,4);X.fillStyle='#186818';X.fillRect(-10,-40,20,3);X.fillStyle='#228822';X.beginPath();X.arc(0,-45,4,0,Math.PI*2);X.fill();
-  X.restore();
-  // Name tag
-  oText('HAND',x,y-52,'#80e080',5);
-  // Speed lines
-  if(E.walk){X.strokeStyle='rgba(100,255,100,0.2)';X.lineWidth=1;const d=-E.f;for(let i=0;i<2;i++){const ly=E.y-20+i*12,lx=E.x+d*15;X.beginPath();X.moveTo(lx,ly);X.lineTo(lx+d*15,ly);X.stroke();}}
-}
-
-// ═══ INTRO OVERLAY ═══
-function drawIntro(){
-  if(!showIntro)return;
-  const a=0.5+Math.sin(Date.now()*0.004)*0.3;
-  X.globalAlpha=a;
-  oText('PRESS SPACE TO CHOP',GW/2,GH/2-20,'#fff',16);
-  X.globalAlpha=0.6;
-  oText('S to stack | M to sell',GW/2,GH/2+15,'#c8a96e',9);
-  X.globalAlpha=1;
-}
-
-// ═══ INPUT ═══
-function snapAwayFromLogs(tx){
-  for(const l of logs){if(l.done)continue;const d=Math.abs(tx-l.x);if(d<l.diam/2+8){tx=tx<l.x?l.x-l.diam/2-12:l.x+l.diam/2+12;}}
-  return Math.max(20,Math.min(GW-20,tx));
-}
-CV.addEventListener('click',e=>{if(isBusy())return;showIntro=false;const g=s2g(e.clientX,e.clientY);J.tx=snapAwayFromLogs(g.x);});
-CV.addEventListener('touchstart',e=>{e.preventDefault();if(isBusy())return;showIntro=false;const t=e.touches[0];const g=s2g(t.clientX,t.clientY);J.tx=snapAwayFromLogs(g.x);},{passive:false});
-document.addEventListener('keydown',e=>{
-  showIntro=false;
-  if(e.code==='Space'){e.preventDefault();doChop();}
-  if(e.code==='KeyS')doStack();if(e.code==='KeyM')doSell();
-  if(e.code==='KeyU')upgradeAxe();if(e.code==='KeyC')buyCoffee();
-  if(e.code==='KeyJ')buyJerky();if(e.code==='KeyB')buyShed();
-  if(e.code==='KeyH')hireOrUpgradeEmp();
-  if(e.code==='KeyG')upgradeEmpAxe();
 });
 
-// ═══ UPDATE DRYING ═══
-let lastTime=0;
-function updateDrying(dt){
-  dryingStacks.forEach(st=>{
-    if(st.done)return;
-    st.dryProgress+=dt/st.dryTime;
-    if(st.dryProgress>=1){st.dryProgress=1;st.done=true;}
+// Auto-calculate on input change
+document.querySelectorAll('.input-field').forEach(input => {
+  input.addEventListener('input', () => {
+    calculate();
   });
+  
+  // Auto-select on focus so typing replaces value
+  input.addEventListener('focus', function() {
+    this.select();
+  });
+  
+  // Also select on click (for iOS)
+  input.addEventListener('click', function() {
+    this.select();
+  });
+  
+  // Handle enter key to close keyboard
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      this.blur();
+      calculate();
+    }
+  });
+});
+
+// Price unit toggle listener
+document.getElementById('price-unit-toggle').addEventListener('change', function() {
+  const isLF = this.checked;
+  const label = document.getElementById('price-input-label');
+  label.textContent = isLF ? 'Price per LF ($)' : 'Price per MBF ($)';
+  calculate();
+});
+
+// Square feet unit toggle
+document.getElementById('sqft-unit-toggle').addEventListener('change', function() {
+  const isSqFt = this.checked;
+  document.getElementById('sqft-input-label').textContent = isSqFt ? 'Square Feet' : 'MBF';
+  calculate();
+});
+
+// Square feet price toggle
+document.getElementById('sqft-price-toggle').addEventListener('change', function() {
+  const isSqFt = this.checked;
+  document.getElementById('sqft-price-label').textContent = isSqFt ? 'Price per SQ FT ($)' : 'Price per MBF ($)';
+  calculate();
+});
+
+// M³ unit toggle
+document.getElementById('m3-unit-toggle').addEventListener('change', function() {
+  const isMBF = this.checked;
+  document.getElementById('m3-input-label').textContent = isMBF ? 'Price per MBF ($)' : 'Price per m³ (€)';
+  calculate();
+});
+
+function setPreset(thickness, width) {
+  const panels = ['lf', 'mbf', 'price'];
+  panels.forEach(prefix => {
+    const thickEl = document.getElementById(`${prefix}-thick`);
+    const widthEl = document.getElementById(`${prefix}-width`);
+    if (thickEl) thickEl.value = thickness;
+    if (widthEl) widthEl.value = width;
+  });
+  calculate();
 }
 
-// ═══ MAIN LOOP ═══
-let loopErr=false;
-function loop(ts){
-  if(loopErr)return;
-  try{
-  const dt=(ts-(lastTime||ts))/1000;lastTime=ts;gt=ts;
-  const dx=J.tx-J.x;
-  if(Math.abs(dx)>3&&!J.chop&&!J.drink&&!J.eat&&!J.flex){J.walk=true;J.x+=Math.sign(dx)*spd();J.f=dx>0?1:-1;J.wt++;}
-  else if(!J.chop){J.walk=false;}
-  if(J.chop){J.cp+=cspd();if(J.cp>=1){J.chop=false;J.cp=0;}}
-
-  updateCS();updateP();updateSplits();updateMsgs();updateDrying(dt);
-  updateEmployee(dt);
-
-  X.clearRect(0,0,GW,GH);
-  drawSky();drawClouds(ts);drawMountains();drawBgTrees();drawGround();
-  drawSheds();drawDryingStacks();
-  drawMarket();drawShedShop();drawEmpShop();drawAnvil();drawAxeSign();drawCoffeeShop();drawJerkyShop();
-  BLOCK_X.forEach(bx=>drawBlock(bx,420));
-  logs.forEach(l=>drawLog(l));
-  drawSplits();drawFreshPiles();
-  drawEmployee();
-  drawJack();
-  drawP();drawHint();drawMarketMsg();drawMsgs();
-  drawGoldenShimmer();
-  drawIntro();
-  }catch(e){loopErr=true;console.error('LOOP ERR:',e);X.fillStyle='#ff0000';X.font='16px monospace';X.fillText('ERROR: '+e.message,20,GH/2);}
-  requestAnimationFrame(loop);
+function setSqFtPreset(netFace, nominalWidth) {
+  document.getElementById('sqft-face-width').value = netFace;
+  document.getElementById('sqft-nominal-width').value = nominalWidth;
+  document.getElementById('sqft-thick').value = 1;
+  calculate();
 }
-requestAnimationFrame(loop);
+
+// Exchange rate fetching for MBF-M³ conversion - Multiple sources for reliability
+async function fetchExchangeRate() {
+  // Try multiple APIs in order of preference - all CORS-enabled and browser-friendly
+  const apis = [
+    {
+      name: 'fawazahmed0 (CDN)',
+      url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+      parse: (data) => data.usd.eur
+    },
+    {
+      name: 'exchangerate.host',
+      url: 'https://api.exchangerate.host/latest?base=USD&symbols=EUR',
+      parse: (data) => data.rates.EUR
+    },
+    {
+      name: 'frankfurter.dev',
+      url: 'https://api.frankfurter.dev/latest?from=USD&to=EUR',
+      parse: (data) => data.rates.EUR
+    }
+  ];
+  
+  for (const api of apis) {
+    try {
+      console.log(`Trying ${api.name}...`);
+      
+      const response = await fetch(api.url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache'
+      });
+      
+      if (!response.ok) {
+        console.warn(`${api.name} returned status ${response.status}`);
+        continue;
+      }
+      
+      const data = await response.json();
+      const rate = api.parse(data);
+      
+      console.log(`${api.name} returned rate:`, rate);
+      
+      if (rate && !isNaN(rate) && rate > 0.7 && rate < 1.2) {
+        // Sanity check: EUR/USD should be between 0.7 and 1.2
+        usdToEurRate = rate;
+        
+        // Cache in localStorage with timestamp
+        localStorage.setItem('usdToEurRate', usdToEurRate.toString());
+        localStorage.setItem('rateTimestamp', Date.now().toString());
+        localStorage.setItem('rateSource', api.name);
+        
+        console.log(`✓ Exchange rate loaded from ${api.name}: ${rate}`);
+        updateRateDisplay();
+        calculateM3Pricing(); // Recalculate with new rate
+        return; // Success - exit function
+      } else {
+        console.warn(`${api.name} returned invalid rate:`, rate);
+      }
+    } catch (error) {
+      console.warn(`Failed to fetch from ${api.name}:`, error.message);
+      continue; // Try next API
+    }
+  }
+  
+  // All APIs failed - use cached rate if available
+  const cached = localStorage.getItem('usdToEurRate');
+  const timestamp = localStorage.getItem('rateTimestamp');
+  
+  if (cached && !isNaN(parseFloat(cached))) {
+    usdToEurRate = parseFloat(cached);
+    const age = timestamp ? Date.now() - parseInt(timestamp) : null;
+    const ageHours = age ? Math.floor(age / (1000 * 60 * 60)) : null;
+    updateRateDisplay(`(cached ${ageHours}h ago)`);
+    console.warn('Using cached exchange rate:', usdToEurRate);
+  } else {
+    // Last resort: Use conservative estimate
+    usdToEurRate = 0.85; // Updated conservative estimate
+    updateRateDisplay('(ESTIMATED - API unavailable)');
+    console.error('All exchange rate APIs failed. Using estimate:', usdToEurRate);
+  }
+}
+
+function updateRateDisplay(suffix = '') {
+  const displayEl = document.getElementById('m3-rate-display');
+  const timeEl = document.getElementById('m3-rate-time');
+  
+  if (displayEl) {
+    displayEl.textContent = `1 USD = ${usdToEurRate.toFixed(4)} EUR ${suffix}`;
+  }
+  
+  if (timeEl) {
+    const timestamp = localStorage.getItem('rateTimestamp');
+    const source = localStorage.getItem('rateSource');
+    
+    if (timestamp && !suffix.includes('ESTIMATED')) {
+      const date = new Date(parseInt(timestamp));
+      const timeStr = date.toLocaleString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+      timeEl.textContent = `Updated: ${timeStr}${source ? ' via ' + source : ''}`;
+    } else if (suffix.includes('ESTIMATED')) {
+      timeEl.textContent = '⚠️ Unable to fetch live rate - verify manually';
+      timeEl.style.color = '#ff6b35'; // Orange warning color
+    } else {
+      timeEl.textContent = '';
+    }
+  }
+}
+
+function checkRateUpdate() {
+  const cached = localStorage.getItem('usdToEurRate');
+  const timestamp = localStorage.getItem('rateTimestamp');
+  
+  if (cached && timestamp) {
+    const age = Date.now() - parseInt(timestamp);
+    const twelveHours = 12 * 60 * 60 * 1000; // Check twice daily for accuracy
+    
+    if (age < twelveHours) {
+      // Use cached rate (less than 12 hours old)
+      usdToEurRate = parseFloat(cached);
+      updateRateDisplay();
+      return;
+    }
+  }
+  
+  // Fetch new rate (cache expired or doesn't exist)
+  fetchExchangeRate();
+}
+
+function calculateM3Pricing() {
+  const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
+  const isMBF = document.getElementById('m3-unit-toggle').checked; // checked = MBF, unchecked = M³
+  
+  let priceM3USD, priceM3EUR;
+  
+  if (isMBF) {
+    // Input is $/MBF → calculate $/m³ and €/m³
+    const priceMBFUSD = priceInput;
+    priceM3USD = priceInput / MBF_TO_M3;
+    priceM3EUR = priceM3USD * usdToEurRate;
+  } else {
+    // Input is €/m³ → calculate $/m³
+    priceM3EUR = priceInput;
+    priceM3USD = priceInput / usdToEurRate;
+  }
+  
+  const usdEl = document.getElementById('m3-price-usd');
+  const eurEl = document.getElementById('m3-price-eur');
+  
+  if (usdEl) {
+    usdEl.textContent = '$' + priceM3USD.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  
+  if (eurEl) {
+    eurEl.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+}
+
+function calculateSqFtPricing(coverageFactor) {
+  const priceInput = parseFloat(document.getElementById('sqft-price-input').value) || 0;
+  const isSqFt = document.getElementById('sqft-price-toggle').checked;
+  
+  if (isSqFt) {
+    // $/SQ FT → $/MBF
+    const priceMBF = priceInput * coverageFactor * 1000;
+    document.getElementById('sqft-price-result-label').textContent = '$/MBF:';
+    document.getElementById('sqft-price-result-value').textContent = 
+      '$' + priceMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  } else {
+    // $/MBF → $/SQ FT
+    const priceSqFt = priceInput / 1000 / coverageFactor;
+    document.getElementById('sqft-price-result-label').textContent = '$/SQ FT:';
+    document.getElementById('sqft-price-result-value').textContent = '$' + priceSqFt.toFixed(3);
+  }
+}
+
+function calculate() {
+  const resultSection = document.getElementById('resultSection');
+  const resultLabel = document.getElementById('resultLabel');
+  const resultValue = document.getElementById('resultValue');
+  const displayNumber = document.getElementById('displayNumber');
+  const displayUnit = document.getElementById('displayUnit');
+  
+  if (currentMode === 'lf-to-mbf') {
+    const lf = parseFloat(document.getElementById('lf-input').value) || 0;
+    const t = parseFloat(document.getElementById('lf-thick').value) || 1;
+    const w = parseFloat(document.getElementById('lf-width').value) || 1;
+    
+    // MBF = LF * (T * W) / 12 / 1000
+    const mbf = lf * (t * w) / 12 / 1000;
+    
+    displayNumber.textContent = mbf.toFixed(3);
+    displayUnit.textContent = 'MBF';
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'mbf-to-lf') {
+    const mbf = parseFloat(document.getElementById('mbf-input').value) || 0;
+    const t = parseFloat(document.getElementById('mbf-thick').value) || 1;
+    const w = parseFloat(document.getElementById('mbf-width').value) || 1;
+    
+    // LF = MBF * 1000 * 12 / (T * W)
+    const lf = mbf * 1000 * 12 / (t * w);
+    
+    displayNumber.textContent = lf.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    displayUnit.textContent = 'LF';
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'sq-ft') {
+    const input = parseFloat(document.getElementById('sqft-input').value) || 0;
+    const netFace = parseFloat(document.getElementById('sqft-face-width').value) || 1;
+    const nominalWidth = parseFloat(document.getElementById('sqft-nominal-width').value) || 1;
+    const isSqFt = document.getElementById('sqft-unit-toggle').checked;
+    
+    // CRITICAL: Coverage Factor = Net Face Width ÷ Nominal Width
+    const coverageFactor = netFace / nominalWidth;
+    
+    if (isSqFt) {
+      // Input is SQ FT → calculate MBF
+      const mbf = input / coverageFactor / 1000;
+      displayNumber.textContent = mbf.toFixed(3);
+      displayUnit.textContent = 'MBF';
+    } else {
+      // Input is MBF → calculate SQ FT
+      const sqFt = input * 1000 * coverageFactor;
+      displayNumber.textContent = sqFt.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = 'SQ FT';
+    }
+    
+    // Calculate pricing
+    calculateSqFtPricing(coverageFactor);
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'mbf-m3') {
+    // MBF to M³ conversion
+    const priceInput = parseFloat(document.getElementById('m3-price-input').value) || 0;
+    const isMBF = document.getElementById('m3-unit-toggle').checked;
+    
+    if (isMBF) {
+      // Input is $/MBF → Show €/m³ in LCD (primary result)
+      const priceMBFUSD = priceInput;
+      const priceM3USD = priceInput / MBF_TO_M3;
+      const priceM3EUR = priceM3USD * usdToEurRate;
+      
+      // Show €/m³ in big LCD display
+      displayNumber.textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = '/m³';
+      
+      // Show $/m³ below in result section
+      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+    } else {
+      // Input is €/m³ → Show $/MBF in LCD (primary result)
+      const priceM3EUR = priceInput;
+      const priceM3USD = priceInput / usdToEurRate;
+      const priceMBFUSD = priceM3USD * MBF_TO_M3;
+      
+      // Show $/MBF in big LCD display
+      displayNumber.textContent = '$' + priceMBFUSD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      displayUnit.textContent = '/MBF';
+      
+      // Show both below in result section
+      document.getElementById('m3-price-usd').textContent = '$' + priceM3USD.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+      document.getElementById('m3-price-eur').textContent = '€' + priceM3EUR.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '/m³';
+    }
+    
+    resultSection.style.display = 'none';
+  }
+  else if (currentMode === 'pricing') {
+    const priceInput = parseFloat(document.getElementById('price-input').value) || 0;
+    const t = parseFloat(document.getElementById('price-thick').value) || 1;
+    const w = parseFloat(document.getElementById('price-width').value) || 1;
+    const isLF = document.getElementById('price-unit-toggle').checked;
+    
+    if (isLF) {
+      // Input is $/LF → calculate $/MBF
+      const calcMBF = priceInput * 12 / (t * w) * 1000;
+      displayNumber.textContent = '$' + calcMBF.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      displayUnit.textContent = '/MBF';
+    } else {
+      // Input is $/MBF → calculate $/LF
+      const calcLF = priceInput / 1000 * (t * w) / 12;
+      displayNumber.textContent = '$' + calcLF.toFixed(3);
+      displayUnit.textContent = '/LF';
+    }
+    resultSection.style.display = 'none';
+  }
+}
+
+// Initial calculation
+calculate();
+
+// Initialize exchange rate for MBF-M³ conversion
+checkRateUpdate();
 </script>
+
 </body>
 </html>
